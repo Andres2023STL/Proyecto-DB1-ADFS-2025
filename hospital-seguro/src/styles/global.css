@@ -1,0 +1,32 @@
+/* global.css */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body, html {
+  height: 100%;
+  font-family: Arial, sans-serif;
+  background-color: #f4f4f4;
+  color: #333;
+}
+
+/* El contenedor principal ocupa toda la altura de la pantalla */
+.layout {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+/* El contenido principal ocupa todo el espacio disponible */
+.content {
+  flex: 1;
+  padding: 20px;
+}
+
+/* Estilo adicional para evitar espacios en los bordes */
+header, footer {
+  width: 100%;
+}
