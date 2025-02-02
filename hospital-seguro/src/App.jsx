@@ -1,35 +1,53 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import React from 'react';
+import { Routes, Route } from 'react-router-dom';
+import Home from './pages/Home';
+import Login from './pages/Login';
+import Dashboard from './pages/Dashboard';
+import ProtectedRoute from './components/ProtectedRoute';
+import Layout from './layouts/Layout';
+
+// Importa las páginas específicas
+import Appointments from './modules/hospital/pages/Appointments';
+import PatientHistory from './modules/hospital/pages/PatientHistory';
+import Prescriptions from './modules/hospital/pages/Prescriptions';
 
 function App() {
-  const [count, setCount] = useState(0)
-
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    <Layout>
+      <Routes>
+        {/* Rutas públicas */}
+        <Route path="/" element={<Home />} />
+        <Route path="/login" element={<Login />} />
+
+        {/* Ruta protegida principal */}
+        <Route path="/dashboard" element={<ProtectedRoute component={Dashboard} />} />
+
+        {/* Rutas específicas del módulo Hospital */}
+        <Route
+          path="/hospital/appointments"
+          element={<ProtectedRoute component={Appointments} requiredRole="doctor" />}
+        />
+        <Route
+          path="/hospital/patient-history"
+          element={<ProtectedRoute component={PatientHistory} requiredRole="doctor" />}
+        />
+        <Route
+          path="/hospital/prescriptions"
+          element={<ProtectedRoute component={Prescriptions} requiredRole="doctor" />}
+        />
+
+        {/* Rutas de ejemplo para otros roles */}
+        <Route
+          path="/admin/users"
+          element={<ProtectedRoute component={() => <h1>Gestión de Usuarios</h1>} requiredRole="admin" />}
+        />
+        <Route
+          path="/employee/appointments"
+          element={<ProtectedRoute component={() => <h1>Control de Citas</h1>} requiredRole="empleado" />}
+        />
+      </Routes>
+    </Layout>
+  );
 }
 
-export default App
+export default App;
