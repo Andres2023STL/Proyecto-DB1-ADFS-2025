@@ -6,10 +6,12 @@ import Dashboard from './pages/Dashboard';
 import ProtectedRoute from './components/ProtectedRoute';
 import Layout from './layouts/Layout';
 
-// Importa las páginas específicas
-import Appointments from './modules/hospital/pages/Appointments';
-import PatientHistory from './modules/hospital/pages/PatientHistory';
-import Prescriptions from './modules/hospital/pages/Prescriptions';
+// Importa las nuevas páginas
+import HospitalHome from './pages/HospitalHome';
+import SeguroHome from './pages/SeguroHome';
+import Historia from './pages/Historia';
+import Faq from './pages/Faq';
+import Contacto from './pages/Contacto';
 
 function App() {
   return (
@@ -17,34 +19,15 @@ function App() {
       <Routes>
         {/* Rutas públicas */}
         <Route path="/" element={<Home />} />
+        <Route path="/hospital" element={<HospitalHome />} />
+        <Route path="/seguro" element={<SeguroHome />} />
+        <Route path="/historia" element={<Historia />} />
+        <Route path="/faq" element={<Faq />} />
+        <Route path="/contacto" element={<Contacto />} />
         <Route path="/login" element={<Login />} />
 
         {/* Ruta protegida principal */}
         <Route path="/dashboard" element={<ProtectedRoute component={Dashboard} />} />
-
-        {/* Rutas específicas del módulo Hospital */}
-        <Route
-          path="/hospital/appointments"
-          element={<ProtectedRoute component={Appointments} requiredRole="doctor" />}
-        />
-        <Route
-          path="/hospital/patient-history"
-          element={<ProtectedRoute component={PatientHistory} requiredRole="doctor" />}
-        />
-        <Route
-          path="/hospital/prescriptions"
-          element={<ProtectedRoute component={Prescriptions} requiredRole="doctor" />}
-        />
-
-        {/* Rutas de ejemplo para otros roles */}
-        <Route
-          path="/admin/users"
-          element={<ProtectedRoute component={() => <h1>Gestión de Usuarios</h1>} requiredRole="admin" />}
-        />
-        <Route
-          path="/employee/appointments"
-          element={<ProtectedRoute component={() => <h1>Control de Citas</h1>} requiredRole="empleado" />}
-        />
       </Routes>
     </Layout>
   );

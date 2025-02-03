@@ -10,6 +10,11 @@ function Header() {
       <h1>Sistema Integrado</h1>
       <nav>
         <Link to="/" className="header-link">Inicio</Link>
+        <Link to="/hospital" className="header-link">Hospital</Link>
+        <Link to="/seguro" className="header-link">Seguro</Link>
+        <Link to="/historia" className="header-link">Historia</Link>
+        <Link to="/faq" className="header-link">FAQ</Link>
+        <Link to="/contacto" className="header-link">Contacto</Link>
         {!role && <Link to="/login" className="header-link">Login</Link>}
         {role && <Link to="/dashboard" className="header-link">Dashboard</Link>}
       </nav>

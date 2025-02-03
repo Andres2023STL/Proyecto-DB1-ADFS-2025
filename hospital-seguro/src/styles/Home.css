@@ -1,119 +1,106 @@
-/* src/styles/Home.css */
-
 .home-page {
-    padding: 20px;
-    font-family: Arial, sans-serif;
-  }
-  
-  /* Hero Section */
-  .hero {
-    text-align: center;
-    padding: 40px 20px;
-    background-color: #007bff;
-    color: white;
-    border-radius: 8px;
-    margin-bottom: 40px;
-  }
-  
-  .hero-title {
-    font-size: 2.5rem;
-    font-weight: bold;
-  }
-  
-  .hero-description {
-    margin-top: 10px;
-    font-size: 1.2rem;
-  }
-  
-  .hero-image {
-    margin-top: 20px;
-    width: 100%;
-    max-width: 600px;
-    border-radius: 8px;
-  }
-  
-  /* Servicios */
-  .services {
-    margin-bottom: 40px;
-    text-align: center;
-  }
-  
-  .section-title {
-    font-size: 2rem;
-    margin-bottom: 20px;
-    color: #333;
-  }
-  
-  .service-cards {
-    display: flex;
-    justify-content: center;
-    gap: 20px;
-  }
-  
-  .service-card {
-    padding: 20px;
-    background-color: #f4f4f4;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    width: 300px;
-    text-align: center;
-    text-decoration: none;
-    color: #007bff;
-    transition: transform 0.3s;
-  }
-  
-  .service-card:hover {
-    transform: translateY(-5px);
-  }
-  
-  /* Beneficios */
-  .benefits {
-    margin-bottom: 40px;
-    text-align: center;
-  }
-  
-  .benefit-cards {
-    display: flex;
-    justify-content: center;
-    gap: 20px;
-    flex-wrap: wrap;
-  }
-  
-  .benefit-card {
-    padding: 20px;
-    background-color: #fff;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    width: 280px;
-    text-align: center;
-    transition: transform 0.3s;
-  }
-  
-  .benefit-card:hover {
-    transform: translateY(-5px);
-  }
-  
-  .benefit-icon {
-    width: 50px;
-    height: 50px;
-    margin-bottom: 10px;
-  }
-  
-  .benefit-card h3 {
-    font-size: 1.5rem;
-    color: #333;
-    margin-bottom: 10px;
-  }
-  
-  .benefit-card p {
-    color: #555;
-  }
-  
-  /* Contacto */
-  .contact {
-    text-align: center;
-    padding: 20px;
-    background-color: #e9ecef;
-    border-radius: 8px;
-  }
-  
+  padding: 20px;
+  font-family: Arial, sans-serif;
+}
+
+/* Sección de bienvenida */
+.hero {
+  text-align: center;
+  padding: 40px 20px;
+  background-color: #007bff;
+  color: white;
+  border-radius: 8px;
+  margin-bottom: 40px;
+}
+
+.hero-title {
+  font-size: 2.5rem;
+  font-weight: bold;
+}
+
+.hero-description {
+  margin-top: 10px;
+  font-size: 1.2rem;
+}
+
+.hero-image {
+  margin-top: 20px;
+  width: 100%;
+  max-width: 600px;
+  border-radius: 8px;
+}
+
+/* Servicios */
+.services {
+  margin-bottom: 40px;
+  text-align: center;
+}
+
+.section-title {
+  font-size: 2rem;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+.service-cards {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+}
+
+.service-card {
+  padding: 20px;
+  background-color: #f4f4f4;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  width: 300px;
+  text-align: center;
+  text-decoration: none;
+  color: #007bff;
+  transition: transform 0.3s;
+}
+
+.service-card:hover {
+  transform: translateY(-5px);
+}
+
+/* Beneficios */
+.benefits {
+  margin-bottom: 40px;
+  text-align: center;
+}
+
+.benefit-cards {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.benefit-card {
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  width: 280px;
+  text-align: center;
+  transition: transform 0.3s;
+}
+
+.benefit-card:hover {
+  transform: translateY(-5px);
+}
+
+.benefit-icon {
+  width: 50px;
+  height: 50px;
+  margin-bottom: 10px;
+}
+
+/* Contacto */
+.contact {
+  text-align: center;
+  padding: 20px;
+  background-color: #e9ecef;
+  border-radius: 8px;
+}

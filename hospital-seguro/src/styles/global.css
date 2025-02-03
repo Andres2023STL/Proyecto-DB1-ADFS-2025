@@ -1,32 +1,55 @@
-/* global.css */
-
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
-body, html {
-  height: 100%;
-  font-family: Arial, sans-serif;
-  background-color: #f4f4f4;
+body {
+  font-family: 'Arial', sans-serif;
+  background-color: #f0f4f7;
   color: #333;
 }
 
-/* El contenedor principal ocupa toda la altura de la pantalla */
 .layout {
   display: flex;
   flex-direction: column;
   min-height: 100vh;
 }
 
-/* El contenido principal ocupa todo el espacio disponible */
 .content {
   flex: 1;
   padding: 20px;
 }
 
-/* Estilo adicional para evitar espacios en los bordes */
-header, footer {
-  width: 100%;
+footer {
+  background-color: #333;
+  color: white;
+  padding: 15px;
+  text-align: center;
+  font-size: 0.9rem;
+}
+
+/* global.css */
+.page-container {
+  padding: 40px;
+  max-width: 900px;
+  margin: 20px auto;
+  background-color: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  font-family: 'Arial', sans-serif;
+}
+
+.page-container h1 {
+  font-size: 2.2rem;
+  color: #007bff;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.page-container p {
+  font-size: 1.1rem;
+  color: #555;
+  line-height: 1.7;
+  text-align: justify;
 }
