@@ -10,7 +10,6 @@ function Login() {
   const handleLogin = (e) => {
     e.preventDefault();
 
-    // Usuarios simulados
     const users = [
       { email: 'doctor@example.com', password: 'password', role: 'doctor' },
       { email: 'admin@example.com', password: 'password', role: 'admin' },

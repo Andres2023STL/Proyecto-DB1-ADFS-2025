@@ -32,4 +32,8 @@ function AuditLogs() {
   );
 }
 
+<<<<<<< HEAD
 export default AuditLogs;
+=======
+export default AuditLogs;
+>>>>>>> f0cb69c (Agregar más los de mas requerimientos)

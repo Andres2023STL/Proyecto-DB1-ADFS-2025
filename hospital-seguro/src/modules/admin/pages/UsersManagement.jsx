@@ -55,4 +55,8 @@ function UsersManagement() {
   );
 }
 
+<<<<<<< HEAD
 export default UsersManagement;
+=======
+export default UsersManagement;
+>>>>>>> f0cb69c (Agregar más los de mas requerimientos)

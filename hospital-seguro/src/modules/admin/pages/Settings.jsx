@@ -34,4 +34,8 @@ function Settings() {
   );
 }
 
+<<<<<<< HEAD
 export default Settings;
+=======
+export default Settings;
+>>>>>>> f0cb69c (Agregar más los de mas requerimientos)

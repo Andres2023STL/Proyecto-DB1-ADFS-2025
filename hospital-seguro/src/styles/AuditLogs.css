@@ -1,4 +1,5 @@
 .page-container {
+<<<<<<< HEAD
     padding: 20px;
     max-width: 900px;
     margin: 0 auto;
@@ -42,3 +43,43 @@
   .users-table tr:hover {
     background-color: #e9ecef;
   }
+=======
+  padding: 20px;
+  max-width: 900px;
+  margin: 0 auto;
+  background-color: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  font-family: 'Arial', sans-serif;
+  color: #333;
+}
+
+h1 {
+  font-size: 2.4rem;
+  color: #007bff;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.audit-log-list {
+  list-style: none;
+  padding: 0;
+}
+
+.audit-log-item {
+  padding: 15px;
+  margin-bottom: 10px;
+  background-color: #f8f9fa;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+}
+
+.audit-log-item strong {
+  color: #007bff;
+}
+
+.audit-log-item:hover {
+  background-color: #e9ecef;
+}
+>>>>>>> f0cb69c (Agregar más los de mas requerimientos)
