@@ -7,7 +7,8 @@ function Header() {
 
   return (
     <header className="header">
-      <h1>Sistema Integrado</h1>
+      <h1>Plataforma de Gestión Médica</h1>
+      <img src="/home-heart.png" alt="Logo" className='logo'/>
       <nav>
         <Link to="/" className="header-link">Inicio</Link>
         <Link to="/hospital" className="header-link">Hospital</Link>

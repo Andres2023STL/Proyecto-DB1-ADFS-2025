@@ -15,7 +15,7 @@ function Dashboard() {
   return (
     <div className="dashboard-container">
       <div className="dashboard-header">
-        <h1>{`Bienvenido, ${role.charAt(0).toUpperCase() + role.slice(1)}!`}</h1>
+        <h1>{`¡Bienvenido, ${role.charAt(0).toUpperCase() + role.slice(1)}!`}</h1>
         <button onClick={handleLogout} className="logout-button">Cerrar Sesión</button>
       </div>
 

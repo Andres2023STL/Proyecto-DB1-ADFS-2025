@@ -26,8 +26,9 @@
 .hero-image {
   margin-top: 20px;
   width: 100%;
-  max-width: 600px;
+  max-width: 100px;
   border-radius: 8px;
+  transform: scale(1);
 }
 
 /* Servicios */

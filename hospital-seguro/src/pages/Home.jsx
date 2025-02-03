@@ -7,11 +7,11 @@ function Home() {
     <div className="home-page">
       {/* Sección de bienvenida */}
       <section className="hero">
-        <h1 className="hero-title">¡Bienvenido al Sistema Integrado de Gestión!</h1>
+        <h1 className="hero-title">¡Bienvenido a la Plataforma de Gestión Médica!</h1>
         <p className="hero-description">
           Gestiona fácilmente tus servicios médicos, seguros y recetas en un solo lugar.
         </p>
-        <img src="/assets/hero-image.jpg" alt="Sistema Integrado" className="hero-image" />
+        <img src="/hero-image.png" alt="Plataforma" className="hero-image" />
       </section>
 
       {/* Módulos del sistema */}
@@ -38,17 +38,17 @@ function Home() {
         <h2 className="section-title">¿Por qué elegirnos?</h2>
         <div className="benefit-cards">
           <div className="benefit-card">
-            <img src="/assets/icon-automation.png" alt="Automatización" className="benefit-icon" />
+            <img src="/robot_1.png" alt="Automatización" className="benefit-icon" />
             <h3>Automatización Completa</h3>
             <p>Optimiza los procesos de gestión con herramientas digitales.</p>
           </div>
           <div className="benefit-card">
-            <img src="/assets/icon-centralized.png" alt="Centralización" className="benefit-icon" />
+            <img src="/centralization_1.png" alt="Centralización" className="benefit-icon" />
             <h3>Gestión Centralizada</h3>
             <p>Consulta toda la información en una única plataforma.</p>
           </div>
           <div className="benefit-card">
-            <img src="/assets/icon-intuitive.png" alt="Interfaz Intuitiva" className="benefit-icon" />
+            <img src="/dispositivos.png" alt="Interfaz Intuitiva" className="benefit-icon" />
             <h3>Fácil de Usar</h3>
             <p>Navega rápidamente gracias a una interfaz intuitiva.</p>
           </div>
