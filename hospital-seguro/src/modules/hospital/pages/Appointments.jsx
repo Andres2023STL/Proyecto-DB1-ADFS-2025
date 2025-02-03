@@ -23,8 +23,8 @@ function Appointments() {
   };
 
   return (
-    <div className="appointments-container">
-      <div className="appointments-header">
+    <div className="page-container">
+      <div className="page-header">
         <h1>Agenda de Consultas</h1>
         <Link to="/dashboard" className="back-button">← Regresar al Dashboard</Link>
       </div>
