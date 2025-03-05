@@ -11,7 +11,10 @@ function ProtectedRoute({ children, requiredRole }) {
 
   const userRole = getUserRole();
 
-  if (requiredRole && userRole !== requiredRole) {
+  // Si requiredRole es un string, lo convertimos en un array para comparar con múltiples roles
+  const rolesPermitidos = Array.isArray(requiredRole) ? requiredRole : [requiredRole];
+
+  if (requiredRole && !rolesPermitidos.includes(userRole)) {
     return (
       <div style={{ padding: '20px', textAlign: 'center', color: '#ff4d4d' }}>
         <h1>Acceso denegado</h1>

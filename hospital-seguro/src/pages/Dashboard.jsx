@@ -34,42 +34,56 @@ function Dashboard() {
             </div>
           </div>
         );
-      case 'admin':
-        return (
-          <div className="dashboard-content">
-            <h2>Panel de Administración</h2>
-            <div className="dashboard-cards">
-              <Link to="/admin/users" className="dashboard-card">
-                <h3>Gestión de Usuarios</h3>
-                <p>Administra los usuarios del sistema.</p>
-              </Link>
-              <Link to="/admin/audit" className="dashboard-card">
-                <h3>Auditoría</h3>
-                <p>Consulta los registros de cambios en el sistema.</p>
-              </Link>
-              <Link to="/admin/settings" className="dashboard-card">
-                <h3>Configuraciones</h3>
-                <p>Modifica las configuraciones generales del sistema.</p>
-              </Link>
+        case 'admin':
+          return (
+            <div className="dashboard-content">
+              <h2>Panel de Administración</h2>
+              <div className="dashboard-cards">
+                <Link to="/admin/users" className="dashboard-card">
+                  <h3>Gestión de Usuarios</h3>
+                  <p>Administra los usuarios del sistema.</p>
+                </Link>
+                <Link to="/admin/audit" className="dashboard-card">
+                  <h3>Auditoría</h3>
+                  <p>Consulta los registros de cambios en el sistema.</p>
+                </Link>
+                <Link to="/admin/settings" className="dashboard-card">
+                  <h3>Configuraciones</h3>
+                  <p>Modifica las configuraciones generales del sistema.</p>
+                </Link>
+                <Link to="/moderation" className="dashboard-card">
+                  <h3>Panel de Moderación</h3>
+                  <p>Aprueba o rechaza cambios en el contenido.</p>
+                </Link>
+                <Link to="/admin" className="dashboard-card">
+                  <h3>Editar Contenido</h3>
+                  <p>Modifica la información del portal.</p>
+                </Link>
+              </div>
             </div>
-          </div>
-        );
-      case 'empleado':
-        return (
-          <div className="dashboard-content">
-            <h2>Panel de Empleado</h2>
-            <div className="dashboard-cards">
-              <Link to="/employee/appointments" className="dashboard-card">
-                <h3>Control de Citas</h3>
-                <p>Gestiona las citas y la atención de pacientes.</p>
-              </Link>
-              <Link to="/employee/reports" className="dashboard-card">
-                <h3>Reportes Operativos</h3>
-                <p>Genera reportes de actividad.</p>
-              </Link>
-            </div>
-          </div>
-        );
+          );
+        
+          case 'empleado':
+            return (
+              <div className="dashboard-content">
+                <h2>Panel de Empleado</h2>
+                <div className="dashboard-cards">
+                  <Link to="/employee/appointments" className="dashboard-card">
+                    <h3>Control de Citas</h3>
+                    <p>Gestiona las citas y la atención de pacientes.</p>
+                  </Link>
+                  <Link to="/employee/reports" className="dashboard-card">
+                    <h3>Reportes Operativos</h3>
+                    <p>Genera reportes de actividad.</p>
+                  </Link>
+                  <Link to="/admin" className="dashboard-card">
+                    <h3>Editar Contenido</h3>
+                    <p>Modifica la información del portal.</p>
+                  </Link>
+                </div>
+              </div>
+            );
+          
       default:
         return <p>No tienes un rol asignado.</p>;
     }

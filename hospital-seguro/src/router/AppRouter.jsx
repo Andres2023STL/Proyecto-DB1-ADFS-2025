@@ -8,11 +8,14 @@ import Faq from '../pages/Faq';
 import Contacto from '../pages/Contacto';
 import Login from '../pages/Login';
 import Dashboard from '../pages/Dashboard';
+import AdminPanel from '../admin/pages/AdminPanel';
+import ModerationPanel from '../admin/pages/ModerationPanel';
 import ProtectedRoute from '../components/ProtectedRoute';
 
 function AppRouter() {
   return (
     <Routes>
+      {/* Páginas principales */}
       <Route path="/" element={<Home />} />
       <Route path="/hospital" element={<HospitalHome />} />
       <Route path="/seguro" element={<SeguroHome />} />
@@ -20,7 +23,11 @@ function AppRouter() {
       <Route path="/faq" element={<Faq />} />
       <Route path="/contacto" element={<Contacto />} />
       <Route path="/login" element={<Login />} />
-      <Route path="/dashboard" element={<ProtectedRoute component={Dashboard} />} />
+
+      {/* Rutas protegidas */}
+      <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
+      <Route path="/admin" element={<ProtectedRoute><AdminPanel /></ProtectedRoute>} />
+      <Route path="/moderation" element={<ProtectedRoute><ModerationPanel /></ProtectedRoute>} />
     </Routes>
   );
 }

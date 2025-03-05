@@ -1,12 +1,12 @@
 import React from 'react';
 import { Routes, Route } from 'react-router-dom';
+import Layout from './layouts/Layout';
 import Home from './pages/Home';
 import Login from './pages/Login';
 import Dashboard from './pages/Dashboard';
 import ProtectedRoute from './components/ProtectedRoute';
-import Layout from './layouts/Layout';
 
-// Importar componentes de módulos hospital y admin
+// Importar módulos hospital y admin
 import Appointments from './modules/hospital/pages/Appointments';
 import PatientHistory from './modules/hospital/pages/PatientHistory';
 import Prescriptions from './modules/hospital/pages/Prescriptions';
@@ -14,18 +14,27 @@ import UsersManagement from './modules/admin/pages/UsersManagement';
 import AuditLogs from './modules/admin/pages/AuditLogs';
 import Settings from './modules/admin/pages/Settings';
 
-// Importar componentes de las páginas adicionales
+// Importar páginas adicionales
 import HospitalHome from './pages/HospitalHome';
 import SeguroHome from './pages/SeguroHome';
 import Historia from './pages/Historia';
 import Faq from './pages/Faq';
 import Contacto from './pages/Contacto';
 
+// Importar Panel de Administración y Moderación
+import AdminPanel from './modules/admin/pages/AdminPanel';
+import ModerationPanel from './modules/admin/pages/ModerationPanel';
+
+//Importar draft
+import DraftEditor from './pages/draft';
+
+
+
 function App() {
   return (
     <Layout>
       <Routes>
-        {/* Rutas públicas */}
+        {/* 🔹 Rutas Públicas */}
         <Route path="/" element={<Home />} />
         <Route path="/hospital" element={<HospitalHome />} />
         <Route path="/seguro" element={<SeguroHome />} />
@@ -34,7 +43,7 @@ function App() {
         <Route path="/contacto" element={<Contacto />} />
         <Route path="/login" element={<Login />} />
 
-        {/* Ruta protegida principal */}
+        {/* 🔹 Dashboard (Protegido) */}
         <Route
           path="/dashboard"
           element={
@@ -44,7 +53,7 @@ function App() {
           }
         />
 
-        {/* Rutas protegidas del módulo hospital */}
+        {/* 🔹 Rutas protegidas para el módulo hospital (Solo Doctor) */}
         <Route
           path="/hospital/appointments"
           element={
@@ -70,7 +79,7 @@ function App() {
           }
         />
 
-        {/* Rutas protegidas del módulo de administración */}
+        {/* 🔹 Rutas protegidas para administración (Solo Admin) */}
         <Route
           path="/admin/users"
           element={
@@ -92,6 +101,34 @@ function App() {
           element={
             <ProtectedRoute requiredRole="admin">
               <Settings />
+            </ProtectedRoute>
+          }
+        />
+
+        {/* 🔹 Panel de Administración (Empleados y Admins pueden acceder) */}
+        <Route
+          path="/admin"
+          element={
+            <ProtectedRoute requiredRole={['admin', 'empleado']}>
+              <AdminPanel />
+            </ProtectedRoute>
+          }
+        />
+
+        {/* 🔹 Panel de Moderación (Solo Admin) */}
+        <Route
+          path="/moderation"
+          element={
+            <ProtectedRoute requiredRole="admin">
+              <ModerationPanel />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/draft"
+          element={
+            <ProtectedRoute requiredRole={['empleado', 'admin']}>
+              <DraftEditor />
             </ProtectedRoute>
           }
         />

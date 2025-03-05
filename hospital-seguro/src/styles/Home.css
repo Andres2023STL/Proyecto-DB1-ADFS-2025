@@ -66,6 +66,13 @@
   transform: translateY(-5px);
 }
 
+/* Ajuste de tamaño de los íconos en módulos */
+.module-icon {
+  width: 40px; /* Tamaño más pequeño */
+  height: 40px;
+  margin-top: 10px;
+}
+
 /* Beneficios */
 .benefits {
   margin-bottom: 40px;
