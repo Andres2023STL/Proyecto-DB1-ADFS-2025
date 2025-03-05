@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import '../../../styles/UsersManagement.css';
+import usersData from '../../../data/users.json'; // Importar usuarios
 import { logAuditEvent } from './AuditLogs'; // Importando desde AuditLogs.jsx
 
 function UsersManagement() {
@@ -13,11 +14,10 @@ function UsersManagement() {
   const [currentPage, setCurrentPage] = useState(1);
   const usersPerPage = 5;
 
-  // ✅ Cargar usuarios desde localStorage al montar el componente
+  //Cargar usuarios desde el archivo JSON al montar el componente
   useEffect(() => {
-    const storedUsers = JSON.parse(localStorage.getItem('users')) || [];
-    setUsers(storedUsers);
-    setFilteredUsers(storedUsers);
+    setUsers(usersData);
+    setFilteredUsers(usersData);
   }, []);
 
   // ✅ Filtrar usuarios cada vez que cambian los filtros o los usuarios
