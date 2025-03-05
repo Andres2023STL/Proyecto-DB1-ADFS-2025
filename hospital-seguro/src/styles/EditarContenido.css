@@ -1,0 +1,107 @@
+.dashboard-container {
+  padding: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+  font-family: 'Arial', sans-serif;
+}
+
+.dashboard-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+}
+
+.dashboard-header h1 {
+  font-size: 2rem;
+  color: #333;
+}
+
+.logout-button {
+  background-color: #ff4d4d;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.logout-button:hover {
+  background-color: #d42d2d;
+}
+
+.dashboard-content {
+  margin-top: 30px;
+}
+
+.dashboard-content h2 {
+  font-size: 1.8rem;
+  color: #333;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.dashboard-cards {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: center;
+}
+
+.dashboard-card {
+  background-color: #f4f4f4;
+  padding: 20px;
+  border-radius: 10px;
+  width: 250px;
+  text-align: center;
+  text-decoration: none;
+  outline: none; /* Quita cualquier línea azul al hacer clic */
+  border: none; /* Quita el borde azul */
+  color: #333;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.dashboard-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  background-color: #e8f0ff;
+}
+
+.dashboard-card h3 {
+  color: #007bff;
+  font-size: 1.4rem;
+  margin-bottom: 10px;
+}
+
+.dashboard-card p {
+  font-size: 1rem;
+  color: #555;
+}
+
+.dashboard-card:hover h3 {
+  color: #0056b3;
+}
+
+/* 🔹 Botón de Regreso */
+.back-button {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  display: block;
+  margin: 20px auto; /* Centrar el botón */
+  text-align: center;
+  text-decoration: none; /* Eliminar líneas de los botones */
+  outline: none;
+}
+
+.back-button:hover {
+  background-color: #0056b3;
+}

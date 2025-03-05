@@ -13,6 +13,7 @@ import Prescriptions from './modules/hospital/pages/Prescriptions';
 import UsersManagement from './modules/admin/pages/UsersManagement';
 import AuditLogs from './modules/admin/pages/AuditLogs';
 import Settings from './modules/admin/pages/Settings';
+import EditarContenido from './modules/admin/pages/EditarContenido'
 
 // Importar páginas adicionales
 import HospitalHome from './pages/HospitalHome';
@@ -108,6 +109,14 @@ function App() {
         {/* 🔹 Panel de Administración (Empleados y Admins pueden acceder) */}
         <Route
           path="/admin"
+          element={
+            <ProtectedRoute requiredRole={['admin', 'empleado']}>
+              <EditarContenido />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/adminpanel"
           element={
             <ProtectedRoute requiredRole={['admin', 'empleado']}>
               <AdminPanel />
