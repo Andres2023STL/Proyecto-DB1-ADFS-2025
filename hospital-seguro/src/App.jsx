@@ -10,6 +10,8 @@ import ProtectedRoute from './components/ProtectedRoute';
 import Appointments from './modules/hospital/pages/Appointments';
 import PatientHistory from './modules/hospital/pages/PatientHistory';
 import Prescriptions from './modules/hospital/pages/Prescriptions';
+import DoctorCatalog from './modules/hospital/pages/DoctorCatalog';
+import DoctorDetails from './modules/hospital/pages/DoctorDetails';
 import UsersManagement from './modules/admin/pages/UsersManagement';
 import AuditLogs from './modules/admin/pages/AuditLogs';
 import Settings from './modules/admin/pages/Settings';
@@ -76,6 +78,22 @@ function App() {
           element={
             <ProtectedRoute requiredRole="doctor">
               <Prescriptions />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/hospital/doctorcatalog"
+          element={
+            <ProtectedRoute requiredRole="doctor">
+              <DoctorCatalog />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/hospital/doctordetails/:id"
+          element={
+            <ProtectedRoute requiredRole="doctor">
+              <DoctorDetails />
             </ProtectedRoute>
           }
         />

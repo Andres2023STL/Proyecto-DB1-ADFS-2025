@@ -2,17 +2,50 @@
     {
       "id": 1,
       "name": "Dr. Juan Pérez",
-      "specialty": "Cardiología"
+      "specialty": "Cardiología",
+      "graduation": {
+        "year": 2010,
+        "university": "Universidad Nacional"
+      },
+      "licenseNumber": "123456",
+      "photo": "/images/doctors/doctor(1).png",
+      "certifications": ["/images/titles/certificado.png", "/images/titles/certificado.png"],
+      "contact": {
+        "phone": "+502 1234-5678",
+        "email": "juan.perez@hospital.com"
+      }
     },
     {
-      "id": 2,
-      "name": "Dra. María López",
-      "specialty": "Pediatría"
-    },
-    {
-      "id": 3,
-      "name": "Dr. Carlos Martínez",
-      "specialty": "Dermatología"
-    }
+        "id": 2,
+        "name": "Dr. Juan Pérez",
+        "specialty": "Cardiología",
+        "graduation": {
+          "year": 2010,
+          "university": "Universidad Nacional"
+        },
+        "licenseNumber": "123456",
+        "photo": "/images/doctors/doctor(1).png",
+        "certifications": ["/images/titles/certificado.png", "/images/titles/certificado.png"],
+        "contact": {
+          "phone": "+502 1234-5678",
+          "email": "juan.perez@hospital.com"
+        }
+      },
+      {
+        "id": 1,
+        "name": "Dr. Juan Pérez",
+        "specialty": "Cardiología",
+        "graduation": {
+          "year": 2010,
+          "university": "Universidad Nacional"
+        },
+        "licenseNumber": "123456",
+        "photo": "/images/doctors/doctor(1).png",
+        "certifications": ["/images/titles/certificado.png", "/images/titles/certificado.png"],
+        "contact": {
+          "phone": "+502 1234-5678",
+          "email": "juan.perez@hospital.com"
+        }
+      }
   ]
   
