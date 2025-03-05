@@ -25,6 +25,7 @@ import SeguroHome from './pages/SeguroHome';
 import Historia from './pages/Historia';
 import Faq from './pages/Faq';
 import Contacto from './pages/Contacto';
+import { UsersProvider } from "./context/UsersContext"; // Asegúrate de la ruta correcta
 
 // Importar Panel de Administración y Moderación
 import AdminPanel from './modules/admin/pages/AdminPanel';

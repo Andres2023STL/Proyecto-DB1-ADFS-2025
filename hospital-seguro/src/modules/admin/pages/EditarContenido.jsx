@@ -15,7 +15,7 @@ function EditarContenido() {
       </button>
 
       <div className="dashboard-cards">
-        <Link to="/admin/edit/home" className="dashboard-card">
+        <Link to="/adminpanel" className="dashboard-card">
           <h3>Editar Inicio</h3>
           <p>Modifica la información de la página principal.</p>
         </Link>

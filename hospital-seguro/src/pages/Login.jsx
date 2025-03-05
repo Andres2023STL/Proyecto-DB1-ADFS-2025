@@ -48,7 +48,7 @@ function Login() {
         />
         <button type="submit">Ingresar</button>
       </form>
-      <button onClick={() => navigate('/register')} className="register-btn">
+      <button onClick={() => navigate('/Register')} className="register-btn">
         Registrarse
       </button>
     </div>

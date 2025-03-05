@@ -1,21 +1,27 @@
 [
     {
+      "id": 1,
       "email": "doctor@example.com",
       "password": "password",
       "role": "doctor",
-      "active": true
+      "active": true,
+      "createdAt": "2025-03-05T10:00:00.000Z"
     },
     {
+      "id": 2,
       "email": "admin@example.com",
       "password": "password",
       "role": "admin",
-      "active": true
+      "active": true,
+      "createdAt": "2025-03-05T10:00:00.000Z"
     },
     {
+      "id": 3,
       "email": "empleado@example.com",
       "password": "password",
       "role": "empleado",
-      "active": true
+      "active": true,
+      "createdAt": "2025-03-05T10:00:00.000Z"
     }
   ]
   
