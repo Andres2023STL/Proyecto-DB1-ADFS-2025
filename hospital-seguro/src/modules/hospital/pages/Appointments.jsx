@@ -1,20 +1,19 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { Link } from 'react-router-dom';
 import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
-import doctorsData from '../../../data/doctor.json'; // Catálogo de doctores
 import '../../../styles/Appointments.css';
+import { DoctorContext } from '../../../context/DoctorContext';
 
 function Appointments() {
   const [appointments, setAppointments] = useState([]);
-  const [newAppointment, setNewAppointment] = useState({ date: '', time: '', patient: '', doctor: '', reason: '', approved: false });
+  const [newAppointment, setNewAppointment] = useState({ date: '', time: '', patient: '', reason: '', approved: false });
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [loading, setLoading] = useState(false);
-  const [doctors, setDoctors] = useState([]);
+  const { selectedDoctor } = useContext(DoctorContext);
 
   useEffect(() => {
     fetchAppointments();
-    loadDoctors();
   }, []);
 
   const fetchAppointments = async () => {
@@ -29,10 +28,6 @@ function Appointments() {
     }
   };
 
-  const loadDoctors = () => {
-    setDoctors(doctorsData);
-  };
-
   const isTimeSlotAvailable = (date, time) => {
     return !appointments.some(appointment => appointment.date === date && appointment.time === time);
   };
@@ -44,9 +39,9 @@ function Appointments() {
 
   const handleAddAppointment = async (e) => {
     e.preventDefault();
-    const { date, time, patient, doctor, reason } = newAppointment;
+    const { date, time, patient, reason } = newAppointment;
 
-    if (!date || !time || !patient || !doctor || !reason) {
+    if (!date || !time || !patient || !selectedDoctor || !reason) {
       alert('⚠ Completa todos los campos.');
       return;
     }
@@ -61,10 +56,10 @@ function Appointments() {
       return;
     }
 
-    const newCita = { id: appointments.length + 1, date, time, patient, doctor, reason, status: "pending" };
+    const newCita = { id: appointments.length + 1, date, time, patient, doctor: selectedDoctor.name, reason, status: "pending" };
     setAppointments([...appointments, newCita]);
     alert('✅ Cita agendada exitosamente.');
-    setNewAppointment({ date: '', time: '', patient: '', doctor: '', reason: '' });
+    setNewAppointment({ date: '', time: '', patient: '', reason: '' });
   };
 
   return (
@@ -122,11 +117,15 @@ function Appointments() {
         </label>
         <label>
           Doctor:
-          <Link to="/hospital/doctorcatalog">
-            <button type="button">Seleccionar Doctor</button>
-          </Link>
+          {selectedDoctor ? (
+            <p className="selected-doctor">
+              {selectedDoctor.name} - {selectedDoctor.specialty}
+              <Link to="/hospital/doctorcatalog" className="change-doctor"> (Cambiar)</Link>
+            </p>
+          ) : (
+            <Link to="/hospital/doctorcatalog" className="select-doctor-link">Seleccionar Doctor</Link>
+          )}
         </label>
-
         <label>
           Motivo:
           <input type="text" placeholder="Motivo de la consulta" value={newAppointment.reason} onChange={(e) => setNewAppointment({ ...newAppointment, reason: e.target.value })} required />

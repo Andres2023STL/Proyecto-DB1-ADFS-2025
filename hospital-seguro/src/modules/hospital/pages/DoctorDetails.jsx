@@ -1,5 +1,6 @@
 import React from 'react';
 import { useParams, Link } from 'react-router-dom';
+import '../../../styles/DoctorDetails.css'
 import doctorsData from '../../../data/doctor.json'; // Asegúrate de tener este archivo
 
 function DoctorDetails() {

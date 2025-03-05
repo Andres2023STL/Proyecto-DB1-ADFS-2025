@@ -92,6 +92,48 @@
   transform: scale(1.02);
 }
 
+/* Sección de selección de doctor */
+.selected-doctor {
+  background: #e9f5ff;
+  padding: 10px;
+  border-left: 5px solid #007bff;
+  border-radius: 5px;
+  font-weight: bold;
+  color: #333;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.change-doctor {
+  background: #dc3545;
+  color: white;
+  padding: 5px 10px;
+  border-radius: 5px;
+  font-size: 12px;
+  text-decoration: none;
+  transition: 0.3s ease-in-out;
+}
+
+.change-doctor:hover {
+  background: #c82333;
+}
+
+/* Enlace para seleccionar doctor */
+.select-doctor-link {
+  display: inline-block;
+  padding: 10px;
+  background: #007bff;
+  color: white;
+  border-radius: 5px;
+  text-decoration: none;
+  transition: 0.3s ease-in-out;
+}
+
+.select-doctor-link:hover {
+  background: #0056b3;
+}
+
 /* Formulario de nueva cita */
 .appointment-form {
   display: flex;
