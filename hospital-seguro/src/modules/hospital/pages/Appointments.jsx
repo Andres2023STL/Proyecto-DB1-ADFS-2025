@@ -4,7 +4,8 @@ import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
 import '../../../styles/Appointments.css';
 import { DoctorContext } from '../../../context/DoctorContext';
-import appointmentsData from '../../../data/appointments.json'; // Importando JSON de citas
+import appointmentsData from '../../../data/appointments.json'; // Importar citas
+import patientsData from '../../../data/patients.json'; // Importar pacientes
 
 function Appointments() {
   const [appointments, setAppointments] = useState([]);
@@ -12,8 +13,7 @@ function Appointments() {
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [loading, setLoading] = useState(false);
   const { selectedDoctor } = useContext(DoctorContext);
-  const [insuranceStatus, setInsuranceStatus] = useState(null);
-  
+
   useEffect(() => {
     fetchAppointments();
   }, []);
@@ -21,7 +21,7 @@ function Appointments() {
   const fetchAppointments = async () => {
     setLoading(true);
     try {
-      setAppointments(appointmentsData); // Usar JSON en lugar de localStorage
+      setAppointments(appointmentsData);
     } catch (error) {
       console.error('Error al obtener citas:', error);
     } finally {
@@ -29,24 +29,17 @@ function Appointments() {
     }
   };
 
-  const checkInsuranceApproval = async () => {
-    // Simulación de verificación con la aseguradora
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        const approved = Math.random() > 0.5; // Simulación de respuesta aleatoria (50% aprobado)
-        setInsuranceStatus(approved ? 'Aprobado' : 'Rechazado');
-        resolve(approved);
-      }, 2000);
+  const updatePatientHistory = (patientName, appointmentDetails) => {
+    const updatedPatients = patientsData.map((patient) => {
+      if (patient.name === patientName) {
+        return {
+          ...patient,
+          services: [...(patient.services || []), appointmentDetails]
+        };
+      }
+      return patient;
     });
-  };
-
-  const isTimeSlotAvailable = (date, time) => {
-    return !appointments.some(appointment => appointment.date === date && appointment.time === time);
-  };
-
-  const isWithinSchedule = (time) => {
-    const [hours, minutes] = time.split(':').map(Number);
-    return (hours >= 8 && hours < 17) && (minutes === 0 || minutes === 30);
+    console.log('Historial de pacientes actualizado:', updatedPatients);
   };
 
   const handleAddAppointment = async (e) => {
@@ -58,27 +51,19 @@ function Appointments() {
       return;
     }
 
-    if (!isWithinSchedule(time)) {
-      alert('❌ El horario debe ser entre 08:00 y 16:30 en intervalos de 30 minutos.');
-      return;
-    }
-
-    if (!isTimeSlotAvailable(date, time)) {
-      alert('❌ Ya hay una cita programada en este horario.');
-      return;
-    }
+    const newCita = {
+      id: appointments.length + 1,
+      date,
+      time,
+      patient,
+      doctor: selectedDoctor.name,
+      reason,
+      insured,
+      status: 'pending'
+    };
     
-    if (insured) {
-      setInsuranceStatus('Verificando...');
-      const approved = await checkInsuranceApproval();
-      if (!approved) {
-        alert('❌ La aseguradora ha rechazado la cita.');
-        return;
-      }
-    }
-
-    const newCita = { id: appointments.length + 1, date, time, patient, doctor: selectedDoctor.name, reason, insured, status: "pending" };
     setAppointments([...appointments, newCita]);
+    updatePatientHistory(patient, `Consulta con ${selectedDoctor.name} - ${date} - ${time}`);
     alert('✅ Cita agendada exitosamente.');
     setNewAppointment({ date: '', time: '', patient: '', reason: '', insured: false });
   };
@@ -131,7 +116,6 @@ function Appointments() {
           <input type="checkbox" checked={newAppointment.insured} onChange={(e) => setNewAppointment({ ...newAppointment, insured: e.target.checked })} />
           Paciente asegurado
         </label>
-        {insuranceStatus && <p><strong>Estado del seguro:</strong> {insuranceStatus}</p>}
         <label>
           Motivo:
           <input type="text" placeholder="Motivo de la consulta" value={newAppointment.reason} onChange={(e) => setNewAppointment({ ...newAppointment, reason: e.target.value })} required />
