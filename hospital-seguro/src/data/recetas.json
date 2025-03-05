@@ -1,0 +1,43 @@
+[
+    {
+      "id": 1,
+      "patient": "Juan Pérez",
+      "date": "2025-01-28",
+      "medicine": "Lisinopril",
+      "dosage": "10mg",
+      "duration": "30 días"
+    },
+    {
+      "id": 2,
+      "patient": "María López",
+      "date": "2025-01-15",
+      "medicine": "Metformina",
+      "dosage": "500mg",
+      "duration": "60 días"
+    },
+    {
+      "id": 3,
+      "patient": "Carlos Gómez",
+      "date": "2025-02-10",
+      "medicine": "Ibuprofeno",
+      "dosage": "400mg",
+      "duration": "7 días"
+    },
+    {
+      "id": 4,
+      "patient": "Ana Rodríguez",
+      "date": "2025-03-05",
+      "medicine": "Amoxicilina",
+      "dosage": "500mg",
+      "duration": "10 días"
+    },
+    {
+      "id": 5,
+      "patient": "Pedro Ramírez",
+      "date": "2025-04-12",
+      "medicine": "Omeprazol",
+      "dosage": "20mg",
+      "duration": "15 días"
+    }
+  ]
+  

@@ -27,7 +27,7 @@ function Dashboard() {
                 <h3>Historial de Pacientes</h3>
                 <p>Consulta el historial clínico de los pacientes.</p>
               </Link>
-              <Link to="/hospital/prescriptions" className="dashboard-card">
+              <Link to="/hospital/recetas" className="dashboard-card">
                 <h3>Gestión de Recetas</h3>
                 <p>Crea y administra las recetas médicas.</p>
               </Link>

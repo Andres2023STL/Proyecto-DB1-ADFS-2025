@@ -10,7 +10,7 @@ import DoctorProvider from './context/DoctorContext';
 // Importar módulos hospital y admin
 import Appointments from './modules/hospital/pages/Appointments';
 import PatientHistory from './modules/hospital/pages/PatientHistory';
-import Prescriptions from './modules/hospital/pages/Prescriptions';
+import Recetas from './modules/hospital/pages/Recetas';
 import DoctorCatalog from './modules/hospital/pages/DoctorCatalog';
 import DoctorDetails from './modules/hospital/pages/DoctorDetails';
 import UsersManagement from './modules/admin/pages/UsersManagement';
@@ -74,10 +74,10 @@ function App() {
             }
           />
           <Route
-            path="/hospital/prescriptions"
+            path="/hospital/recetas"
             element={
               <ProtectedRoute requiredRole="doctor">
-                <Prescriptions />
+                <Recetas />
               </ProtectedRoute>
             }
           />
