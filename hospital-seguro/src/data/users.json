@@ -1,0 +1,21 @@
+[
+    {
+      "email": "doctor@example.com",
+      "password": "password",
+      "role": "doctor",
+      "active": true
+    },
+    {
+      "email": "admin@example.com",
+      "password": "password",
+      "role": "admin",
+      "active": true
+    },
+    {
+      "email": "empleado@example.com",
+      "password": "password",
+      "role": "empleado",
+      "active": true
+    }
+  ]
+  

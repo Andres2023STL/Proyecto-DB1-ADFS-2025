@@ -3,6 +3,7 @@ import { Routes, Route } from 'react-router-dom';
 import Layout from './layouts/Layout';
 import Home from './pages/Home';
 import Login from './pages/Login';
+import Register from './pages/Register';
 import Dashboard from './pages/Dashboard';
 import ProtectedRoute from './components/ProtectedRoute';
 import DoctorProvider from './context/DoctorContext';
@@ -45,6 +46,7 @@ function App() {
           <Route path="/faq" element={<Faq />} />
           <Route path="/contacto" element={<Contacto />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/Register" element={<Register />} />
 
           {/* 🔹 Dashboard (Protegido) */}
           <Route

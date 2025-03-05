@@ -1,29 +1,32 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import usersData from '../data/users.json'; // Importamos JSON
 import '../styles/Login.css';
 
 function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [users, setUsers] = useState([]);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    setUsers(usersData);
+  }, []);
 
   const handleLogin = (e) => {
     e.preventDefault();
-
-    const users = [
-      { email: 'doctor@example.com', password: 'password', role: 'doctor' },
-      { email: 'admin@example.com', password: 'password', role: 'admin' },
-      { email: 'empleado@example.com', password: 'password', role: 'empleado' },
-    ];
-
     const user = users.find((u) => u.email === email && u.password === password);
 
     if (user) {
-      localStorage.setItem('token', 'fake-token');
-      localStorage.setItem('role', user.role);
-      navigate('/dashboard');
+      if (user.active) {
+        localStorage.setItem('token', 'fake-token');
+        localStorage.setItem('role', user.role);
+        navigate('/dashboard');
+      } else {
+        alert('Tu cuenta aún no ha sido activada por un administrador.');
+      }
     } else {
-      alert('Credenciales inválidas');
+      alert('Credenciales inválidas.');
     }
   };
 
@@ -45,6 +48,9 @@ function Login() {
         />
         <button type="submit">Ingresar</button>
       </form>
+      <button onClick={() => navigate('/register')} className="register-btn">
+        Registrarse
+      </button>
     </div>
   );
 }

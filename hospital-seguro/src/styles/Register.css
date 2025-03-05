@@ -1,0 +1,89 @@
+/* Estilos generales */
+.register-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background: linear-gradient(135deg, #007bff, #6610f2);
+    font-family: 'Arial', sans-serif;
+  }
+  
+  /* Estilos del formulario */
+  .register-form {
+    background: white;
+    padding: 2rem;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    width: 100%;
+    max-width: 400px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    text-align: center;
+  }
+  
+  /* Título */
+  .register-form h1 {
+    font-size: 24px;
+    margin-bottom: 10px;
+    color: #333;
+  }
+  
+  /* Inputs */
+  .register-form input {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+    transition: all 0.3s ease;
+  }
+  
+  /* Efecto al enfocar el input */
+  .register-form input:focus {
+    border-color: #007bff;
+    outline: none;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+  }
+  
+  /* Botones */
+  .register-form button {
+    width: 100%;
+    padding: 12px;
+    font-size: 16px;
+    font-weight: bold;
+    color: white;
+    background: #007bff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+  
+  .register-form button:hover {
+    background: #0056b3;
+  }
+  
+  /* Botón de volver */
+  .back-btn {
+    background: #6c757d;
+  }
+  
+  .back-btn:hover {
+    background: #495057;
+  }
+  
+  /* Input de archivo personalizado */
+  .register-form input[type="file"] {
+    padding: 10px;
+    border: none;
+  }
+  
+  /* Media query para responsividad */
+  @media (max-width: 500px) {
+    .register-form {
+      width: 90%;
+      padding: 1.5rem;
+    }
+  }
+  
