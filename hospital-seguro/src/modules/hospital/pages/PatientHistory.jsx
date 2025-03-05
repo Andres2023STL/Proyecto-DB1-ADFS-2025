@@ -44,6 +44,13 @@ function PatientHistory() {
     setReplyingTo((prev) => ({ ...prev, [patientId]: null }));
   };
 
+  const toggleReplyingTo = (patientId, index) => {
+    setReplyingTo((prev) => ({
+      ...prev,
+      [patientId]: prev[patientId] === index ? null : index
+    }));
+  };
+
   return (
     <div className="page-container">
       <div className="page-header">
@@ -88,12 +95,7 @@ function PatientHistory() {
                     <li key={index} style={{ marginLeft: comment.parentId !== null ? '30px' : '0' }}>
                       {comment.text}
                       <button
-                        onClick={() =>
-                          setReplyingTo((prev) => ({
-                            ...prev,
-                            [patient.id]: prev[patient.id] === index ? null : index
-                          }))
-                        }
+                        onClick={() => toggleReplyingTo(patient.id, index)}
                       >
                         Responder
                       </button>
@@ -114,12 +116,16 @@ function PatientHistory() {
                 </ul>
                 
                 {/* Campo de nuevo comentario */}
-                <textarea
-                  placeholder="Agregar comentario..."
-                  value={commentText[patient.id] || ''}
-                  onChange={(e) => setCommentText((prev) => ({ ...prev, [patient.id]: e.target.value }))}
-                ></textarea>
-                <button onClick={() => handleAddComment(patient.id)}>Añadir Comentario</button>
+                {Object.values(replyingTo).every((val) => val === null) && (
+                  <>
+                    <textarea
+                      placeholder="Agregar comentario..."
+                      value={commentText[patient.id] || ''}
+                      onChange={(e) => setCommentText((prev) => ({ ...prev, [patient.id]: e.target.value }))}
+                    ></textarea>
+                    <button onClick={() => handleAddComment(patient.id)}>Añadir Comentario</button>
+                  </>
+                )}
               </div>
             </li>
           ))}

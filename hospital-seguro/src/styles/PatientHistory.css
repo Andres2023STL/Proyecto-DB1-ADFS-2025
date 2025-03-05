@@ -145,3 +145,12 @@ h1 {
 .comments-list li button:hover {
   text-decoration: underline;
 }
+
+button{
+  margin-left: 10px;
+  margin-bottom: 10px;
+}
+
+ul{
+  padding-left: 20px;
+}
