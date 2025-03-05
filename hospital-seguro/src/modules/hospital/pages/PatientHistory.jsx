@@ -26,17 +26,20 @@ function PatientHistory() {
 
   const handleAddComment = (patientId, parentId = null) => {
     if (!commentText[patientId] || commentText[patientId].trim() === '') return;
-
+  
     setComments((prevComments) => {
       const updatedComments = { ...prevComments };
       if (!updatedComments[patientId]) {
         updatedComments[patientId] = [];
       }
-      updatedComments[patientId].push({ text: commentText[patientId], parentId });
-
+      updatedComments[patientId] = [
+        ...updatedComments[patientId], //Operador de propagación (nuevo array) en lugar de push, ya que causaba problemas
+        { text: commentText[patientId], parentId }
+      ];
+  
       return updatedComments;
     });
-
+  
     setCommentText((prev) => ({ ...prev, [patientId]: '' }));
     setReplyingTo((prev) => ({ ...prev, [patientId]: null }));
   };
