@@ -17,7 +17,7 @@
     },
     {
         "id": 2,
-        "name": "Dr. Juan Pérez",
+        "name": "Dr. Rodrigo Mens",
         "specialty": "Cardiología",
         "graduation": {
           "year": 2010,
@@ -33,7 +33,7 @@
       },
       {
         "id": 1,
-        "name": "Dr. Juan Pérez",
+        "name": "Dr. Jose Ariola",
         "specialty": "Cardiología",
         "graduation": {
           "year": 2010,

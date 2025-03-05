@@ -1,0 +1,23 @@
+[
+    {
+      "id": 1,
+      "date": "2024-03-06",
+      "time": "10:30",
+      "patient": "Juan Pérez",
+      "doctor": "Dr. Roberto Gómez",
+      "reason": "Consulta general",
+      "insured": true,
+      "status": "pending"
+    },
+    {
+      "id": 2,
+      "date": "2024-03-06",
+      "time": "11:00",
+      "patient": "María López",
+      "doctor": "Dra. Ana Martínez",
+      "reason": "Revisión anual",
+      "insured": false,
+      "status": "pending"
+    }
+  ]
+  

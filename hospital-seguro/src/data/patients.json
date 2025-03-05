@@ -1,0 +1,19 @@
+[
+    {
+      "id": 1,
+      "name": "Juan Pérez",
+      "lastVisit": "2024-03-06",
+      "diagnosis": "Hipertensión",
+      "medications": ["Losartán", "Aspirina"],
+      "notes": "Debe controlar la presión arterial con dieta y ejercicio."
+    },
+    {
+      "id": 2,
+      "name": "María López",
+      "lastVisit": "2024-03-04",
+      "diagnosis": "Gripe",
+      "medications": ["Paracetamol", "Ibuprofeno"],
+      "notes": "Requiere descanso y mucha hidratación."
+    }
+  ]
+  
