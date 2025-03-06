@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import '../../../styles/UsersManagement.css';
 import usersData from '../../../data/users.json'; // Importar usuarios
 import { logAuditEvent } from './AuditLogs'; // Importando desde AuditLogs.jsx
+import { Button } from '@chakra-ui/react'
 
 function UsersManagement() {
   const [users, setUsers] = useState([]);
@@ -129,9 +130,9 @@ function UsersManagement() {
                 <td>{user.role || "Sin rol"}</td>
                 <td>{user.active ? "🟢 Activo" : "🔴 Inactivo"}</td>
                 <td>
-                  <button onClick={() => toggleUserStatus(user.id)}>
+                  <Button variant="surface" onClick={() => toggleUserStatus(user.id)}>
                     {user.active ? "Desactivar" : "Activar"}
-                  </button>
+                  </Button>
                 </td>
               </tr>
             ))

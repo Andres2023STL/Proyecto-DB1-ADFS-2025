@@ -1,8 +1,18 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import '../../../styles/Settings.css';
+import {
+  ColorModeButton,
+  DarkMode,
+  LightMode,
+  useColorMode,
+  useColorModeValue,
+} from "../../../components/ui/color-mode";
+import { Button } from "@chakra-ui/react";
+
 
 function Settings() {
+  const { toggleColorMode } = useColorMode();
   return (
     <div className="page-container">
       <div className="page-header">
@@ -22,13 +32,11 @@ function Settings() {
           <input type="email" placeholder="Correo de soporte" />
         </label>
         <label>
-          Tema:
-          <select>
-            <option value="light">Claro</option>
-            <option value="dark">Oscuro</option>
-          </select>
+          <Button variant="surface" onClick={toggleColorMode}>
+            Cambio de tema
+          </Button>
         </label>
-        <button type="submit">Guardar Configuraciones</button>
+        <Button variant="surface" type="submit">Guardar Configuraciones</Button>
       </form>
     </div>
   );

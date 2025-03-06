@@ -44,7 +44,7 @@ function PatientHistory() {
     setReplyingTo((prev) => ({ ...prev, [patientId]: null }));
   };
 
-  const toggleReplyingTo = (patientId, index) => {
+  const toggleReplyingTo = (patientId, index) => {  //Oculta o muestra la caja de añadir comentario nuevo
     setReplyingTo((prev) => ({
       ...prev,
       [patientId]: prev[patientId] === index ? null : index
