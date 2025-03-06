@@ -1,0 +1,32 @@
+[
+  {
+    "id_servicio": 1,
+    "category": "Consulta Médica",
+    "subcategory": "Pediatra",
+    "price": 200
+  },
+  {
+    "id_servicio": 2,
+    "category": "Examen de Laboratorio",
+    "subcategory": "Sangre",
+    "price": 150
+  },
+  {
+    "id_servicio": 3,
+    "category": "Cirugía",
+    "subcategory": "Extirpar Vesícula",
+    "price": 5000
+  },
+  {
+    "id_servicio": 4,
+    "category": "Consulta Médica",
+    "subcategory": "General",
+    "price": 100
+  },
+  {
+    "id_servicio": 5,
+    "category": "Examen de Laboratorio",
+    "subcategory": "Orina",
+    "price": 80
+  }
+]

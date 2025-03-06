@@ -1,0 +1,50 @@
+[
+  {
+    "id_med": 1,
+    "name": "Metformina",
+    "price": 150,
+    "activeIngredient": "Metformina",
+    "concentration": "500 mg",
+    "presentation": "Tabletas",
+    "pharmaceuticalForm": "Oral",
+    "dosage": "1 tableta",
+    "frequency": "2 veces al día",
+    "duration": "Indefinido"
+  },
+  {
+    "id_med": 2,
+    "name": "Losartán",
+    "price": 120,
+    "activeIngredient": "Losartán",
+    "concentration": "50 mg",
+    "presentation": "Tabletas",
+    "pharmaceuticalForm": "Oral",
+    "dosage": "1 tableta",
+    "frequency": "1 vez al día",
+    "duration": "Indefinido"
+  },
+  {
+    "id_med": 3,
+    "name": "Aspirina",
+    "price": 30,
+    "activeIngredient": "Ácido Acetilsalicílico",
+    "concentration": "100 mg",
+    "presentation": "Tabletas",
+    "pharmaceuticalForm": "Oral",
+    "dosage": "1 tableta",
+    "frequency": "1 vez al día",
+    "duration": "Indefinido"
+  },
+  {
+    "id_med": 4,
+    "name": "Amoxicilina",
+    "price": 80,
+    "activeIngredient": "Amoxicilina",
+    "concentration": "500 mg",
+    "presentation": "Cápsulas",
+    "pharmaceuticalForm": "Oral",
+    "dosage": "1 cápsula",
+    "frequency": "Cada 8 horas",
+    "duration": "7 días"
+  }
+]

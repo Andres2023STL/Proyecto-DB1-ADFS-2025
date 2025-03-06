@@ -172,7 +172,7 @@ function App() {
           <Route
             path="/empleado/Approvals"
             element={
-              <ProtectedRoute requiredRole="empleado">
+              <ProtectedRoute requiredRole="empleado_Aseguradora">
                 <Approvals />
               </ProtectedRoute>
             }
@@ -180,7 +180,7 @@ function App() {
           <Route
             path="/empleado/Reports"
             element={
-              <ProtectedRoute requiredRole="empleado">
+              <ProtectedRoute requiredRole="empleado_Aseguradora">
                 <Reports />
               </ProtectedRoute>
             }

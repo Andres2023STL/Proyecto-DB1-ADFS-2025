@@ -72,18 +72,6 @@ function Dashboard() {
                     <h3>Control de Citas</h3>
                     <p>Gestiona las citas y la atención de pacientes.</p>
                   </Link>
-                  <Link to="/empleado/Reports" className="dashboard-card">
-                    <h3>Reportes Operativos</h3>
-                    <p>Genera reportes de actividad.</p>
-                  </Link>
-                  <Link to="/empleado/InsuranceClients" className="dashboard-card">
-                    <h3>Clientes Seguro</h3>
-                    <p>Aquí se pueden administrar los clientes asegurados.</p>
-                  </Link>
-                  <Link to="/empleado/Approvals" className="dashboard-card">
-                    <h3>Aprobaciones</h3>
-                    <p>Aquí los empleados del seguro pueden aprobar o rechazar servicios.</p>
-                  </Link>
                   <Link to="/admin" className="dashboard-card">
                     <h3>Editar Contenido</h3>
                     <p>Modifica la información del portal.</p>
@@ -91,6 +79,27 @@ function Dashboard() {
                 </div>
               </div>
             );
+
+            case 'empleado_Aseguradora':
+              return (
+                <div className="dashboard-content">
+                  <h2>Panel de empleado de aseguradora</h2>
+                  <div className="dashboard-cards">
+                  <Link to="/empleado/Approvals" className="dashboard-card">
+                    <h3>Aprobaciones</h3>
+                    <p>Aquí los empleados del seguro pueden aprobar o rechazar servicios.</p>
+                  </Link>
+                  <Link to="/empleado/InsuranceClients" className="dashboard-card">
+                    <h3>Clientes Seguro</h3>
+                    <p>Aquí se pueden administrar los clientes asegurados.</p>
+                  </Link>
+                  <Link to="/empleado/Reports" className="dashboard-card">
+                    <h3>Reportes Operativos</h3>
+                    <p>Genera reportes de actividad.</p>
+                  </Link>
+                  </div>
+                </div>
+              );
           
           
       default:

@@ -1,4 +1,34 @@
 [
-    { "id": 1, "title": "Reporte Mensual", "date": "2025-03-01", "summary": "Análisis de actividad del mes" }
-  ]
-  
+  {
+    "id": 1,
+    "title": "Reporte Mensual",
+    "date": "2025-03-01",
+    "summary": "Análisis de actividad del mes",
+    "details": [
+      {
+        "hospital": "Hospital General",
+        "services": [
+          {
+            "service": "Consulta Médica",
+            "amount": 200
+          },
+          {
+            "service": "Examen de Laboratorio",
+            "amount": 150
+          }
+        ],
+        "total": 350
+      },
+      {
+        "pharmacy": "Farmacia Salud",
+        "services": [
+          {
+            "service": "Medicamento A",
+            "amount": 90
+          }
+        ],
+        "total": 80
+      }
+    ]
+  }
+]

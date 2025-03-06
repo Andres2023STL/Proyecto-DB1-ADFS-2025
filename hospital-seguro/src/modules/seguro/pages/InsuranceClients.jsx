@@ -94,7 +94,7 @@ function InsuranceClients() {
                   onChange={(e) => handlePolicyChange(client.id, e.target.value)}
                 >
                   <option value="70%">70%</option>
-                  <option value="80%">80%</option>
+                  <option value="90%">90%</option>
                 </select>
               </div>
             </div>
