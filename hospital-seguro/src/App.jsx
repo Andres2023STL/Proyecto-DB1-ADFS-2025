@@ -19,6 +19,12 @@ import AuditLogs from './modules/admin/pages/AuditLogs';
 import Settings from './modules/admin/pages/Settings';
 import EditarContenido from './modules/admin/pages/EditarContenido';
 
+// Importar módulos seguros y empleados
+import Approvals from './modules/seguro/pages/Approvals';
+import Reports from './modules/seguro/pages/Reports';
+import AppointmentsControl from './modules/seguro/pages/AppointmentsControl';
+import InsuranceClients from './modules/seguro/pages/InsuranceClients';
+
 // Importar páginas adicionales
 import HospitalHome from './pages/HospitalHome';
 import SeguroHome from './pages/SeguroHome';
@@ -162,7 +168,39 @@ function App() {
               </ProtectedRoute>
             }
           />
-          
+          {/* 🔹 Panel de Empleados) */}
+          <Route
+            path="/empleado/Approvals"
+            element={
+              <ProtectedRoute requiredRole="empleado">
+                <Approvals />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/empleado/Reports"
+            element={
+              <ProtectedRoute requiredRole="empleado">
+                <Reports />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/empleado/AppointmentsControl"
+            element={
+              <ProtectedRoute requiredRole="empleado">
+                <AppointmentsControl />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/empleado/InsuranceClients"
+            element={
+              <ProtectedRoute requiredRole="empleado">
+                <InsuranceClients />
+              </ProtectedRoute>
+            }
+          />
         </Routes>
       </Layout>
     </DoctorProvider>

@@ -68,23 +68,19 @@ function Dashboard() {
               <div className="dashboard-content">
                 <h2>Panel de Empleado</h2>
                 <div className="dashboard-cards">
-                  <Link to="/employee/appointments" className="dashboard-card">
+                  <Link to="/empleado/AppointmentsControl" className="dashboard-card">
                     <h3>Control de Citas</h3>
                     <p>Gestiona las citas y la atención de pacientes.</p>
                   </Link>
-                  <Link to="/employee/reports" className="dashboard-card">
+                  <Link to="/empleado/Reports" className="dashboard-card">
                     <h3>Reportes Operativos</h3>
                     <p>Genera reportes de actividad.</p>
                   </Link>
-                  <Link to="/employee/reports" className="dashboard-card">
-                    <h3>Clientes seguro</h3>
+                  <Link to="/empleado/InsuranceClients" className="dashboard-card">
+                    <h3>Clientes Seguro</h3>
                     <p>Aquí se pueden administrar los clientes asegurados.</p>
                   </Link>
-                  <Link to="/employee/reports" className="dashboard-card">
-                    <h3>Aprobaciones</h3>
-                    <p>Aquí los empleados del seguro pueden aprobar o rechazar servicios.</p>
-                  </Link>
-                  <Link to="/employee/reports" className="dashboard-card">
+                  <Link to="/empleado/Approvals" className="dashboard-card">
                     <h3>Aprobaciones</h3>
                     <p>Aquí los empleados del seguro pueden aprobar o rechazar servicios.</p>
                   </Link>
@@ -95,6 +91,7 @@ function Dashboard() {
                 </div>
               </div>
             );
+          
           
       default:
         return <p>No tienes un rol asignado.</p>;

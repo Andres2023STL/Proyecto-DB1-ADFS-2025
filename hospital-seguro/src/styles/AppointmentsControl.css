@@ -1,0 +1,72 @@
+/* Estilos profesionales para AppointmentsControl */
+
+.appointments-container {
+    max-width: 800px;
+    margin: 40px auto;
+    padding: 20px;
+    background: #ffffff;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+  }
+  
+  h1 {
+    font-size: 24px;
+    color: #333;
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  
+  .back-button {
+    display: inline-block;
+    text-decoration: none;
+    color: #ffffff;
+    background: #007bff;
+    padding: 10px 15px;
+    border-radius: 5px;
+    font-size: 14px;
+    font-weight: bold;
+    margin-bottom: 20px;
+    transition: background 0.3s ease;
+  }
+  
+  .back-button:hover {
+    background: #0056b3;
+  }
+  
+  .appointment-list {
+    list-style: none;
+    padding: 0;
+  }
+  
+  .appointment-list li {
+    padding: 15px;
+    border-bottom: 1px solid #ddd;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 16px;
+  }
+  
+  .appointment-list li strong {
+    color: #28a745;
+  }
+  
+  .appointment-list li:last-child {
+    border-bottom: none;
+  }
+  
+  .status-pending {
+    color: #ffc107;
+    font-weight: bold;
+  }
+  
+  .status-confirmed {
+    color: #28a745;
+    font-weight: bold;
+  }
+  
+  .status-cancelled {
+    color: #dc3545;
+    font-weight: bold;
+  }
+  

@@ -1,0 +1,5 @@
+[
+    { "id": 1, "service": "Consulta Médica", "patient": "Juan Pérez", "status": "Pendiente" },
+    { "id": 2, "service": "Examen de Sangre", "patient": "Ana López", "status": "Pendiente" }
+  ]
+  
