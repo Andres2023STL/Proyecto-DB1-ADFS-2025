@@ -97,6 +97,14 @@ function Dashboard() {
                     <h3>Reportes Operativos</h3>
                     <p>Genera reportes de actividad.</p>
                   </Link>
+                  <Link to="/empleado/CatalogoSeguro" className="dashboard-card">
+                    <h3>Catálogo Seguro</h3>
+                    <p>Consulta el catálogo de servicios cubiertos.</p>
+                  </Link>
+                  <Link to="/empleado/CatalogoMedicina" className="dashboard-card">
+                    <h3>Catálogo Medicina</h3>
+                    <p>Consulta el catálogo de medicinas cubierta.</p>
+                  </Link>
                   </div>
                 </div>
               );

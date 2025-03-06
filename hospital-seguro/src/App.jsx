@@ -24,6 +24,8 @@ import Approvals from './modules/seguro/pages/Approvals';
 import Reports from './modules/seguro/pages/Reports';
 import AppointmentsControl from './modules/seguro/pages/AppointmentsControl';
 import InsuranceClients from './modules/seguro/pages/InsuranceClients';
+import CatalogoSeguro from './modules/seguro/pages/CatalogoSeguro';
+import CatalogoMedicina from './modules/seguro/pages/CatalogoMedicina';
 
 // Importar páginas adicionales
 import HospitalHome from './pages/HospitalHome';
@@ -198,6 +200,22 @@ function App() {
             element={
               <ProtectedRoute requiredRole="empleado_Aseguradora">
                 <InsuranceClients />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/empleado/CatalogoSeguro"
+            element={
+              <ProtectedRoute requiredRole="empleado_Aseguradora">
+                <CatalogoSeguro />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/empleado/CatalogoMedicina"
+            element={
+              <ProtectedRoute requiredRole="empleado_Aseguradora">
+                <CatalogoMedicina />
               </ProtectedRoute>
             }
           />

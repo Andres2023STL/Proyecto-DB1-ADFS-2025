@@ -6,10 +6,8 @@ import '../../../styles/InsuranceClients.css';
 
 function InsuranceClients() {
   const [clients, setClients] = useState([]);
-  // Quitar isExpanded y toda la lógica del botón "Expandir Interfaz"
   const [isRegistering, setIsRegistering] = useState(false);
 
-  // Estado para manejar los valores del nuevo cliente
   const [newClient, setNewClient] = useState({
     name: '',
     policy: '70%',
@@ -23,9 +21,8 @@ function InsuranceClients() {
     setClients(clientsData);
   }, []);
 
-  // Cambiar la póliza de un cliente existente
   const handlePolicyChange = (clientId, newPolicy) => {
-    const updatedClients = clients.map((client) => {
+    const updatedClients = clients.map(client => {
       if (client.id === clientId) {
         return { ...client, policy: newPolicy };
       }
@@ -34,14 +31,11 @@ function InsuranceClients() {
     setClients(updatedClients);
   };
 
-  // Registrar un nuevo cliente en la lista
   const handleRegisterClient = (e) => {
     e.preventDefault();
-    const newId = clients.length ? Math.max(...clients.map((c) => c.id)) + 1 : 1;
+    const newId = clients.length ? Math.max(...clients.map(c => c.id)) + 1 : 1;
     const clientToAdd = { id: newId, ...newClient };
     setClients([...clients, clientToAdd]);
-
-    // Resetear formulario
     setNewClient({
       name: '',
       policy: '70%',
@@ -50,18 +44,45 @@ function InsuranceClients() {
       expirationDate: '',
       services: []
     });
-
-    // Cerrar formulario de registro
     setIsRegistering(false);
   };
 
-  // Filtrar clientes por número de seguro
   const handleFilterClients = (e) => {
     const filterValue = e.target.value.toLowerCase();
-    const filteredClients = clientsData.filter((client) =>
+    const filteredClients = clientsData.filter(client =>
       client.insuranceNumber.toLowerCase().includes(filterValue)
     );
     setClients(filteredClients);
+  };
+
+  // Cambia el estado "paid" de todas las consultas de un cliente
+  const toggleAllServicesPaid = (clientId) => {
+    const updatedClients = clients.map(client => {
+      if (client.id === clientId && client.services && client.services.length > 0) {
+        // Si todas están pagadas => false, sino => true.
+        const allPaid = client.services.every(s => s.paid);
+        return {
+          ...client,
+          services: client.services.map(s => ({ ...s, paid: !allPaid }))
+        };
+      }
+      return client;
+    });
+    setClients(updatedClients);
+  };
+
+  // Actualiza la fecha de vencimiento de todas las consultas de un cliente
+  const updateAllServicesExpiration = (clientId, newDate) => {
+    const updatedClients = clients.map(client => {
+      if (client.id === clientId && client.services && client.services.length > 0) {
+        return {
+          ...client,
+          services: client.services.map(s => ({ ...s, expirationDate: newDate }))
+        };
+      }
+      return client;
+    });
+    setClients(updatedClients);
   };
 
   return (
@@ -69,7 +90,6 @@ function InsuranceClients() {
       <h1>Clientes Asegurados</h1>
       <Link to="/dashboard" className="back-button">← Regresar</Link>
 
-      {/* Filtro por número de seguro */}
       <div className="filter-container">
         <input
           type="text"
@@ -78,9 +98,8 @@ function InsuranceClients() {
         />
       </div>
 
-      {/* Listado de clientes */}
       <ul className="client-list">
-        {clients.map((client) => (
+        {clients.map(client => (
           <li key={client.id} className="client-card">
             <div className="client-header">
               <span className="client-name">{client.name}</span>
@@ -91,7 +110,7 @@ function InsuranceClients() {
                 <strong>Cambiar Póliza:</strong>
                 <select
                   value={client.policy}
-                  onChange={(e) => handlePolicyChange(client.id, e.target.value)}
+                  onChange={e => handlePolicyChange(client.id, e.target.value)}
                 >
                   <option value="70%">70%</option>
                   <option value="90%">90%</option>
@@ -99,85 +118,53 @@ function InsuranceClients() {
               </div>
             </div>
 
-            {/* Detalles de servicios con <details> */}
+            {/* Sección desplegable para mostrar información básica del servicio */}
             <details className="services-details">
               <summary>Mostrar/Ocultar Servicios</summary>
               {client.services && client.services.length > 0 ? (
                 client.services.map((service, index) => (
                   <ul key={index} className="service-list">
                     <li className="service-title"><strong>{service.serviceName}</strong></li>
-                    <li><strong>Última Visita:</strong> {service.lastVisit}</li>
+                    <li><strong>Visita:</strong> {service.lastVisit}</li>
                     <li><strong>Diagnóstico:</strong> {service.diagnosis}</li>
-                    <li>
-                      <strong>Medicamentos:</strong> {service.medications.join(', ') || 'Ninguno'}
-                    </li>
+                    <li><strong>Medicamentos:</strong> {service.medications.join(', ') || 'Ninguno'}</li>
                     <li><strong>Notas:</strong> {service.notes}</li>
                     {service.services && service.services.join ? (
                       <li><strong>Servicios:</strong> {service.services.join(', ')}</li>
                     ) : null}
                     <li><strong>Costo:</strong> {service.cost}</li>
                     <li><strong>Copago:</strong> {service.copayment}</li>
-                    <li className="service-actions">
-                      <div>
-                        <strong>Pagado:</strong> {service.paid ? 'Sí' : 'No'}
-                        <button
-                          onClick={() => {
-                            const updatedClients = clients.map((c) => {
-                              if (c.id === client.id) {
-                                return {
-                                  ...c,
-                                  services: c.services.map((s, i) => {
-                                    if (i === index) {
-                                      return { ...s, paid: !s.paid };
-                                    }
-                                    return s;
-                                  })
-                                };
-                              }
-                              return c;
-                            });
-                            setClients(updatedClients);
-                          }}
-                        >
-                          Cambiar Estado
-                        </button>
-                      </div>
-                      <div>
-                        <strong>Fecha de Vencimiento:</strong>
-                        <input
-                          type="date"
-                          value={service.expirationDate}
-                          onChange={(e) => {
-                            const updatedClients = clients.map((c) => {
-                              if (c.id === client.id) {
-                                return {
-                                  ...c,
-                                  services: c.services.map((s, i) => {
-                                    if (i === index) {
-                                      return { ...s, expirationDate: e.target.value };
-                                    }
-                                    return s;
-                                  })
-                                };
-                              }
-                              return c;
-                            });
-                            setClients(updatedClients);
-                          }}
-                        />
-                      </div>
-                    </li>
                   </ul>
                 ))
               ) : (
                 <p>No hay servicios registrados.</p>
               )}
             </details>
+
+            {/* Sección de acciones, fuera del desplegable, una sola instancia para el cliente */}
+            {client.services && client.services.length > 0 && (
+              <div className="service-actions-container">
+                {/* Muestra estado "Pagado" basado en si todas las consultas están pagadas */}
+                <span>
+                  <strong>Pagado:</strong> {client.services.every(s => s.paid) ? 'Sí' : 'No'}
+                </span>
+                <button onClick={() => toggleAllServicesPaid(client.id)}>
+                  Cambiar Estado
+                </button>
+                <span>
+                  <strong>Fecha de Vencimiento:</strong>
+                </span>
+                <input
+                  type="date"
+                  value={client.services[0].expirationDate || ''}
+                  onChange={(e) => updateAllServicesExpiration(client.id, e.target.value)}
+                />
+              </div>
+            )}
           </li>
         ))}
       </ul>
 
-      {/* Botón Registro SIEMPRE al final y centrado */}
       <div className="final-register-section">
         <button
           className="register-button"
@@ -193,42 +180,53 @@ function InsuranceClients() {
               placeholder="Nombre"
               value={newClient.name}
               required
-              onChange={(e) => setNewClient({ ...newClient, name: e.target.value })}
+              onChange={e => setNewClient({ ...newClient, name: e.target.value })}
             />
             <input
               type="text"
               placeholder="ID del Documento"
               value={newClient.documentId}
               required
-              onChange={(e) => setNewClient({ ...newClient, documentId: e.target.value })}
+              onChange={e =>
+                setNewClient({ ...newClient, documentId: e.target.value })
+              }
             />
             <input
               type="text"
               placeholder="Número de Seguro"
               value={newClient.insuranceNumber}
               required
-              onChange={(e) => setNewClient({ ...newClient, insuranceNumber: e.target.value })}
+              onChange={e =>
+                setNewClient({ ...newClient, insuranceNumber: e.target.value })
+              }
             />
             <input
               type="date"
               placeholder="Fecha de Vencimiento"
               value={newClient.expirationDate}
               required
-              onChange={(e) => setNewClient({ ...newClient, expirationDate: e.target.value })}
+              onChange={e =>
+                setNewClient({ ...newClient, expirationDate: e.target.value })
+              }
             />
-
             <div className="policy-selector">
               <strong>Póliza:</strong>
               <select
                 value={newClient.policy}
-                onChange={(e) => setNewClient({ ...newClient, policy: e.target.value })}
+                onChange={e =>
+                  setNewClient({ ...newClient, policy: e.target.value })
+                }
               >
                 <option value="70%">70%</option>
                 <option value="90%">90%</option>
               </select>
             </div>
-
-            <button type="submit" className="submit-button">Agregar Cliente</button>
+            <div>
+              Costo por afiliación: Q.125
+            </div>
+            <button type="submit" className="submit-button">
+              Agregar Cliente
+            </button>
           </form>
         )}
       </div>
