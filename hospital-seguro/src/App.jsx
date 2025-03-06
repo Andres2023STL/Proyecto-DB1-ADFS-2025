@@ -162,6 +162,7 @@ function App() {
               </ProtectedRoute>
             }
           />
+          
         </Routes>
       </Layout>
     </DoctorProvider>

@@ -76,6 +76,18 @@ function Dashboard() {
                     <h3>Reportes Operativos</h3>
                     <p>Genera reportes de actividad.</p>
                   </Link>
+                  <Link to="/employee/reports" className="dashboard-card">
+                    <h3>Clientes seguro</h3>
+                    <p>Aquí se pueden administrar los clientes asegurados.</p>
+                  </Link>
+                  <Link to="/employee/reports" className="dashboard-card">
+                    <h3>Aprobaciones</h3>
+                    <p>Aquí los empleados del seguro pueden aprobar o rechazar servicios.</p>
+                  </Link>
+                  <Link to="/employee/reports" className="dashboard-card">
+                    <h3>Aprobaciones</h3>
+                    <p>Aquí los empleados del seguro pueden aprobar o rechazar servicios.</p>
+                  </Link>
                   <Link to="/admin" className="dashboard-card">
                     <h3>Editar Contenido</h3>
                     <p>Modifica la información del portal.</p>

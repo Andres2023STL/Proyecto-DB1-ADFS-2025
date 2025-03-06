@@ -29,6 +29,16 @@ function Appointments() {
     }
   };
 
+  const isTimeSlotAvailable = (date, time) => {
+    return !appointments.some(appointment => appointment.date === date && appointment.time === time);
+  };
+
+  const isValidAppointmentTime = (time) => {
+    const [hours, minutes] = time.split(':').map(Number);
+    const appointmentTime = hours * 60 + minutes;
+    return appointmentTime >= 480 && appointmentTime <= 990 && minutes % 30 === 0;
+  };
+
   const updatePatientHistory = (patientName, appointmentDetails) => {
     const updatedPatients = patientsData.map((patient) => {
       if (patient.name === patientName) {
@@ -51,6 +61,16 @@ function Appointments() {
       return;
     }
 
+    if (!isValidAppointmentTime(time)) {
+      alert('⚠ La hora de la cita debe ser en intervalos de 30 minutos entre las 08:00 y 16:30.');
+      return;
+    }
+
+    if (!isTimeSlotAvailable(date, time)) {
+      alert('⚠ Ya existe una cita programada en este horario. Elige otra hora.');
+      return;
+    }
+
     const newCita = {
       id: appointments.length + 1,
       date,
@@ -65,7 +85,7 @@ function Appointments() {
     setAppointments([...appointments, newCita]);
     updatePatientHistory(patient, `Consulta con ${selectedDoctor.name} - ${date} - ${time}`);
     alert('✅ Cita agendada exitosamente.');
-    setNewAppointment({ date: '', time: '', patient: '', reason: '', insured: false });
+    setNewAppointment({ date: '', time: '', patient: '', reason: '', insured: false, approved: false });
   };
 
   return (
@@ -74,7 +94,6 @@ function Appointments() {
         <h1>Agenda de Consultas</h1>
         <Link to="/dashboard" className="back-button">← Regresar</Link>
       </div>
-
       <h2>Calendario de Citas</h2>
       <Calendar
         onChange={setSelectedDate}
@@ -85,7 +104,6 @@ function Appointments() {
             : ''
         }
       />
-
       <h2>Agendar Nueva Cita</h2>
       <form className="appointment-form" onSubmit={handleAddAppointment}>
         <label>
@@ -105,7 +123,7 @@ function Appointments() {
         </label>
         <label>
           Hora:
-          <input type="time" value={newAppointment.time} onChange={(e) => setNewAppointment({ ...newAppointment, time: e.target.value })} required />
+          <input type="time" step="1800" value={newAppointment.time} onChange={(e) => setNewAppointment({ ...newAppointment, time: e.target.value })} required />
         </label>
         <label>
           Paciente:
@@ -122,7 +140,6 @@ function Appointments() {
         </label>
         <button type="submit">Agendar Cita</button>
       </form>
-
       <h2>Citas para el {selectedDate.toISOString().split('T')[0]}</h2>
       {loading ? <p>Cargando citas...</p> : (
         <ul className="appointments-list">
