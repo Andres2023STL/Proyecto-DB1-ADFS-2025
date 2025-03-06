@@ -1,12 +1,15 @@
-body {
-  font-family: Arial, sans-serif;
-  margin: 20px;
-  background-color: #f6f6f6;
+.insurance-container {
+  max-width: 900px;
+  margin: 20px auto;
+  padding: 20px;
+  background-color: #fdfdfd;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
 }
 
 h1 {
-  color: #333;
   text-align: center;
+  color: #333;
   margin-bottom: 20px;
 }
 
@@ -18,58 +21,201 @@ h1 {
   color: #fff;
   text-decoration: none;
   border-radius: 4px;
-  transition: background-color 0.2s ease-in-out;
+  transition: background-color 0.3s ease;
 }
 
 .back-button:hover {
   background-color: #005ea2;
 }
 
-input[type="text"],
-input[type="date"] {
-  padding: 6px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  margin-top: 10px;
+.register-container {
+  text-align: center;
   margin-bottom: 20px;
-  width: 100%;
-  max-width: 300px;
 }
 
-.patient-list {
-  list-style-type: none;
-  padding: 0;
-}
-
-.patient-list li {
-  background-color: #fff;
-  margin-bottom: 15px;
-  padding: 15px;
-  border-radius: 4px;
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
-}
-
-.patient-list li ul {
-  margin-top: 10px;
-  padding-left: 15px;
-}
-
-.patient-list li ul li {
-  margin-bottom: 8px;
-  font-size: 0.9em;
-}
-
-button {
-  margin-left: 10px;
-  padding: 4px 8px;
+.register-button {
+  padding: 8px 12px;
+  background-color: #17a2b8;
+  color: #fff;
   border: none;
   border-radius: 4px;
-  background-color: #28a745;
-  color: #fff;
   cursor: pointer;
-  transition: background-color 0.2s ease-in-out;
+  transition: background-color 0.3s ease;
+  margin-bottom: 10px;
 }
 
-button:hover {
+.register-button:hover {
+  background-color: #138496;
+}
+
+.register-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.register-form input,
+.register-form select {
+  padding: 8px;
+  width: 80%;
+  max-width: 300px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.submit-button {
+  padding: 8px 12px;
+  background-color: #28a745;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.submit-button:hover {
   background-color: #218838;
+}
+
+.filter-container {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.filter-container input[type="text"] {
+  padding: 8px;
+  width: 80%;
+  max-width: 400px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.client-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.client-card {
+  background-color: #fff;
+  margin: 15px;
+  padding: 15px;
+  border-radius: 6px;
+  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.1);
+}
+
+.client-header {
+  margin-bottom: 10px;
+}
+
+.client-name {
+  font-size: 1.2em;
+  font-weight: bold;
+  color: #004080;
+}
+
+.client-info {
+  display: block;
+  margin-top: 5px;
+  color: #666;
+}
+
+.policy-selector {
+  margin-top: 8px;
+}
+
+.policy-selector select {
+  margin-left: 5px;
+  padding: 4px;
+  border-radius: 4px;
+}
+
+details {
+  margin-top: 10px;
+}
+
+details summary {
+  font-weight: bold;
+  cursor: pointer;
+  outline: none;
+}
+
+.service-list {
+  background-color: #f9f9f9;
+  margin: 10px 0;
+  padding: 10px;
+  list-style: none;
+  border: 1px solid #eee;
+  border-radius: 4px;
+}
+
+.service-title {
+  font-size: 1.1em;
+  margin-bottom: 8px;
+  color: #333;
+}
+
+.service-list li {
+  margin: 6px 0;
+  font-size: 0.95em;
+  color: #555;
+}
+
+.service-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.service-actions button {
+  padding: 4px 8px;
+  background-color: #28a745;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.service-actions button:hover {
+  background-color: #218838;
+}
+
+.service-actions input[type="date"] {
+  padding: 4px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.expanded-section {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.expand-button {
+  padding: 8px 12px;
+  background-color: #6c757d;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.expand-button:hover {
+  background-color: #5a6268;
+}
+
+.expanded-content {
+  margin-top: 15px;
+  padding: 15px;
+  background-color: #f1f1f1;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.final-register-section {
+  text-align: center;       /* Centra el contenido horizontalmente */
+  margin-top: 20px;         /* Espacio antes del botón/formulario */
 }

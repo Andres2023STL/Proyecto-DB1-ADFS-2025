@@ -2,49 +2,60 @@
   {
     "id": 1,
     "name": "Juan Pérez",
-    "policy": "Premium",
+    "policy": "90",
     "documentId": "12345678",
     "insuranceNumber": "INS-789654",
+    "expirationDate": "2024-01-01",
     "services": [
       {
         "serviceName": "Consulta General",
-        "cost": 100,
-        "copayment": 20,
-        "paid": true,
-        "expirationDate": "2024-01-01",
-        "lastVisit": "2024-03-06",
+        "lastVisit": "2024-01-15",
         "diagnosis": "Hipertensión",
         "medications": ["Losartán", "Aspirina"],
         "notes": "Debe controlar la presión arterial con dieta y ejercicio.",
-        "services": [
-          "Consulta médica - 2024-03-06",
-          "Examen de presión arterial - 2024-03-06",
-          "Electrocardiograma - 2024-02-20"
-        ]
+        "cost": 100,
+        "copayment": 20,
+        "paid": true
+      },
+      {
+        "serviceName": "Examen de Laboratorio",
+        "lastVisit": "2024-02-10",
+        "diagnosis": "Colesterol alto",
+        "medications": [],
+        "notes": "Análisis de sangre programado.",
+        "cost": 150,
+        "copayment": 30,
+        "paid": false
       }
     ]
   },
   {
     "id": 2,
     "name": "Ana López",
-    "policy": "Básico",
+    "policy": "70",
     "documentId": "87654321",
     "insuranceNumber": "INS-123456",
+    "expirationDate": "2023-12-31",
     "services": [
       {
         "serviceName": "Consulta Especialista",
-        "cost": 150,
-        "copayment": 30,
-        "paid": false,
-        "expirationDate": "2023-12-31",
         "lastVisit": "2024-03-01",
         "diagnosis": "Diabetes",
         "medications": ["Metformina"],
-        "notes": "Control de glucosa necesario.",
-        "services": [
-          "Consulta médica - 2024-03-01",
-          "Examen de glucosa - 2024-03-01"
-        ]
+        "notes": "Control de glucosa y recomendaciones dietéticas.",
+        "cost": 150,
+        "copayment": 30,
+        "paid": false
+      },
+      {
+        "serviceName": "Terapia Nutricional",
+        "lastVisit": "2024-04-10",
+        "diagnosis": "Plan nutricional personalizado",
+        "medications": [],
+        "notes": "Evaluación y seguimiento nutricional.",
+        "cost": 120,
+        "copayment": 25,
+        "paid": true
       }
     ]
   }

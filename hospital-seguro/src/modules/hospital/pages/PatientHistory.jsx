@@ -55,7 +55,7 @@ function PatientHistory() {
     <div className="page-container">
       <div className="page-header">
         <h1>Historial de Pacientes</h1>
-        <Link to="/dashboard" className="back-button">← Regresar al Dashboard</Link>
+        <Link to="/seguro" className="back-button">← Regresar</Link>
       </div>
 
       {loading ? (

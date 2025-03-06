@@ -27,7 +27,7 @@
       "id": 4,
       "email": "empleadoas@example.com",
       "password": "password",
-      "role": "empleadoAs",
+      "role": "empleado_Aseguradora",
       "active": true,
       "createdAt": "2025-03-05T10:00:00.000Z"
     }

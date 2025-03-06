@@ -196,7 +196,7 @@ function App() {
           <Route
             path="/empleado/InsuranceClients"
             element={
-              <ProtectedRoute requiredRole="empleadoAs">
+              <ProtectedRoute requiredRole="empleado_Aseguradora">
                 <InsuranceClients />
               </ProtectedRoute>
             }
