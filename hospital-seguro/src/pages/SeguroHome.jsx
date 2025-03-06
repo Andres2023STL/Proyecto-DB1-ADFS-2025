@@ -15,7 +15,7 @@ function SeguroHome() {
         <li><strong>Autorización de Tratamientos:</strong> Aprobación de medicamentos y procedimientos médicos.</li>
       </ul>
 
-      <Link to="/seguro/clientes" className="button-link">Consultar Clientes</Link>
+      <Link to="/empleado/InsuranceClients" className="button-link">Consultar Clientes</Link>
     </div>
   );
 }

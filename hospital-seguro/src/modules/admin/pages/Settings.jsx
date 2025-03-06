@@ -12,7 +12,6 @@ import { Button } from "@chakra-ui/react";
 
 
 function Settings() {
-  const { toggleColorMode } = useColorMode();
   return (
     <div className="page-container">
       <div className="page-header">
@@ -31,12 +30,7 @@ function Settings() {
           Correo de Soporte:
           <input type="email" placeholder="Correo de soporte" />
         </label>
-        <label>
-          <Button variant="surface" onClick={toggleColorMode}>
-            Cambio de tema
-          </Button>
-        </label>
-        <Button variant="surface" type="submit">Guardar Configuraciones</Button>
+        <button variant="surface" type="submit">Guardar Configuraciones</button>
       </form>
     </div>
   );

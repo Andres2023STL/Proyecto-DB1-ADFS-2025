@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom';
 import '../../../styles/UsersManagement.css';
 import usersData from '../../../data/users.json'; // Importar usuarios
 import { logAuditEvent } from './AuditLogs'; // Importando desde AuditLogs.jsx
-import { Button } from '@chakra-ui/react'
 
 function UsersManagement() {
   const [users, setUsers] = useState([]);
@@ -103,7 +102,8 @@ function UsersManagement() {
           <option value="">Todos los roles</option>
           <option value="doctor">Doctor</option>
           <option value="admin">Administrador</option>
-          <option value="empleado">Empleado</option>
+          <option value="empleado">Empleado hospital</option>
+          <option value="empleadoAs">Empleado aseguradora</option>
         </select>
         <input type="date" value={searchDate} onChange={(e) => setSearchDate(e.target.value)} />
       </div>
@@ -130,9 +130,9 @@ function UsersManagement() {
                 <td>{user.role || "Sin rol"}</td>
                 <td>{user.active ? "🟢 Activo" : "🔴 Inactivo"}</td>
                 <td>
-                  <Button variant="surface" onClick={() => toggleUserStatus(user.id)}>
+                  <button onClick={() => toggleUserStatus(user.id)}>
                     {user.active ? "Desactivar" : "Activar"}
-                  </Button>
+                  </button>
                 </td>
               </tr>
             ))
