@@ -1,8 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import '../styles/HospitalHome.css';  // Import correcto del CSS
 
-function HospitalHome() {
+function SubHomeHospital() {
   return (
     <div className="page-container">
       <h1>Servicios del Hospital</h1>
@@ -14,10 +13,8 @@ function HospitalHome() {
         <li><strong>Exámenes de Laboratorio:</strong> Análisis de sangre, orina y otros.</li>
         <li><strong>Cirugías:</strong> Procedimientos quirúrgicos programados.</li>
       </ul>
-
-      <Link to="/hospital/appointments" className="button-link">Agendar una Cita</Link>
     </div>
   );
 }
 
-export default HospitalHome;
+export default SubHomeHospital;

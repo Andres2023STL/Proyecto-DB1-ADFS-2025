@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import '../styles/Home.css';
+//import '../styles/Home.css';
 
 function Home() {
   // Datos por defecto que siempre estarán visibles en Home.jsx
@@ -44,15 +44,15 @@ function Home() {
 
       {/* Módulos del sistema */}
       <section className="services">
-        <h2 className="section-title">Nuestros Módulos prueba xdd</h2>
+        <h2 className="section-title">Nuestros Módulos</h2>
         <div className="service-cards">
-          <Link to="/hospital" className="service-card">
+          <Link to="/SubHomeHospital" className="service-card">
             <h3>Módulo Hospital</h3>
             <img src={content.automationIcon} alt="Automatización" className="module-icon" />
             <p>{content.hospitalText}</p>
           </Link>
 
-          <Link to="/seguro" className="service-card">
+          <Link to="/SubHomeSeguro" className="service-card">
             <h3>Módulo Seguro</h3>
             <img src={content.automationIcon} alt="Automatización" className="module-icon" />
             <p>{content.seguroText}</p>
