@@ -44,7 +44,7 @@ function Home() {
 
       {/* Módulos del sistema */}
       <section className="services">
-        <h2 className="section-title">Nuestros Módulos</h2>
+        <h2 className="section-title">Nuestros Módulos prueba xdd</h2>
         <div className="service-cards">
           <Link to="/hospital" className="service-card">
             <h3>Módulo Hospital</h3>
