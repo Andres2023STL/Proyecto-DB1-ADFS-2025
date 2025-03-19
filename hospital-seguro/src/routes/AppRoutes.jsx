@@ -2,6 +2,7 @@ import { Routes, Route } from "react-router-dom";
 import { useState, useEffect } from "react";
 import Header from "../components/Header";
 import Navbar from "../components/Navbar";
+import Footer from "../components/Footer";
 import PublicRoutes from "./PublicRoutes";
 import PrivateRoutes from "./PrivateRoutes";
 
@@ -33,8 +34,10 @@ const AppRoutes = () => {
         <Route path="/*" element={<PublicRoutes setIsAuthenticated={setIsAuthenticated} />} />
         <Route path="/hospital/*" element={<PrivateRoutes allowedRole="doctor" />} />
         <Route path="/admin/*" element={<PrivateRoutes allowedRole="admin" />} />
+        <Route path="/seguro/*" element={<PrivateRoutes allowedRole="empleado_seguro" />} />
         <Route path="/acceso-denegado" element={<p>Acceso Denegado</p>} />
       </Routes>
+      <Footer/>
     </>
   );
 };

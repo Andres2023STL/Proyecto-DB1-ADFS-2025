@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Navigate, Routes, Route } from "react-router-dom";
 import AdminRoutes from "../modules/admin/AdminRoutes";
 import HospitalRoutes from "../modules/hospital/HospitalRoutes";
+import SeguroRoutes from "../modules/seguro/SeguroRoutes";
 
 const PrivateRoutes = ({ allowedRole }) => {
   const [role, setRole] = useState(null);
@@ -46,6 +47,7 @@ const PrivateRoutes = ({ allowedRole }) => {
     <Routes>
       {allowedRole === "doctor" && <Route path="/*" element={<HospitalRoutes />} />}
       {allowedRole === "admin" && <Route path="/*" element={<AdminRoutes />} />}
+      {allowedRole === "empleado_seguro" && <Route path="/*" element={<SeguroRoutes />} />}
       <Route path="*" element={<Navigate to="/acceso-denegado" />} />
     </Routes>
   );

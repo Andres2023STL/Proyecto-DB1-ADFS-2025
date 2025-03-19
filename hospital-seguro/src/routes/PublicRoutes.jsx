@@ -1,11 +1,16 @@
 import { Routes, Route } from "react-router-dom";
-import Home from "../pages/home/Home";
+import DoctorDashboard from "../modules/hospital/pages/doctor/DoctorDashboard";
 import SubHomeHospital from "../pages/home/SubHomeHospital";
 import SubHomeSeguro from "../pages/home/SubHomeSeguro";
-import Login from "../pages/Login"; // ✅ Importa Login correctamente
+import Contacto from "../pages/Contacto";
 import Register from "../pages/Register";
 import AboutUs from "../pages/AboutUs";
-import DoctorDashboard from "../modules/hospital/pages/doctor/DoctorDashboard";
+import Home from "../pages/home/Home";
+import Login from "../pages/Login";
+import Faq from "../pages/Faq";
+
+
+
 
 const PublicRoutes = ({ setIsAuthenticated }) => {
   return (
@@ -17,6 +22,8 @@ const PublicRoutes = ({ setIsAuthenticated }) => {
       <Route path="/Register" element={<Register />} />
       <Route path="/AboutUs" element={<AboutUs />} />
       <Route path="/DoctorDashboard" element={<DoctorDashboard />} />
+      <Route path="/Contacto" element={<Contacto />} />
+      <Route path="/Faq" element={<Faq />} />
     </Routes>
   );
 };
