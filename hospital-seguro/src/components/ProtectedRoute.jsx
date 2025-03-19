@@ -1,29 +1,55 @@
-import React from 'react';
-import { Navigate } from 'react-router-dom';
+import React, { useState, useEffect } from "react";
+import { Navigate, Outlet } from "react-router-dom";
 
-const isAuthenticated = () => !!localStorage.getItem('token');
-const getUserRole = () => localStorage.getItem('role');
+const ProtectedRoute = ({ requiredRole }) => {
+  const [role, setRole] = useState(null);
+  const [loading, setLoading] = useState(true);
 
-function ProtectedRoute({ children, requiredRole }) {
-  if (!isAuthenticated()) {
+  useEffect(() => {
+    const fetchUserRole = async () => {
+      try {
+        const response = await fetch("http://localhost/hospital_api/getUser.php", {
+          method: "GET",
+          credentials: "include",
+        });
+
+        const data = await response.json();
+        if (data.success) {
+          setRole(data.role.trim().toLowerCase()); // 🔥 Elimina espacios y normaliza mayúsculas
+        } else {
+          setRole(null);
+        }
+      } catch (error) {
+        console.error("Error verificando sesión en ProtectedRoute:", error);
+        setRole(null);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchUserRole();
+  }, []);
+
+  useEffect(() => {
+  }, [role]);
+
+  if (loading) {
+    return <p>Cargando...</p>;
+  }
+
+  if (!role) {
     return <Navigate to="/login" />;
   }
 
-  const userRole = getUserRole();
-
-  // Si requiredRole es un string, lo convertimos en un array para comparar con múltiples roles
-  const rolesPermitidos = Array.isArray(requiredRole) ? requiredRole : [requiredRole];
-
-  if (requiredRole && !rolesPermitidos.includes(userRole)) {
+  if (requiredRole.toLowerCase() !== role) {
     return (
-      <div style={{ padding: '20px', textAlign: 'center', color: '#ff4d4d' }}>
+      <div style={{ padding: "20px", textAlign: "center", color: "#ff4d4d" }}>
         <h1>Acceso denegado</h1>
         <p>No tienes permisos para acceder a esta página.</p>
       </div>
     );
   }
-
-  return children;
-}
+  return <Outlet />;
+};
 
 export default ProtectedRoute;
