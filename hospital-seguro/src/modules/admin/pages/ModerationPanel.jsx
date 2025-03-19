@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import emailjs from 'emailjs-com';
+import emailjs from "@emailjs/browser";
+
 import { logAuditEvent } from './AuditLogs'; // Importando desde AuditLogs.jsx
-import '../../../styles/ModerationPanel.css';
+
 
 function ModerationPanel() {
   const [pendingChanges, setPendingChanges] = useState(null);

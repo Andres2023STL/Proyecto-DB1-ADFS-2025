@@ -1,14 +1,14 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import '../../../styles/Settings.css';
-import {
-  ColorModeButton,
-  DarkMode,
-  LightMode,
-  useColorMode,
-  useColorModeValue,
-} from "../../../components/ui/color-mode";
-import { Button } from "@chakra-ui/react";
+
+// import {
+//   ColorModeButton,
+//   DarkMode,
+//   LightMode,
+//   useColorMode,
+//   useColorModeValue,
+// } from "../../../components/ui/color-mode";
+// import { Button } from "@chakra-ui/react";
 
 
 function Settings() {
@@ -16,7 +16,7 @@ function Settings() {
     <div className="page-container">
       <div className="page-header">
         <h1>Configuraciones</h1>
-        <Link to="/dashboard" className="back-button">← Regresar al Dashboard</Link>
+        <Link to="/admin/admindashboard" className="back-button">← Regresar al Dashboard</Link>
       </div>
       <p>Modifica las configuraciones generales del sistema.</p>
 

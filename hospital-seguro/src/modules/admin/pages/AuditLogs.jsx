@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { utils, writeFile } from 'xlsx';
-import '../../../styles/AuditLogs.css';
+
 
 // 🔹 Exportar logAuditEvent para que otros archivos puedan usarlo
 export const logAuditEvent = (user, action, details) => {
@@ -36,7 +36,7 @@ function AuditLogs() {
     <div className="page-container">
       <div className="page-header">
         <h1>Auditoría</h1>
-        <Link to="/dashboard" className="back-button">← Regresar</Link>
+        <Link to="/admin/admindashboard" className="back-button">← Regresar</Link>
       </div>
 
       <table className="audit-table">

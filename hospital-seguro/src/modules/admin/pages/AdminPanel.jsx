@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import '../../../styles/AdminPanel.css';
+
 
 function AdminPanel() {
   // Contenido predeterminado del Home

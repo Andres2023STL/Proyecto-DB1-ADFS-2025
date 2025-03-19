@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import '../../../styles/UsersManagement.css';
 import usersData from '../../../data/users.json'; // Importar usuarios
 import { logAuditEvent } from './AuditLogs'; // Importando desde AuditLogs.jsx
 
@@ -87,7 +86,7 @@ function UsersManagement() {
     <div className="page-container">
       <div className="page-header">
         <h1>Gestión de Usuarios</h1>
-        <Link to="/dashboard" className="back-button">← Regresar</Link>
+        <Link to="/admin/admindashboard" className="back-button">← Regresar</Link>
       </div>
 
       {/* 🔍 Filtros de búsqueda */}
