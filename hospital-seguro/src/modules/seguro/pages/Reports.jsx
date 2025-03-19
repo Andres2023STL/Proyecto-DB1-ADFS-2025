@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import * as XLSX from 'xlsx';
-import '../../../styles/Reports.css';
+
 import reportsData from '../../../data/reports.json';
 
 function Reports() {
@@ -42,7 +42,7 @@ function Reports() {
   return (
     <div className="reports-container">
       <h1>Reportes Operativos</h1>
-      <Link to="/dashboard" className="back-button">← Regresar al Dashboard</Link>
+      <Link to="/seguro/SeguroEmpleadoDashboard" className="back-button">← Regresar al Dashboard</Link>
       <p>Aquí se generarán los reportes de actividad del sistema.</p>
       
       {/* Botón que genera el reporte */}

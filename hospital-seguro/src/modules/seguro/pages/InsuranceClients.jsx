@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import clientsData from '../../../data/insurance_clients.json';
-import '../../../styles/PatientHistory.css';
-import '../../../styles/InsuranceClients.css';
+
 
 function InsuranceClients() {
   const [clients, setClients] = useState([]);
@@ -88,7 +87,7 @@ function InsuranceClients() {
   return (
     <div className="insurance-container">
       <h1>Clientes Asegurados</h1>
-      <Link to="/dashboard" className="back-button">← Regresar</Link>
+      <Link to="/seguro/SeguroEmpleadoDashboard" className="back-button">← Regresar</Link>
 
       <div className="filter-container">
         <input

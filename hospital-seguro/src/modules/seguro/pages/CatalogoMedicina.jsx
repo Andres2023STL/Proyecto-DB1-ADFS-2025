@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import medications from '../../../data/medications.json';
-import '../../../styles/CatalogoMedicina.css';  // Import the CSS file
+
 
 function groupData(items, categoryKey, subcategoryKey) {
   const grouped = {};
@@ -21,7 +21,7 @@ function CatalogoMedicina() {
   return (
     <div className="catalog-container">
       <h1 className="catalog-title">Catálogo Medicina</h1>
-      <Link to="/dashboard" className="back-button">← Regresar al Dashboard</Link>
+      <Link to="/seguro/SeguroEmpleadoDashboard" className="back-button">← Regresar al Dashboard</Link>
       {Object.keys(groupedMedications).map(category => (
         <details key={category} className="category-details">
           <summary className="category-summary">{category}</summary>
