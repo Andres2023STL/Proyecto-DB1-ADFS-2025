@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import appointmentsData from '../../../data/appointmentsC.json';
-import '../../../styles/AppointmentsControl.css'
+
 
 function AppointmentsControl() {
   const [appointments, setAppointments] = useState([]);
@@ -13,7 +13,7 @@ function AppointmentsControl() {
   return (
     <div>
       <h1>Gestión de Citas</h1>
-      <Link to="/dashboard" className="back-button">← Regresar al Dashboard</Link>
+      <Link to="/seguro/SeguroEmpleadoDashboard" className="back-button">← Regresar al Dashboard</Link>
       <ul>
         {appointments.map((cita) => (
           <li key={cita.id}>

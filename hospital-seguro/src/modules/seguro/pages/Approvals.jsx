@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import approvalsData from '../../../data/approvals.json';
-import '../../../styles/Approvals.css'
+
 
 function Approvals() {
   const [pendingApprovals, setPendingApprovals] = useState(approvalsData);
@@ -17,7 +17,7 @@ function Approvals() {
   return (
     <div>
       <h1>Aprobaciones</h1>
-      <Link to="/dashboard" className="back-button">← Regresar al Dashboard</Link>
+      <Link to="/seguro/SeguroEmpleadoDashboard" className="back-button">← Regresar al Dashboard</Link>
       <ul>
         {pendingApprovals.map((ap) => (
           <li key={ap.id}>
