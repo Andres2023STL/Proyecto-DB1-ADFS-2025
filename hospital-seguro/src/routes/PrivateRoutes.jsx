@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Navigate, Routes, Route } from "react-router-dom";
 import AdminRoutes from "../modules/admin/AdminRoutes";
-import HospitalRoutes from "../modules/hospital/hospitalRoutes";
+import HospitalRoutes from "../modules/hospital/HospitalRoutes";
 
 const PrivateRoutes = ({ allowedRole }) => {
   const [role, setRole] = useState(null);
