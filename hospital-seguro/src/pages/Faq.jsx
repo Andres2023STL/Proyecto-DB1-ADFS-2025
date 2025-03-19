@@ -1,5 +1,4 @@
 import React from 'react';
-import '../styles/Faq.css';  // Import correcto del CSS
 
 function Faq() {
   return (

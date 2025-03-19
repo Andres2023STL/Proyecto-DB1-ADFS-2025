@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-//import '../styles/Home.css';
 
 function Home() {
   // Datos por defecto que siempre estarán visibles en Home.jsx

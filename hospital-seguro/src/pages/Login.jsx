@@ -1,32 +1,37 @@
-import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import usersData from '../data/users.json'; // Importamos JSON
-import '../styles/Login.css';
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
-function Login() {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [users, setUsers] = useState([]);
+function Login({ setIsAuthenticated }) {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const navigate = useNavigate();
 
-  useEffect(() => {
-    setUsers(usersData);
-  }, []);
-
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
-    const user = users.find((u) => u.email === email && u.password === password);
 
-    if (user) {
-      if (user.active) {
-        localStorage.setItem('token', 'fake-token');
-        localStorage.setItem('role', user.role);
-        navigate('/dashboard');
+    const response = await fetch("http://localhost/hospital_api/login.php", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      credentials: "include",
+      body: JSON.stringify({ email, password }),
+    });
+
+    const data = await response.json();
+
+    if (data.success) {
+      setIsAuthenticated(true);
+      // Normalizamos y verificamos el rol devuelto
+      const role = data.role && data.role.trim().toLowerCase();
+      if (role === "admin") {
+        navigate("/admin/admindashboard");
+      } else if (role === "doctor") {
+        navigate("/hospital/dashboard");
       } else {
-        alert('Tu cuenta aún no ha sido activada por un administrador.');
+        // Ruta por defecto o manejo de error si no se reconoce el rol
+        navigate("/login");
       }
     } else {
-      alert('Credenciales inválidas.');
+      alert(data.message);
     }
   };
 
@@ -47,10 +52,10 @@ function Login() {
           onChange={(e) => setPassword(e.target.value)}
         />
         <button type="submit">Ingresar</button>
+        <button type="button" onClick={() => navigate("/register")}>
+          Registrarse
+        </button>
       </form>
-      <button onClick={() => navigate('/Register')} className="register-btn">
-        Registrarse
-      </button>
     </div>
   );
 }

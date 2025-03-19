@@ -1,98 +1,65 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import '../styles/Register.css';
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 function Register() {
-  const [formData, setFormData] = useState({
-    email: '',
-    password: '',
-    nombre: '',
-    fechaNacimiento: '',
-    documento: '',
-    afiliacionSeguro: '',
-    foto: null
-  });
-
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const navigate = useNavigate();
 
-  const handleChange = (e) => {
-    const { name, value, type } = e.target;
-    if (type === 'file') {
-      setFormData({ ...formData, [name]: e.target.files[0] });
-    } else {
-      setFormData({ ...formData, [name]: value });
-    }
-  };
-
-  const handleSubmit = (e) => {
+  const handleRegister = async (e) => {
     e.preventDefault();
-    alert('Registro enviado. Espera aprobación de un administrador.');
-    navigate('/login');
+
+    if (password !== confirmPassword) {
+      alert("Las contraseñas no coinciden.");
+      return;
+    }
+
+    const response = await fetch("http://localhost/hospital_api/register.php", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email, password }),
+    });
+
+    const data = await response.json();
+
+    if (data.success) {
+      alert("Registro exitoso. Ahora puedes iniciar sesión.");
+      navigate("/login");
+    } else {
+      alert(data.message);
+    }
   };
 
   return (
     <div className="register-container">
-      <form className="register-form" onSubmit={handleSubmit}>
-        <h1>Registro de Usuario</h1>
-
+      <form className="register-form" onSubmit={handleRegister}>
+        <h1>Registrarse</h1>
         <input
           type="email"
-          name="email"
           placeholder="Correo electrónico"
-          required
-          value={formData.email}
-          onChange={handleChange}
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
         />
         <input
           type="password"
-          name="password"
           placeholder="Contraseña"
-          required
-          value={formData.password}
-          onChange={handleChange}
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
         />
         <input
-          type="text"
-          name="nombre"
-          placeholder="Nombre completo"
-          required
-          value={formData.nombre}
-          onChange={handleChange}
+          type="password"
+          placeholder="Confirmar Contraseña"
+          value={confirmPassword}
+          onChange={(e) => setConfirmPassword(e.target.value)}
         />
-        <input
-          type="date"
-          name="fechaNacimiento"
-          required
-          value={formData.fechaNacimiento}
-          onChange={handleChange}
-        />
-        <input
-          type="text"
-          name="documento"
-          placeholder="Documento de Identificación"
-          required
-          value={formData.documento}
-          onChange={handleChange}
-        />
-        <input
-          type="text"
-          name="afiliacionSeguro"
-          placeholder="Número de afiliación del seguro (opcional)"
-          value={formData.afiliacionSeguro}
-          onChange={handleChange}
-        />
-        <input
-          type="file"
-          name="foto"
-          accept="image/*"
-          onChange={handleChange}
-        />
-
         <button type="submit">Registrarse</button>
+
+        {/* 🔥 Botón para volver al login */}
+        <button type="button" onClick={() => navigate("/login")} style={{ marginTop: "10px" }}>
+          Volver al Login
+        </button>
       </form>
-      <button onClick={() => navigate('/login')} className="back-btn">
-        Volver al Login
-      </button>
     </div>
   );
 }

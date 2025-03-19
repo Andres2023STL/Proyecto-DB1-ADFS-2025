@@ -1,6 +1,6 @@
 import React from 'react';
 
-function Historia() {
+function AboutUs() {
   return (
     <div className="page-container">
       <h1>Nuestra Historia</h1>
@@ -9,6 +9,9 @@ function Historia() {
         Nuestra institución se basa en la integración de servicios para garantizar la mejor atención a nuestros clientes.
       </p>
 
+      <h2>Equipo
+      Valores</h2>
+
       <h2>Misión</h2>
       <p>Brindar servicios de salud accesibles, confiables y eficientes.</p>
 
@@ -16,6 +19,7 @@ function Historia() {
       <p>Ser un referente en la integración de servicios de salud y seguros en la región.</p>
     </div>
   );
+
 }
 
-export default Historia;
+export default AboutUs;
