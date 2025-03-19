@@ -26,8 +26,9 @@ function Login({ setIsAuthenticated }) {
         navigate("/admin/admindashboard");
       } else if (role === "doctor") {
         navigate("/hospital/dashboard");
+      } else if (role === "empleado_seguro") {
+        navigate("/seguro/SeguroEmpleadoDashboard");
       } else {
-        // Ruta por defecto o manejo de error si no se reconoce el rol
         navigate("/login");
       }
     } else {
