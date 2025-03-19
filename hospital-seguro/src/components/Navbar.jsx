@@ -19,6 +19,8 @@ const Navbar = ({ isAuthenticated, setIsAuthenticated }) => {
       <Link to="/SubHomeHospital">Hospital</Link> 
       <Link to="/SubHomeSeguro">Seguro</Link> 
       <Link to="/AboutUs">Acerca de nosotros</Link> 
+      <Link to="/Contacto">Contacto</Link> 
+      <Link to="/Faq">FAQ</Link> 
 
       {isAuthenticated ? (
         <>
