@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import DashboardLayout from"../../../../components/DashboardLayout.jsx";
+import DashboardLinkCard from "../../../../components/DashboardLinkCard";
 
 function DoctorDashboard() {
   const [role, setRole] = useState(null);
@@ -13,7 +15,6 @@ function DoctorDashboard() {
           method: "GET",
           credentials: "include",
         });
-
         const data = await response.json();
         if (data.success) {
           setRole(data.role);
@@ -30,21 +31,17 @@ function DoctorDashboard() {
     fetchUserRole();
   }, [navigate]);
 
-  if (loading) {
-    return <p>Cargando...</p>;
-  }
-
-  if (!role) {
-    return <p>Error: No se pudo obtener el rol.</p>;
-  }
+  if (loading) return <p>Cargando...</p>;
+  if (!role) return <p>Error: No se pudo obtener el rol.</p>;
 
   return (
-    <div className="dashboard-container">
-      <h1>¡Bienvenido, Doctor!</h1>
-      <Link to="/hospital/appointments">Ir a Citas</Link>  
-      <Link to="/hospital/patienthistory">Historial de Pacientes</Link>
-      <Link to="/hospital/recetas">Gestión de Recetas</Link>
-    </div>
+    <DashboardLayout title="¡Bienvenido, Doctor!">
+      <div className="dashboard-link-container">
+        <DashboardLinkCard title="Ir a Citas" link="/hospital/appointments" />
+        <DashboardLinkCard title="Historial de Pacientes" link="/hospital/patienthistory" />
+        <DashboardLinkCard title="Gestión de Recetas" link="/hospital/recetas" />
+      </div>
+    </DashboardLayout>
   );
 }
 
