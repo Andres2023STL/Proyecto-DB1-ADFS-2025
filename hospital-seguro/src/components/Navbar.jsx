@@ -31,7 +31,7 @@ const Navbar = ({ isAuthenticated, setIsAuthenticated }) => {
 
   // 2) Items para usuario logueado
   const authItems = [
-    { key: '7', label: <Link to="/hospital/dashboard" className="navbar-menu-item">Dashboard</Link> },
+    { key: '7', label: <Link to="/dashboard" className="navbar-menu-item">Dashboard</Link> },
     {
       key: '8',
       label: (
