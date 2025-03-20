@@ -1,6 +1,5 @@
 import { Routes, Route } from "react-router-dom";
 import { useState, useEffect } from "react";
-import Header from "../components/Header";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import PublicRoutes from "./PublicRoutes";
@@ -28,7 +27,6 @@ const AppRoutes = () => {
 
   return (
     <>
-      <Header />
       <Navbar isAuthenticated={isAuthenticated} setIsAuthenticated={setIsAuthenticated} />
       <Routes>
         <Route path="/*" element={<PublicRoutes setIsAuthenticated={setIsAuthenticated} />} />

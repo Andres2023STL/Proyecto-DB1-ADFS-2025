@@ -1,8 +1,13 @@
+import { Layout } from 'antd';
+import '../assets/footer.css';
+
+const { Footer: AntFooter } = Layout;
+
 function Footer() {
   return (
-    <footer className="footer">
-      © 2025 Plataforma de Gestión Médica. Todos los derechos reservados.
-    </footer>
+    <AntFooter className="footer">
+      © {new Date().getFullYear()} Plataforma de Gestión Médica. Todos los derechos reservados.
+    </AntFooter>
   );
 }
 
