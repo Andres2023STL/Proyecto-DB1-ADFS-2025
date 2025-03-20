@@ -1,6 +1,5 @@
 import { Link, useNavigate } from "react-router-dom";
 import { Layout, Menu, theme } from 'antd';
-import '../assets/navbar.css'; // Import the CSS file
 const { Header } = Layout;
 
 const Navbar = ({ isAuthenticated, setIsAuthenticated }) => {

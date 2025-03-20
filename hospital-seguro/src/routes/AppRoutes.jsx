@@ -27,15 +27,19 @@ const AppRoutes = () => {
 
   return (
     <>
+    <div className="page-container">
       <Navbar isAuthenticated={isAuthenticated} setIsAuthenticated={setIsAuthenticated} />
-      <Routes>
-        <Route path="/*" element={<PublicRoutes setIsAuthenticated={setIsAuthenticated} />} />
-        <Route path="/hospital/*" element={<PrivateRoutes allowedRole="doctor" />} />
-        <Route path="/admin/*" element={<PrivateRoutes allowedRole="admin" />} />
-        <Route path="/seguro/*" element={<PrivateRoutes allowedRole="empleado_seguro" />} />
-        <Route path="/acceso-denegado" element={<p>Acceso Denegado</p>} />
-      </Routes>
+        <main className="main-content">
+          <Routes>
+            <Route path="/*" element={<PublicRoutes setIsAuthenticated={setIsAuthenticated} />} />
+            <Route path="/hospital/*" element={<PrivateRoutes allowedRole="doctor" />} />
+            <Route path="/admin/*" element={<PrivateRoutes allowedRole="admin" />} />
+            <Route path="/seguro/*" element={<PrivateRoutes allowedRole="empleado_seguro" />} />
+            <Route path="/acceso-denegado" element={<p>Acceso Denegado</p>} />
+          </Routes>
+        </main>
       <Footer/>
+    </div>
     </>
   );
 };

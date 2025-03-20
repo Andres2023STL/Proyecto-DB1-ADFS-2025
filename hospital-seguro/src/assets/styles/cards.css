@@ -1,0 +1,58 @@
+
+   .service-card,
+   .benefit-card {
+     background: #fff;
+     border: 1px solid #f0f0f0;
+     border-radius: 8px;
+     text-align: center;
+     width: 100%;
+     max-width: 400px;
+     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+     margin: 0 auto;
+   }
+   
+   .aboutus-card {
+     padding: 20px;
+     border-radius: 8px;
+     border: 1px solid #f0f0f0;
+   }
+   
+   /* Tema azul reutilizable */
+   .blue-theme {
+     border: 1px solid #1890ff;    
+     background-color: #f0f5ff;         
+     transition: box-shadow 0.3s ease;
+   }
+   
+   .blue-theme:hover {
+     box-shadow: 0 4px 16px rgba(24, 144, 255, 0.2);
+   }
+   
+   .card-title-blue {
+     color: #1890ff; 
+   }
+
+   .card-main-title {
+     font-size: 2rem;
+     margin-bottom: 1.5rem;
+   }
+
+   .card-main-text {
+     font-size: 1.2rem;
+     margin-bottom: 2rem;
+   }
+   
+   .card-section-title {
+     font-size: 1.6rem;
+     margin-bottom: 1.5rem;
+   }
+   
+   .card-service-title {
+     font-size: 1.3rem;
+     margin-bottom: 0.5rem;
+   }
+   
+   .card-service-text {
+     font-size: 1.1rem;
+   }
+   
