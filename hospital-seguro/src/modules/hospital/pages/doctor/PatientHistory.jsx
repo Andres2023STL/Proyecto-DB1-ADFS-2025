@@ -1,6 +1,11 @@
-import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
-import patientsData from '../../../../data/patients.json';
+import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
+import { Card, List, Button, Typography, Input } from "antd";
+import { motion } from "framer-motion";
+import patientsData from "../../../../data/patients.json";
+
+const { Title, Paragraph } = Typography;
+const { TextArea } = Input;
 
 function PatientHistory() {
   const [patients, setPatients] = useState([]);
@@ -13,7 +18,7 @@ function PatientHistory() {
   useEffect(() => {
     try {
       if (!patientsData || !Array.isArray(patientsData)) {
-        throw new Error('El archivo JSON de pacientes no es válido.');
+        throw new Error("El archivo JSON de pacientes no es válido.");
       }
       setPatients(patientsData);
     } catch (err) {
@@ -24,111 +29,181 @@ function PatientHistory() {
   }, []);
 
   const handleAddComment = (patientId, parentId = null) => {
-    if (!commentText[patientId] || commentText[patientId].trim() === '') return;
-  
-    setComments((prevComments) => {
-      const updatedComments = { ...prevComments };
-      if (!updatedComments[patientId]) {
-        updatedComments[patientId] = [];
+    if (!commentText[patientId] || commentText[patientId].trim() === "") return;
+    setComments((prev) => {
+      const updated = { ...prev };
+      if (!updated[patientId]) {
+        updated[patientId] = [];
       }
-      updatedComments[patientId] = [
-        ...updatedComments[patientId], //Operador de propagación (nuevo array) en lugar de push, ya que causaba problemas
-        { text: commentText[patientId], parentId }
+      updated[patientId] = [
+        ...updated[patientId],
+        { text: commentText[patientId], parentId },
       ];
-  
-      return updatedComments;
+      return updated;
     });
-  
-    setCommentText((prev) => ({ ...prev, [patientId]: '' }));
+    setCommentText((prev) => ({ ...prev, [patientId]: "" }));
     setReplyingTo((prev) => ({ ...prev, [patientId]: null }));
   };
 
-  const toggleReplyingTo = (patientId, index) => {  //Oculta o muestra la caja de añadir comentario nuevo
+  const toggleReplyingTo = (patientId, index) => {
     setReplyingTo((prev) => ({
       ...prev,
-      [patientId]: prev[patientId] === index ? null : index
+      [patientId]: prev[patientId] === index ? null : index,
     }));
   };
 
   return (
-    <div className="page-container">
-      <div className="page-header">
-        <h1>Historial de Pacientes</h1>
-        <Link to="/hospital/dashboard" className="back-button">← Regresar</Link>
+    <div className="private-page-container">
+      <div className="private-page-header">
+        <Title level={2}>Historial de Pacientes</Title>
+        <Link to="/hospital/dashboard" className="private-back-button">
+          ← Regresar
+        </Link>
       </div>
-
       {loading ? (
-        <p>Cargando historial de pacientes...</p>
+        <Paragraph>Cargando historial de pacientes...</Paragraph>
       ) : error ? (
-        <p className="error-message">❌ Error: {error}</p>
+        <Paragraph className="private-error-message">❌ Error: {error}</Paragraph>
       ) : patients.length === 0 ? (
-        <p>No hay registros de pacientes.</p>
+        <Paragraph>No hay registros de pacientes.</Paragraph>
       ) : (
-        <ul className="patient-list">
-          {patients.map((patient) => (
-            <li key={patient.id} className="patient-item">
-              {patient.photo && <img src={patient.photo} alt={patient.name} className="patient-photo" />}
-              <strong>Nombre:</strong> {patient.name} <br />
-              <strong>Fecha de Nacimiento:</strong> {patient.birthDate || 'No disponible'} <br />
-              <strong>Documento de Identificación:</strong> {patient.documentId || 'No disponible'} <br />
-              <strong>Número de Afiliación:</strong> {patient.insuranceNumber || 'No disponible'} <br />
-              <strong>Código de Compañía de Seguro:</strong> {patient.insuranceCompany || 'No disponible'} <br />
-              <strong>Última visita:</strong> {patient.lastVisit || 'No disponible'} <br />
-              <strong>Diagnóstico:</strong> {patient.diagnosis || 'No disponible'} <br />
-              <strong>Medicamentos Recetados:</strong> {(patient.medications && patient.medications.length > 0) ? patient.medications.join(', ') : 'Ninguno'} <br />
-              <strong>Notas del Doctor:</strong> {patient.notes || 'No disponible'} <br />
-              <strong>Historial de Servicios:</strong>
-              <ul>
-                {patient.services && patient.services.length > 0 ? (
-                  patient.services.map((service, index) => <li key={index}>{service}</li>)
-                ) : (
-                  <li>No hay servicios registrados</li>
-                )}
-              </ul>
+        <List
+          dataSource={patients}
+          renderItem={(patient) => (
+            <List.Item>
+              <motion.div
+                className="private-patient-card"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5 }}
+              >
+                <Card hoverable className="private-patient-card-ant">
+                  {patient.photo && (
+                    <img
+                      src={patient.photo}
+                      alt={patient.name}
+                      className="private-patient-photo"
+                    />
+                  )}
+                  <Title level={4}>{patient.name}</Title>
+                  <Paragraph>
+                    <strong>Fecha de Nacimiento:</strong>{" "}
+                    {patient.birthDate || "No disponible"}
+                  </Paragraph>
+                  <Paragraph>
+                    <strong>Documento:</strong>{" "}
+                    {patient.documentId || "No disponible"}
+                  </Paragraph>
+                  <Paragraph>
+                    <strong>N° Afiliación:</strong>{" "}
+                    {patient.insuranceNumber || "No disponible"}
+                  </Paragraph>
+                  <Paragraph>
+                    <strong>Compañía de Seguro:</strong>{" "}
+                    {patient.insuranceCompany || "No disponible"}
+                  </Paragraph>
+                  <Paragraph>
+                    <strong>Última visita:</strong>{" "}
+                    {patient.lastVisit || "No disponible"}
+                  </Paragraph>
+                  <Paragraph>
+                    <strong>Diagnóstico:</strong>{" "}
+                    {patient.diagnosis || "No disponible"}
+                  </Paragraph>
+                  <Paragraph>
+                    <strong>Medicamentos:</strong>{" "}
+                    {(patient.medications && patient.medications.length > 0)
+                      ? patient.medications.join(", ")
+                      : "Ninguno"}
+                  </Paragraph>
+                  <Paragraph>
+                    <strong>Notas del Doctor:</strong>{" "}
+                    {patient.notes || "No disponible"}
+                  </Paragraph>
+                  <Paragraph>
+                    <strong>Historial de Servicios:</strong>
+                  </Paragraph>
+                  <List
+                    size="small"
+                    dataSource={
+                      patient.services && patient.services.length > 0
+                        ? patient.services
+                        : ["No hay servicios registrados"]
+                    }
+                    renderItem={(service) => <List.Item>{service}</List.Item>}
+                  />
 
-              {/* Sección de comentarios */}
-              <div className="comments-section">
-                <h3>Comentarios</h3>
-                <ul>
-                  {comments[patient.id]?.map((comment, index) => (
-                    <li key={index} style={{ marginLeft: comment.parentId !== null ? '30px' : '0' }}>
-                      {comment.text}
-                      <button
-                        onClick={() => toggleReplyingTo(patient.id, index)}
-                      >
-                        Responder
-                      </button>
-                      {replyingTo[patient.id] === index && (
-                        <div className="reply-section">
-                          <textarea
-                            placeholder="Escribe tu respuesta..."
-                            value={commentText[patient.id] || ''}
-                            onChange={(e) =>
-                              setCommentText((prev) => ({ ...prev, [patient.id]: e.target.value }))
-                            }
-                          ></textarea>
-                          <button onClick={() => handleAddComment(patient.id, index)}>Añadir Respuesta</button>
-                        </div>
+                  {/* Sección de comentarios */}
+                  <div className="private-comments-section">
+                    <Title level={5}>Comentarios</Title>
+                    <List
+                      dataSource={comments[patient.id] || []}
+                      renderItem={(comment, index) => (
+                        <List.Item
+                          style={{
+                            marginLeft: comment.parentId !== null ? "30px" : "0",
+                          }}
+                        >
+                          <span>{comment.text}</span>
+                          <Button
+                            size="small"
+                            onClick={() => toggleReplyingTo(patient.id, index)}
+                          >
+                            Responder
+                          </Button>
+                          {replyingTo[patient.id] === index && (
+                            <div className="private-reply-section">
+                              <TextArea
+                                rows={2}
+                                placeholder="Escribe tu respuesta..."
+                                value={commentText[patient.id] || ""}
+                                onChange={(e) =>
+                                  setCommentText((prev) => ({
+                                    ...prev,
+                                    [patient.id]: e.target.value,
+                                  }))
+                                }
+                              />
+                              <Button
+                                size="small"
+                                onClick={() => handleAddComment(patient.id, index)}
+                              >
+                                Añadir Respuesta
+                              </Button>
+                            </div>
+                          )}
+                        </List.Item>
                       )}
-                    </li>
-                  ))}
-                </ul>
-                
-                {/* Campo de nuevo comentario */}
-                {Object.values(replyingTo).every((val) => val === null) && (
-                  <>
-                    <textarea
-                      placeholder="Agregar comentario..."
-                      value={commentText[patient.id] || ''}
-                      onChange={(e) => setCommentText((prev) => ({ ...prev, [patient.id]: e.target.value }))}
-                    ></textarea>
-                    <button onClick={() => handleAddComment(patient.id)}>Añadir Comentario</button>
-                  </>
-                )}
-              </div>
-            </li>
-          ))}
-        </ul>
+                    />
+                    {(!comments[patient.id] ||
+                      comments[patient.id].length === 0 ||
+                      Object.values(replyingTo).every((val) => val === null)) && (
+                      <>
+                        <TextArea
+                          rows={2}
+                          placeholder="Agregar comentario..."
+                          value={commentText[patient.id] || ""}
+                          onChange={(e) =>
+                            setCommentText((prev) => ({
+                              ...prev,
+                              [patient.id]: e.target.value,
+                            }))
+                          }
+                        />
+                        <Button
+                          size="small"
+                          onClick={() => handleAddComment(patient.id)}
+                        >
+                          Añadir Comentario
+                        </Button>
+                      </>
+                    )}
+                  </div>
+                </Card>
+              </motion.div>
+            </List.Item>
+          )}
+        />
       )}
     </div>
   );

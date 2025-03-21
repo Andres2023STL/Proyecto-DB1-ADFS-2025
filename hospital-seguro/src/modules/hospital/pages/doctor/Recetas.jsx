@@ -1,111 +1,156 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import recetasData from '../../../../data/recetas.json'; // ✅ Importar JSON de recetas
+import { Form, Input, Button, Card, Row, Col, Typography } from 'antd';
+import { motion } from 'framer-motion';
+import recetasData from '../../../../data/recetas.json';
+
+const { Title, Paragraph } = Typography;
 
 function Recetas() {
   const [prescriptions, setPrescriptions] = useState([]);
-  const [newPrescription, setNewPrescription] = useState({
-    patient: '',
-    date: '',
-    medicine: '',
-    dosage: '',
-    duration: '',
-  });
-
   const [editingPrescription, setEditingPrescription] = useState(null);
+  const [form] = Form.useForm();
 
-  // Cargar recetas desde el JSON al montar el componente
   useEffect(() => {
     setPrescriptions(recetasData);
   }, []);
 
-  // Función para manejar cambios en el formulario
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setNewPrescription((prev) => ({ ...prev, [name]: value }));
-  };
-
-  // Función para agregar o actualizar receta
-  const handleAddOrUpdatePrescription = (e) => {
-    e.preventDefault();
-
+  const handleFinish = (values) => {
     if (editingPrescription) {
-      // Modificar una receta existente
       setPrescriptions((prev) =>
-        prev.map((p) => (p.id === editingPrescription.id ? { ...newPrescription, id: p.id } : p))
+        prev.map((p) => (p.id === editingPrescription.id ? { ...values, id: p.id } : p))
       );
       setEditingPrescription(null);
     } else {
-      // Agregar una nueva receta
       const newId = prescriptions.length > 0 ? prescriptions[prescriptions.length - 1].id + 1 : 1;
-      setPrescriptions((prev) => [...prev, { ...newPrescription, id: newId }]);
+      setPrescriptions((prev) => [...prev, { ...values, id: newId }]);
     }
-
-    // Limpiar el formulario
-    setNewPrescription({ patient: '', date: '', medicine: '', dosage: '', duration: '' });
+    form.resetFields();
   };
 
-  // Función para eliminar receta
+  const handleEditPrescription = (prescription) => {
+    form.setFieldsValue(prescription);
+    setEditingPrescription(prescription);
+  };
+
   const handleDeletePrescription = (id) => {
     setPrescriptions((prev) => prev.filter((p) => p.id !== id));
   };
 
-  // Función para cargar datos en el formulario para edición
-  const handleEditPrescription = (prescription) => {
-    setNewPrescription(prescription);
-    setEditingPrescription(prescription);
-  };
-
   return (
-    <div className="page-container">
-      <div className="page-header">
-        <h1>Gestión de Recetas</h1>
-        <Link to="/hospital/dashboard" className="back-button">← Regresar</Link>
+    <div className="private-page-container">
+      <div className="private-page-header">
+        <Title level={2}>Gestión de Recetas</Title>
+        <Link to="/hospital/dashboard" className="private-back-button">← Regresar</Link>
       </div>
 
-      <p>Crea, edita y administra las recetas médicas.</p>
+      <Paragraph className="private-description">
+        Crea, edita y administra las recetas médicas.
+      </Paragraph>
 
-      {/* Formulario para agregar o editar receta */}
-      <form className="prescription-form" onSubmit={handleAddOrUpdatePrescription}>
-        <label>
-          Paciente:
-          <input type="text" name="patient" value={newPrescription.patient} onChange={handleInputChange} required />
-        </label>
-        <label>
-          Fecha:
-          <input type="date" name="date" value={newPrescription.date} onChange={handleInputChange} required />
-        </label>
-        <label>
-          Medicamento:
-          <input type="text" name="medicine" value={newPrescription.medicine} onChange={handleInputChange} required />
-        </label>
-        <label>
-          Dosis:
-          <input type="text" name="dosage" value={newPrescription.dosage} onChange={handleInputChange} required />
-        </label>
-        <label>
-          Duración:
-          <input type="text" name="duration" value={newPrescription.duration} onChange={handleInputChange} required />
-        </label>
-        <button type="submit">
-          {editingPrescription ? 'Actualizar Receta' : 'Agregar Receta'}
-        </button>
-      </form>
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
+      >
+        <Card className="private-prescription-form-card">
+          <Form form={form} layout="vertical" onFinish={handleFinish} className="private-prescription-form">
+            <Form.Item
+              label="Paciente"
+              name="patient"
+              rules={[{ required: true, message: 'Ingrese el nombre del paciente' }]}
+              className="private-form-item"
+            >
+              <Input className="private-input" />
+            </Form.Item>
+            <Form.Item
+              label="Fecha"
+              name="date"
+              rules={[{ required: true, message: 'Seleccione la fecha' }]}
+              className="private-form-item"
+            >
+              <Input type="date" className="private-input" />
+            </Form.Item>
+            <Form.Item
+              label="Medicamento"
+              name="medicine"
+              rules={[{ required: true, message: 'Ingrese el medicamento' }]}
+              className="private-form-item"
+            >
+              <Input className="private-input" />
+            </Form.Item>
+            <Form.Item
+              label="Dosis"
+              name="dosage"
+              rules={[{ required: true, message: 'Ingrese la dosis' }]}
+              className="private-form-item"
+            >
+              <Input className="private-input" />
+            </Form.Item>
+            <Form.Item
+              label="Duración"
+              name="duration"
+              rules={[{ required: true, message: 'Ingrese la duración' }]}
+              className="private-form-item"
+            >
+              <Input className="private-input" />
+            </Form.Item>
+            <Form.Item>
+              <Button type="primary" htmlType="submit" block className="private-btn">
+                {editingPrescription ? 'Actualizar Receta' : 'Agregar Receta'}
+              </Button>
+            </Form.Item>
+          </Form>
+        </Card>
+      </motion.div>
 
-      {/* Lista de recetas médicas */}
-      <ul className="prescription-list">
-        {prescriptions.map((prescription) => (
-          <li key={prescription.id} className="prescription-item">
-            <strong>Paciente:</strong> {prescription.patient} <br />
-            <strong>Fecha:</strong> {prescription.date} <br />
-            <strong>Medicamento:</strong> {prescription.medicine} <br />
-            <strong>Dosis:</strong> {prescription.dosage} <br />
-            <strong>Duración:</strong> {prescription.duration} <br />
-            <button className="edit-btn" onClick={() => handleEditPrescription(prescription)}>✏ Editar</button>
-            <button className="delete-btn" onClick={() => handleDeletePrescription(prescription.id)}>🗑 Eliminar</button>
-          </li>
-        ))}
-      </ul>
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.5, delay: 0.2 }}
+      >
+        <Row gutter={[16, 16]}>
+          {prescriptions.map((prescription) => (
+            <Col xs={24} sm={12} md={8} key={prescription.id}>
+              <motion.div whileHover={{ scale: 1.02 }}>
+                <Card
+                  title={prescription.patient}
+                  className="private-prescription-card"
+                  extra={<span>{prescription.date}</span>}
+                  hoverable
+                >
+                  <Paragraph>
+                    <strong>Medicamento:</strong> {prescription.medicine}
+                  </Paragraph>
+                  <Paragraph>
+                    <strong>Dosis:</strong> {prescription.dosage}
+                  </Paragraph>
+                  <Paragraph>
+                    <strong>Duración:</strong> {prescription.duration}
+                  </Paragraph>
+                  <div className="private-card-actions">
+                    <Button
+                      size="small"
+                      onClick={() => handleEditPrescription(prescription)}
+                      className="private-edit-btn"
+                    >
+                      Editar
+                    </Button>
+                    <Button
+                      size="small"
+                      danger
+                      onClick={() => handleDeletePrescription(prescription.id)}
+                      className="private-delete-btn"
+                    >
+                      Eliminar
+                    </Button>
+                  </div>
+                </Card>
+              </motion.div>
+            </Col>
+          ))}
+        </Row>
+      </motion.div>
     </div>
   );
 }

@@ -1,38 +1,56 @@
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
-import doctorsData from "../../../../data/doctor.json"; // ✅ Importa el JSON de doctores
+import { Card, Button } from "antd";
+import { motion } from "framer-motion";
+import doctorsData from "../../../../data/doctor.json";
 
 function DoctorCatalog() {
   const navigate = useNavigate();
 
   const handleSelectDoctor = (doctor) => {
-    localStorage.setItem("selectedDoctor", JSON.stringify(doctor)); // ✅ Guarda en LocalStorage
-    navigate("/hospital/appointments"); // ✅ Redirige a la agenda
+    localStorage.setItem("selectedDoctor", JSON.stringify(doctor));
+    navigate("/hospital/appointments");
   };
 
   return (
-    <div className="doctor-catalog">
-      <h1>Catálogo de Doctores</h1>
-      <ul className="doctor-list">
+    <div className="private-doctor-catalog-container">
+      <h1 className="private-doctor-catalog-title">Catálogo de Doctores</h1>
+      <div className="private-doctor-catalog-grid">
         {doctorsData.map((doctor) => (
-          <li key={doctor.id} className="doctor-card">
-            <h3>{doctor.name}</h3>
-            <p><strong>Especialidad:</strong> {doctor.specialty}</p>
-
-            {/* 🔥 Botón para Ver Detalles */}
-            <Link to={`/hospital/doctordetails/${doctor.id}`} className="details-link">
-              Ver Detalles
-            </Link>
-
-            {/* 🔥 Botón para Seleccionar Doctor */}
-            <button className="select-button" onClick={() => handleSelectDoctor(doctor)}>
-              Seleccionar Doctor
-            </button>
-          </li>
+          <motion.div
+            key={doctor.id}
+            whileHover={{ scale: 1.02 }}
+            className="private-doctor-card"
+          >
+            <Card
+              title={doctor.name}
+              bordered
+              extra={
+                <Link to={`/hospital/doctordetails/${doctor.id}`} className="private-doctor-details-link">
+                  Ver Detalles
+                </Link>
+              }
+              className="private-doctor-card-ant"
+            >
+              <p>
+                <strong>Especialidad:</strong> {doctor.specialty}
+              </p>
+              <Button
+                type="primary"
+                onClick={() => handleSelectDoctor(doctor)}
+                className="private-doctor-select-btn"
+              >
+                Seleccionar Doctor
+              </Button>
+            </Card>
+          </motion.div>
         ))}
-      </ul>
-
-      <Link to="/hospital/appointments" className="back-button">← Volver a citas</Link>
+      </div>
+      <div className="private-doctor-catalog-back">
+        <Link to="/hospital/appointments" className="private-back-button">
+          ← Volver a citas
+        </Link>
+      </div>
     </div>
   );
 }

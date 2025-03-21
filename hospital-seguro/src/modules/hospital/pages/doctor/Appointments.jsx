@@ -1,14 +1,17 @@
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import Calendar from "react-calendar";
+import { Calendar as AntdCalendar, Input, Button, Checkbox, TimePicker } from "antd";
+import { motion } from "framer-motion";
+import Calendar from "react-calendar"; 
 import "react-calendar/dist/Calendar.css";
+import dayjs from "dayjs";
 
 function Appointments() {
   const [appointments, setAppointments] = useState([]);
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [newAppointment, setNewAppointment] = useState({
     date: "",
-    time: "",
+    time: null, 
     patient: "",
     reason: "",
     insured: false,
@@ -17,6 +20,7 @@ function Appointments() {
   const [selectedDoctor, setSelectedDoctor] = useState(null);
   const navigate = useNavigate();
 
+  // Carga inicial
   useEffect(() => {
     const storedAppointments = JSON.parse(localStorage.getItem("appointments")) || [];
     setAppointments(storedAppointments);
@@ -27,34 +31,42 @@ function Appointments() {
     }
   }, []);
 
+  // Guardado local
   useEffect(() => {
     localStorage.setItem("appointments", JSON.stringify(appointments));
   }, [appointments]);
 
   const formatDate = (dateObj) => dateObj.toISOString().split("T")[0];
 
+  // Filtrar las citas del día seleccionado
   const filteredAppointments = appointments.filter(
     (appointment) => appointment.date === formatDate(selectedDate)
   );
 
+  // Verificar si está disponible la hora elegida
   const isTimeSlotAvailable = (date, time) => {
     return !appointments.some(
       (appointment) => appointment.date === date && appointment.time === time
     );
   };
 
-  const isValidAppointmentTime = (time) => {
-    const [hours, minutes] = time.split(":").map(Number);
+  // Validar que la hora esté entre 08:00 y 16:30 y en intervalos de 30 min
+  const isValidAppointmentTime = (timeString) => {
+    const [hours, minutes] = timeString.split(":").map(Number);
     const appointmentTime = hours * 60 + minutes;
     return (
-      appointmentTime >= 480 && appointmentTime <= 990 && minutes % 30 === 0
+      appointmentTime >= 480 && 
+      appointmentTime <= 990 && 
+      minutes % 30 === 0
     );
   };
 
+  // Navegar al catálogo de doctores
   const handleSelectDoctor = () => {
     navigate("/hospital/doctorcatalog");
   };
 
+  // Manejar cambio de checkbox de seguro
   const handleInsuranceCheck = (e) => {
     setNewAppointment((prev) => ({
       ...prev,
@@ -62,6 +74,7 @@ function Appointments() {
     }));
   };
 
+  // Agregar nueva cita
   const handleAddAppointment = (e) => {
     e.preventDefault();
     const { date, time, patient, reason, insured } = newAppointment;
@@ -77,12 +90,15 @@ function Appointments() {
       return;
     }
 
-    if (!isValidAppointmentTime(time)) {
+    // Convertimos el objeto dayjs a string "HH:mm"
+    const timeString = time.format("HH:mm");
+
+    if (!isValidAppointmentTime(timeString)) {
       alert("⚠ La hora de la cita debe estar entre 08:00 y 16:30 en intervalos de 30 minutos.");
       return;
     }
 
-    if (!isTimeSlotAvailable(date, time)) {
+    if (!isTimeSlotAvailable(date, timeString)) {
       alert("⚠ Ya existe una cita en esta fecha y hora. Elige otra.");
       return;
     }
@@ -90,7 +106,7 @@ function Appointments() {
     const newCita = {
       id: Date.now(),
       date,
-      time,
+      time: timeString,
       patient,
       doctor: selectedDoctor.name,
       reason,
@@ -109,153 +125,163 @@ function Appointments() {
     alert("✅ Cita agendada exitosamente.");
     setNewAppointment({
       date: "",
-      time: "",
+      time: null,
       patient: "",
       reason: "",
       insured: false,
     });
   };
 
+  // Borrar todas las citas
   const handleClearAppointments = () => {
     localStorage.removeItem("appointments");
     setAppointments([]);
   };
 
   return (
-    <div className="page-container">
-      <header className="page-header">
+    <div className="private-page-container">
+      <header className="private-page-header">
         <h1>Agenda de Consultas</h1>
-        <Link to="/hospital/dashboard" className="back-button">← Regresar</Link>
+        <Link to="/hospital/dashboard" className="private-back-button">
+          ← Regresar
+        </Link>
       </header>
 
-      <div className="dashboard-container">
-        {/* Panel del Calendario */}
-        <div className="panel calendar-panel">
+      <div className="private-dashboard-container">
+        {/* Panel de Calendario (react-calendar) */}
+        <motion.div
+          className="private-panel private-calendar-panel"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+        >
           <h2>Calendario</h2>
           <Calendar onChange={setSelectedDate} value={selectedDate} />
-        </div>
+        </motion.div>
 
-        {/* Panel de Agendar Cita */}
-        <div className="panel form-panel">
+        {/* Panel para agendar cita */}
+        <motion.div
+          className="private-panel private-form-panel"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.2 }}
+        >
           <h2>Agendar Nueva Cita</h2>
 
-          {/* 🔥 SELECCIÓN DE DOCTOR */}
-          <div className="form-group">
+          <div className="private-form-group">
             <label>Doctor:</label>
             {selectedDoctor ? (
-              <p className="selected-doctor">
-                {selectedDoctor.name} - {selectedDoctor.specialty}
-                <button onClick={handleSelectDoctor} className="change-doctor">
+              <p>
+                {selectedDoctor.name} - {selectedDoctor.specialty}{" "}
+                <Button onClick={handleSelectDoctor} style={{ marginLeft: "10px" }}>
                   Cambiar
-                </button>
+                </Button>
               </p>
             ) : (
-              <button onClick={handleSelectDoctor} className="select-doctor">
+              <Button onClick={handleSelectDoctor} type="primary">
                 Seleccionar Doctor
-              </button>
+              </Button>
             )}
           </div>
 
-          <form onSubmit={handleAddAppointment} className="appointment-form">
-            <div className="form-group">
+          <form onSubmit={handleAddAppointment}>
+            <div className="private-form-group">
               <label>Fecha:</label>
-              <input
+              <Input
                 type="date"
                 value={newAppointment.date}
                 onChange={(e) =>
                   setNewAppointment({ ...newAppointment, date: e.target.value })
                 }
                 required
+                className="private-input"
               />
             </div>
 
-            <div className="form-group">
+            <div className="private-form-group">
               <label>Hora:</label>
-              <input
-                type="time"
-                step="1800"
+              <TimePicker
+                format="HH:mm"
+                minuteStep={30}
                 value={newAppointment.time}
-                onChange={(e) =>
-                  setNewAppointment({ ...newAppointment, time: e.target.value })
-                }
-                required
+                onChange={(timeVal) => {
+                  setNewAppointment({ ...newAppointment, time: timeVal });
+                }}
+                className="private-input"
               />
             </div>
 
-            <div className="form-group">
+            <div className="private-form-group">
               <label>Paciente:</label>
-              <input
-                type="text"
+              <Input
                 placeholder="Nombre del paciente"
                 value={newAppointment.patient}
                 onChange={(e) =>
-                  setNewAppointment({
-                    ...newAppointment,
-                    patient: e.target.value,
-                  })
+                  setNewAppointment({ ...newAppointment, patient: e.target.value })
                 }
                 required
+                className="private-input"
               />
             </div>
 
-            <div className="form-group checkbox-group">
-              <label>
-                <input
-                  type="checkbox"
-                  checked={newAppointment.insured}
-                  onChange={handleInsuranceCheck}
-                />
+            <div className="private-form-group private-checkbox-group">
+              <Checkbox
+                checked={newAppointment.insured}
+                onChange={handleInsuranceCheck}
+              >
                 Paciente asegurado
-              </label>
+              </Checkbox>
               {insuranceMessage && (
-                <p className="insurance-message">{insuranceMessage}</p>
+                <p className="private-insurance-message">{insuranceMessage}</p>
               )}
             </div>
 
-            <div className="form-group">
+            <div className="private-form-group">
               <label>Motivo:</label>
-              <input
-                type="text"
+              <Input
                 placeholder="Motivo de la consulta"
                 value={newAppointment.reason}
                 onChange={(e) =>
-                  setNewAppointment({
-                    ...newAppointment,
-                    reason: e.target.value,
-                  })
+                  setNewAppointment({ ...newAppointment, reason: e.target.value })
                 }
                 required
+                className="private-input"
               />
             </div>
 
-            <button type="submit" className="submit-button">
+            <Button htmlType="submit" type="primary" block style={{ marginTop: "10px" }}>
               Agendar Cita
-            </button>
+            </Button>
           </form>
-        </div>
+        </motion.div>
 
-        {/* 🔥 Panel de Citas Agendadas */}
-        <div className="panel appointments-panel">
+        {/* Panel de citas agendadas */}
+        <motion.div
+          className="private-panel private-appointments-panel"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.4 }}
+        >
           <h2>Citas para el {formatDate(selectedDate)}</h2>
           {filteredAppointments.length === 0 ? (
-            <p className="no-appointments">No hay citas para este día.</p>
+            <p className="private-no-appointments">No hay citas para este día.</p>
           ) : (
-            <ul className="appointments-list">
+            <ul className="private-appointments-list">
               {filteredAppointments.map((appointment) => (
-                <li key={appointment.id} className="appointment-item">
+                <li key={appointment.id} className="private-appointment-item">
                   <span>
-                    {appointment.time} - {appointment.patient} con{" "}
-                    {appointment.doctor}
+                    {appointment.time} - {appointment.patient} con {appointment.doctor}
                   </span>
                 </li>
               ))}
             </ul>
           )}
-        </div>
+        </motion.div>
 
-        {/* 🔥 Botón para limpiar citas */}
-        <div className="clear-appointments">
-          <button onClick={handleClearAppointments}>Borrar Todas las Citas</button>
+        <div className="private-clear-appointments">
+          <Button danger onClick={handleClearAppointments}>
+            Borrar Todas las Citas
+          </Button>
         </div>
       </div>
     </div>

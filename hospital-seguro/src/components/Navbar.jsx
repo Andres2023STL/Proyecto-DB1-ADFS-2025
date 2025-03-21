@@ -57,7 +57,7 @@ const Navbar = ({ isAuthenticated, setIsAuthenticated }) => {
       <Layout>
         <Header className="navbar-header">
           {/* LOGO Y TÍTULO */}
-          <img src="../../public/home-heart.png" alt="Logo" className="navbar-logo"/>
+          <img src="/home-heart.png" alt="Logo" className="navbar-logo"/>
           <h1 className="navbar-title">Plataforma Unificada</h1>
           
           {/* MENÚ CON ITEMS CONDICIONALES A LA DERECHA */}

@@ -1,40 +1,78 @@
 import React from "react";
 import { useParams, Link } from "react-router-dom";
-import doctorsData from "../../../../data/doctor.json"; // ✅ Asegurar importación correcta
+import { Card, Row, Col, Typography } from "antd";
+import { motion } from "framer-motion";
+import doctorsData from "../../../../data/doctor.json";
+
+const { Title, Paragraph } = Typography;
 
 function DoctorDetails() {
   const { id } = useParams();
   const doctor = doctorsData.find((doc) => doc.id.toString() === id);
 
   if (!doctor) {
-    return <h2>Doctor no encontrado</h2>;
+    return <Title level={2}>Doctor no encontrado</Title>;
   }
 
   return (
-    <div className="doctor-details">
-      <h1>{doctor.name}</h1>
-      <p><strong>Especialidad:</strong> {doctor.specialty}</p>
-      <p><strong>Número de colegiado:</strong> {doctor.licenseNumber}</p>
-      <p><strong>Teléfono:</strong> {doctor.contact.phone}</p>
-      <p><strong>Universidad de Graduación:</strong> {doctor.graduation.university} ({doctor.graduation.year})</p>
-
-      {/* 📌 Foto del doctor */}
-      <img src={doctor.photo} alt={doctor.name} width="150px" />
-
-      {/* 📌 Sección de certificaciones/títulos */}
-      <p><strong>Títulos y Certificaciones:</strong></p>
-      <div>
-        {doctor.certifications && doctor.certifications.length > 0 ? (
-          doctor.certifications.map((cert, index) => (
-            <img key={index} src={cert} alt={`Certificado ${index + 1}`} width="150px" />
-          ))
-        ) : (
-          <p>No hay certificaciones disponibles.</p>
-        )}
+    <motion.div
+      className="private-doctor-details-container"
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5 }}
+    >
+      <Card className="private-doctor-details-card">
+        <Row gutter={[16, 16]}>
+          <Col xs={24} md={8}>
+            <motion.img
+              src={doctor.photo}
+              alt={doctor.name}
+              className="private-doctor-photo"
+              whileHover={{ scale: 1.05 }}
+            />
+          </Col>
+          <Col xs={24} md={16}>
+            <Title level={2} className="private-doctor-name">
+              {doctor.name}
+            </Title>
+            <Paragraph>
+              <strong>Especialidad:</strong> {doctor.specialty}
+            </Paragraph>
+            <Paragraph>
+              <strong>Número de colegiado:</strong> {doctor.licenseNumber}
+            </Paragraph>
+            <Paragraph>
+              <strong>Teléfono:</strong> {doctor.contact.phone}
+            </Paragraph>
+            <Paragraph>
+              <strong>Universidad de Graduación:</strong>{" "}
+              {doctor.graduation.university} ({doctor.graduation.year})
+            </Paragraph>
+            <Title level={4}>Títulos y Certificaciones:</Title>
+            <div className="private-doctor-certifications">
+              {doctor.certifications && doctor.certifications.length > 0 ? (
+                doctor.certifications.map((cert, index) => (
+                  <motion.img
+                    key={index}
+                    src={cert}
+                    alt={`Certificado ${index + 1}`}
+                    className="private-certification-img"
+                    whileHover={{ scale: 1.05 }}
+                  />
+                ))
+              ) : (
+                <Paragraph>No hay certificaciones disponibles.</Paragraph>
+              )}
+            </div>
+          </Col>
+        </Row>
+      </Card>
+      <div className="private-doctor-details-back">
+        <Link to="/hospital/doctorcatalog" className="private-back-button">
+          ← Volver al catálogo
+        </Link>
       </div>
-
-      <Link to="/hospital/doctorcatalog" className="back-button">← Volver al catálogo</Link>
-    </div>
+    </motion.div>
   );
 }
 
