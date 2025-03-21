@@ -1,8 +1,12 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { Collapse } from 'antd';
+import { motion } from 'framer-motion';
 import services from '../../../data/medical_services.json';
 
+const { Panel } = Collapse;
 
+// Agrupa los servicios por categoría y subcategoría
 function groupData(items, categoryKey, subcategoryKey) {
   const grouped = {};
   items.forEach(item => {
@@ -18,29 +22,45 @@ function groupData(items, categoryKey, subcategoryKey) {
 function CatalogoSeguro() {
   const groupedServices = groupData(services, 'category', 'subcategory');
 
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: { opacity: 1, transition: { staggerChildren: 0.2 } }
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 10 },
+    visible: { opacity: 1, y: 0 }
+  };
+
   return (
-    <div className="catalog-container">
+    <div className="catalog-container private-page-container">
       <h1 className="catalog-title">Catálogo Seguro</h1>
       <Link to="/seguro/SeguroEmpleadoDashboard" className="back-button">← Regresar al Dashboard</Link>
-      {Object.keys(groupedServices).map(category => (
-        <details key={category} className="category-details">
-          <summary className="category-summary">{category}</summary>
-          {Object.keys(groupedServices[category]).map(subcategory => (
-            <details key={subcategory} className="subcategory-details">
-              <summary className="subcategory-summary">{subcategory}</summary>
-              <ul className="item-list">
-                {groupedServices[category][subcategory].map(service => (
-                  <li key={service.id_servicio} className="item">
-                    <div className="item-details">
-                      <span>Precio: ${service.price}</span>
-                    </div>
-                  </li>
-                ))}
-              </ul>
-            </details>
-          ))}
-        </details>
-      ))}
+      <motion.div variants={containerVariants} initial="hidden" animate="visible">
+        {Object.keys(groupedServices).map(category => (
+          <motion.div key={category} variants={itemVariants} className="category-panel" style={{ marginBottom: '20px' }}>
+            <Collapse accordion className="blue-theme">
+              <Panel header={category} key={category}>
+                <Collapse accordion>
+                  {Object.keys(groupedServices[category]).map(subcategory => (
+                    <Panel header={subcategory} key={subcategory} className="subcategory-panel">
+                      <ul className="item-list">
+                        {groupedServices[category][subcategory].map(service => (
+                          <li key={service.id_servicio} className="item">
+                            <div className="item-details">
+                              <span>Precio: ${service.price}</span>
+                            </div>
+                          </li>
+                        ))}
+                      </ul>
+                    </Panel>
+                  ))}
+                </Collapse>
+              </Panel>
+            </Collapse>
+          </motion.div>
+        ))}
+      </motion.div>
     </div>
   );
 }

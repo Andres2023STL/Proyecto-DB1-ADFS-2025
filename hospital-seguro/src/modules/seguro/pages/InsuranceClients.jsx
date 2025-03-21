@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { Input, Button, Card, DatePicker } from 'antd';
+import { motion } from 'framer-motion';
+import moment from 'moment';
 import clientsData from '../../../data/insurance_clients.json';
-
 
 function InsuranceClients() {
   const [clients, setClients] = useState([]);
   const [isRegistering, setIsRegistering] = useState(false);
-
   const [newClient, setNewClient] = useState({
     name: '',
     policy: '70%',
@@ -16,10 +17,12 @@ function InsuranceClients() {
     services: []
   });
 
+  // Cargamos los datos de clientes al iniciar el componente
   useEffect(() => {
     setClients(clientsData);
   }, []);
 
+  // Actualiza la póliza de un cliente
   const handlePolicyChange = (clientId, newPolicy) => {
     const updatedClients = clients.map(client => {
       if (client.id === clientId) {
@@ -30,6 +33,7 @@ function InsuranceClients() {
     setClients(updatedClients);
   };
 
+  // Registra un nuevo cliente
   const handleRegisterClient = (e) => {
     e.preventDefault();
     const newId = clients.length ? Math.max(...clients.map(c => c.id)) + 1 : 1;
@@ -46,6 +50,7 @@ function InsuranceClients() {
     setIsRegistering(false);
   };
 
+  // Filtra los clientes por número de seguro
   const handleFilterClients = (e) => {
     const filterValue = e.target.value.toLowerCase();
     const filteredClients = clientsData.filter(client =>
@@ -54,11 +59,10 @@ function InsuranceClients() {
     setClients(filteredClients);
   };
 
-  // Cambia el estado "paid" de todas las consultas de un cliente
+  // Alterna el estado "paid" de todos los servicios de un cliente
   const toggleAllServicesPaid = (clientId) => {
     const updatedClients = clients.map(client => {
       if (client.id === clientId && client.services && client.services.length > 0) {
-        // Si todas están pagadas => false, sino => true.
         const allPaid = client.services.every(s => s.paid);
         return {
           ...client,
@@ -70,7 +74,7 @@ function InsuranceClients() {
     setClients(updatedClients);
   };
 
-  // Actualiza la fecha de vencimiento de todas las consultas de un cliente
+  // Actualiza la fecha de vencimiento de todos los servicios de un cliente
   const updateAllServicesExpiration = (clientId, newDate) => {
     const updatedClients = clients.map(client => {
       if (client.id === clientId && client.services && client.services.length > 0) {
@@ -84,149 +88,168 @@ function InsuranceClients() {
     setClients(updatedClients);
   };
 
-  return (
-    <div className="insurance-container">
-      <h1>Clientes Asegurados</h1>
-      <Link to="/seguro/SeguroEmpleadoDashboard" className="back-button">← Regresar</Link>
+  // Definición de animación para cada tarjeta de cliente
+  const cardVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: { opacity: 1, y: 0 }
+  };
 
-      <div className="filter-container">
-        <input
-          type="text"
-          placeholder="Filtrar por número de seguro"
-          onChange={handleFilterClients}
+  return (
+    <div className="private-page-container insurance-container">
+      <h1>Clientes Asegurados</h1>
+      <Link to="/seguro/SeguroEmpleadoDashboard" className="private-back-button">← Regresar</Link>
+
+      {/* Campo para filtrar clientes */}
+      <div className="filter-container" style={{ marginBottom: '20px' }}>
+        <Input 
+          placeholder="Filtrar por número de seguro" 
+          onChange={handleFilterClients} 
         />
       </div>
 
-      <ul className="client-list">
+      {/* Listado de clientes */}
+      <div className="client-list">
         {clients.map(client => (
-          <li key={client.id} className="client-card">
-            <div className="client-header">
-              <span className="client-name">{client.name}</span>
-              <span className="client-info">
-                Póliza: {client.policy} | ID: {client.documentId} | Nº Seguro: {client.insuranceNumber}
-              </span>
-              <div className="policy-selector">
-                <strong>Cambiar Póliza:</strong>
+          <motion.div
+            key={client.id}
+            initial="hidden"
+            animate="visible"
+            variants={cardVariants}
+            transition={{ duration: 0.3 }}
+            className="client-card"
+            style={{ marginBottom: '20px' }}
+          >
+            <Card className="blue-theme">
+              <div className="client-header" style={{ marginBottom: '10px' }}>
+                <span className="client-name" style={{ fontWeight: 'bold' }}>{client.name}</span>
+                <span className="client-info">
+                  Póliza: {client.policy} | ID: {client.documentId} | Nº Seguro: {client.insuranceNumber}
+                </span>
+                <div className="policy-selector">
+                  <strong>Cambiar Póliza: </strong>
+                  <select
+                    value={client.policy}
+                    onChange={e => handlePolicyChange(client.id, e.target.value)}
+                  >
+                    <option value="70%">70%</option>
+                    <option value="90%">90%</option>
+                  </select>
+                </div>
+              </div>
+
+              {/* Desplegable para mostrar servicios */}
+              <details className="services-details" style={{ marginBottom: '10px' }}>
+                <summary>Mostrar/Ocultar Servicios</summary>
+                {client.services && client.services.length > 0 ? (
+                  client.services.map((service, index) => (
+                    <ul key={index} className="service-list" style={{ marginLeft: '20px', marginTop: '10px' }}>
+                      <li className="service-title"><strong>{service.serviceName}</strong></li>
+                      <li><strong>Visita:</strong> {service.lastVisit}</li>
+                      <li><strong>Diagnóstico:</strong> {service.diagnosis}</li>
+                      <li><strong>Medicamentos:</strong> {service.medications.join(', ') || 'Ninguno'}</li>
+                      <li><strong>Notas:</strong> {service.notes}</li>
+                      {service.services && service.services.join ? (
+                        <li><strong>Servicios:</strong> {service.services.join(', ')}</li>
+                      ) : null}
+                      <li><strong>Costo:</strong> {service.cost}</li>
+                      <li><strong>Copago:</strong> {service.copayment}</li>
+                    </ul>
+                  ))
+                ) : (
+                  <p>No hay servicios registrados.</p>
+                )}
+              </details>
+
+              {/* Acciones de servicios */}
+              {client.services && client.services.length > 0 && (
+                <div className="service-actions-container" style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                  <span>
+                    <strong>Pagado:</strong> {client.services.every(s => s.paid) ? 'Sí' : 'No'}
+                  </span>
+                  <Button onClick={() => toggleAllServicesPaid(client.id)}>
+                    Cambiar Estado
+                  </Button>
+                  <span>
+                    <strong>Fecha de Vencimiento:</strong>
+                  </span>
+                  <DatePicker
+                    value={client.services[0].expirationDate ? moment(client.services[0].expirationDate) : null}
+                    onChange={(date, dateString) => updateAllServicesExpiration(client.id, dateString)}
+                    format="YYYY-MM-DD"
+                  />
+                </div>
+              )}
+            </Card>
+          </motion.div>
+        ))}
+      </div>
+
+      {/* Sección de registro de nuevos clientes */}
+      <div className="final-register-section" style={{ marginTop: '20px' }}>
+        <Button 
+          type="primary" 
+          onClick={() => setIsRegistering(!isRegistering)}
+          className="register-button"
+        >
+          {isRegistering ? 'Ocultar Registro' : 'Registro'}
+        </Button>
+
+        {isRegistering && (
+          <motion.div
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: 'auto' }}
+            transition={{ duration: 0.3 }}
+          >
+            <form className="register-form" onSubmit={handleRegisterClient} style={{ marginTop: '20px' }}>
+              <Input 
+                type="text"
+                placeholder="Nombre"
+                value={newClient.name}
+                required
+                onChange={e => setNewClient({ ...newClient, name: e.target.value })}
+                style={{ marginBottom: '10px' }}
+              />
+              <Input 
+                type="text"
+                placeholder="ID del Documento"
+                value={newClient.documentId}
+                required
+                onChange={e => setNewClient({ ...newClient, documentId: e.target.value })}
+                style={{ marginBottom: '10px' }}
+              />
+              <Input 
+                type="text"
+                placeholder="Número de Seguro"
+                value={newClient.insuranceNumber}
+                required
+                onChange={e => setNewClient({ ...newClient, insuranceNumber: e.target.value })}
+                style={{ marginBottom: '10px' }}
+              />
+              <DatePicker 
+                placeholder="Fecha de Vencimiento"
+                value={newClient.expirationDate ? moment(newClient.expirationDate) : null}
+                onChange={(date, dateString) => setNewClient({ ...newClient, expirationDate: dateString })}
+                style={{ marginBottom: '10px', width: '100%' }}
+                format="YYYY-MM-DD"
+              />
+              <div className="policy-selector" style={{ marginBottom: '10px' }}>
+                <strong>Póliza: </strong>
                 <select
-                  value={client.policy}
-                  onChange={e => handlePolicyChange(client.id, e.target.value)}
+                  value={newClient.policy}
+                  onChange={e => setNewClient({ ...newClient, policy: e.target.value })}
                 >
                   <option value="70%">70%</option>
                   <option value="90%">90%</option>
                 </select>
               </div>
-            </div>
-
-            {/* Sección desplegable para mostrar información básica del servicio */}
-            <details className="services-details">
-              <summary>Mostrar/Ocultar Servicios</summary>
-              {client.services && client.services.length > 0 ? (
-                client.services.map((service, index) => (
-                  <ul key={index} className="service-list">
-                    <li className="service-title"><strong>{service.serviceName}</strong></li>
-                    <li><strong>Visita:</strong> {service.lastVisit}</li>
-                    <li><strong>Diagnóstico:</strong> {service.diagnosis}</li>
-                    <li><strong>Medicamentos:</strong> {service.medications.join(', ') || 'Ninguno'}</li>
-                    <li><strong>Notas:</strong> {service.notes}</li>
-                    {service.services && service.services.join ? (
-                      <li><strong>Servicios:</strong> {service.services.join(', ')}</li>
-                    ) : null}
-                    <li><strong>Costo:</strong> {service.cost}</li>
-                    <li><strong>Copago:</strong> {service.copayment}</li>
-                  </ul>
-                ))
-              ) : (
-                <p>No hay servicios registrados.</p>
-              )}
-            </details>
-
-            {/* Sección de acciones, fuera del desplegable, una sola instancia para el cliente */}
-            {client.services && client.services.length > 0 && (
-              <div className="service-actions-container">
-                {/* Muestra estado "Pagado" basado en si todas las consultas están pagadas */}
-                <span>
-                  <strong>Pagado:</strong> {client.services.every(s => s.paid) ? 'Sí' : 'No'}
-                </span>
-                <button onClick={() => toggleAllServicesPaid(client.id)}>
-                  Cambiar Estado
-                </button>
-                <span>
-                  <strong>Fecha de Vencimiento:</strong>
-                </span>
-                <input
-                  type="date"
-                  value={client.services[0].expirationDate || ''}
-                  onChange={(e) => updateAllServicesExpiration(client.id, e.target.value)}
-                />
+              <div style={{ marginBottom: '10px' }}>
+                Costo por afiliación: Q.125
               </div>
-            )}
-          </li>
-        ))}
-      </ul>
-
-      <div className="final-register-section">
-        <button
-          className="register-button"
-          onClick={() => setIsRegistering(!isRegistering)}
-        >
-          {isRegistering ? 'Ocultar Registro' : 'Registro'}
-        </button>
-
-        {isRegistering && (
-          <form className="register-form" onSubmit={handleRegisterClient}>
-            <input
-              type="text"
-              placeholder="Nombre"
-              value={newClient.name}
-              required
-              onChange={e => setNewClient({ ...newClient, name: e.target.value })}
-            />
-            <input
-              type="text"
-              placeholder="ID del Documento"
-              value={newClient.documentId}
-              required
-              onChange={e =>
-                setNewClient({ ...newClient, documentId: e.target.value })
-              }
-            />
-            <input
-              type="text"
-              placeholder="Número de Seguro"
-              value={newClient.insuranceNumber}
-              required
-              onChange={e =>
-                setNewClient({ ...newClient, insuranceNumber: e.target.value })
-              }
-            />
-            <input
-              type="date"
-              placeholder="Fecha de Vencimiento"
-              value={newClient.expirationDate}
-              required
-              onChange={e =>
-                setNewClient({ ...newClient, expirationDate: e.target.value })
-              }
-            />
-            <div className="policy-selector">
-              <strong>Póliza:</strong>
-              <select
-                value={newClient.policy}
-                onChange={e =>
-                  setNewClient({ ...newClient, policy: e.target.value })
-                }
-              >
-                <option value="70%">70%</option>
-                <option value="90%">90%</option>
-              </select>
-            </div>
-            <div>
-              Costo por afiliación: Q.125
-            </div>
-            <button type="submit" className="submit-button">
-              Agregar Cliente
-            </button>
-          </form>
+              <Button type="primary" htmlType="submit" className="submit-button">
+                Agregar Cliente
+              </Button>
+            </form>
+          </motion.div>
         )}
       </div>
     </div>
