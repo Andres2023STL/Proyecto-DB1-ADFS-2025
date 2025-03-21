@@ -1,15 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { Table, Button, Typography, Card } from 'antd';
+import { motion } from 'framer-motion';
 import { utils, writeFile } from 'xlsx';
 
+const { Title } = Typography;
 
-// 🔹 Exportar logAuditEvent para que otros archivos puedan usarlo
+// Función para registrar eventos en la auditoría
 export const logAuditEvent = (user, action, details) => {
   const newLog = {
     date: new Date().toLocaleString(),
     user,
     action,
-    details
+    details,
   };
 
   const logs = JSON.parse(localStorage.getItem("auditLogs")) || [];
@@ -20,11 +23,13 @@ export const logAuditEvent = (user, action, details) => {
 function AuditLogs() {
   const [logs, setLogs] = useState([]);
 
+  // Cargar registros al montar el componente
   useEffect(() => {
     const storedLogs = JSON.parse(localStorage.getItem("auditLogs")) || [];
     setLogs(storedLogs);
   }, []);
 
+  // Exporta los registros a un archivo Excel
   const exportToExcel = () => {
     const worksheet = utils.json_to_sheet(logs);
     const workbook = utils.book_new();
@@ -32,42 +37,42 @@ function AuditLogs() {
     writeFile(workbook, "audit_logs.xlsx");
   };
 
+  // Columnas para la tabla de auditoría
+  const columns = [
+    { title: 'Fecha', dataIndex: 'date', key: 'date' },
+    { title: 'Usuario', dataIndex: 'user', key: 'user' },
+    { title: 'Acción', dataIndex: 'action', key: 'action' },
+    { title: 'Detalles', dataIndex: 'details', key: 'details' },
+  ];
+
   return (
-    <div className="page-container">
-      <div className="page-header">
-        <h1>Auditoría</h1>
-        <Link to="/admin/admindashboard" className="back-button">← Regresar</Link>
+    <motion.div 
+      className="private-page-container"
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5 }}
+    >
+      <div className="private-page-header">
+        <Title level={2}>Auditoría</Title>
+        <Link to="/admin/admindashboard" className="private-back-button">← Regresar</Link>
       </div>
+      
+      <Card className="private-panel">
+        <Table 
+          dataSource={logs}
+          columns={columns}
+          rowKey={(record, index) => index}
+          pagination={{ pageSize: 10 }}
+          className="private-audit-table"
+        />
+      </Card>
 
-      <table className="audit-table">
-        <thead>
-          <tr>
-            <th>Fecha</th>
-            <th>Usuario</th>
-            <th>Acción</th>
-            <th>Detalles</th>
-          </tr>
-        </thead>
-        <tbody>
-          {logs.length > 0 ? (
-            logs.map((log, index) => (
-              <tr key={index}>
-                <td>{log.date}</td>
-                <td>{log.user}</td>
-                <td>{log.action}</td>
-                <td>{log.details}</td>
-              </tr>
-            ))
-          ) : (
-            <tr>
-              <td colSpan="4" className="empty-row">No hay registros disponibles.</td>
-            </tr>
-          )}
-        </tbody>
-      </table>
-
-      <button onClick={exportToExcel} className="export-button">📥 Exportar a Excel</button>
-    </div>
+      <div className="private-clear-appointments" style={{ marginTop: '20px' }}>
+        <Button onClick={exportToExcel} className="private-btn">
+          📥 Exportar a Excel
+        </Button>
+      </div>
+    </motion.div>
   );
 }
 

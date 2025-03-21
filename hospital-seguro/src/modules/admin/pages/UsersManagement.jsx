@@ -1,7 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import usersData from '../../../data/users.json'; // Importar usuarios
-import { logAuditEvent } from './AuditLogs'; // Importando desde AuditLogs.jsx
+import { Table, Input, Select, DatePicker, Form, Button, Typography, Pagination, Card } from 'antd';
+import { motion } from 'framer-motion';
+import usersData from '../../../data/users.json';
+import { logAuditEvent } from './AuditLogs';
+
+const { Title } = Typography;
+const { Option } = Select;
 
 function UsersManagement() {
   const [users, setUsers] = useState([]);
@@ -13,162 +18,197 @@ function UsersManagement() {
   const [currentPage, setCurrentPage] = useState(1);
   const usersPerPage = 5;
 
-  //Cargar usuarios desde el archivo JSON al montar el componente
+  // Cargar usuarios iniciales desde JSON
   useEffect(() => {
     setUsers(usersData);
     setFilteredUsers(usersData);
   }, []);
 
-  // ✅ Filtrar usuarios cada vez que cambian los filtros o los usuarios
+  // Filtrar usuarios según los valores de búsqueda
   useEffect(() => {
     if (users.length === 0) return;
-
     let filtered = users.filter(user =>
       (searchEmail === "" || user.email.toLowerCase().includes(searchEmail.toLowerCase())) &&
       (searchRole === "" || user.role === searchRole) &&
       (searchDate === "" || (user.createdAt && user.createdAt.startsWith(searchDate)))
     );
-
     setFilteredUsers(filtered);
     setCurrentPage(1);
   }, [searchEmail, searchRole, searchDate, users]);
 
+  // Cálculo para paginación manual
   const indexOfLastUser = currentPage * usersPerPage;
   const indexOfFirstUser = indexOfLastUser - usersPerPage;
   const currentUsers = filteredUsers.slice(indexOfFirstUser, indexOfLastUser);
 
-  // ✅ Manejo del formulario para agregar usuario (solo el Admin debería hacerlo)
-  const handleInputChange = (e) => {
-    setNewUser({ ...newUser, [e.target.name]: e.target.value });
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    if (!newUser.name || !newUser.email || !newUser.role) {
-      alert("⚠ Debes llenar todos los campos.");
-      return;
-    }
-
+  // Función para agregar un nuevo usuario
+  const handleAddUser = (values) => {
     const newUserEntry = {
-      ...newUser,
+      ...values,
       id: Date.now(),
       createdAt: new Date().toISOString(),
-      active: false, // ✅ Los usuarios nuevos deben ser aprobados por el admin
+      active: false,
     };
-
     const updatedUsers = [...users, newUserEntry];
     localStorage.setItem('users', JSON.stringify(updatedUsers));
     setUsers(updatedUsers);
-
-    // 🔹 Registrar evento en la auditoría
-    logAuditEvent("Administrador", "Creación de usuario", `Se creó el usuario ${newUser.email} con rol ${newUser.role}`);
-
+    logAuditEvent("Administrador", "Creación de usuario", `Se creó el usuario ${values.email} con rol ${values.role}`);
     alert("✅ Usuario agregado correctamente.");
-    setNewUser({ name: "", email: "", role: "", active: false });
   };
 
-  // ✅ Activar/desactivar usuario
+  // Alternar el estado (activo/inactivo) de un usuario
   const toggleUserStatus = (id) => {
     const updatedUsers = users.map(user =>
       user.id === id ? { ...user, active: !user.active } : user
     );
     localStorage.setItem('users', JSON.stringify(updatedUsers));
     setUsers(updatedUsers);
-
     const toggledUser = updatedUsers.find(user => user.id === id);
     const status = toggledUser.active ? "activado" : "desactivado";
-
-    // 🔹 Registrar evento en la auditoría
     logAuditEvent("Administrador", "Cambio de estado", `Se ${status} la cuenta de ${toggledUser.email}`);
   };
 
+  // Columnas para la tabla de usuarios
+  const columns = [
+    {
+      title: 'ID',
+      dataIndex: 'id',
+      key: 'id',
+    },
+    {
+      title: 'Nombre',
+      dataIndex: 'name',
+      key: 'name',
+      render: text => text || "No asignado"
+    },
+    {
+      title: 'Correo',
+      dataIndex: 'email',
+      key: 'email',
+    },
+    {
+      title: 'Rol',
+      dataIndex: 'role',
+      key: 'role',
+      render: text => text || "Sin rol"
+    },
+    {
+      title: 'Estado',
+      dataIndex: 'active',
+      key: 'active',
+      render: active => active ? "🟢 Activo" : "🔴 Inactivo"
+    },
+    {
+      title: 'Acciones',
+      key: 'actions',
+      render: (_, record) => (
+        <Button onClick={() => toggleUserStatus(record.id)}>
+          {record.active ? "Desactivar" : "Activar"}
+        </Button>
+      )
+    }
+  ];
+
   return (
-    <div className="page-container">
-      <div className="page-header">
-        <h1>Gestión de Usuarios</h1>
-        <Link to="/admin/admindashboard" className="back-button">← Regresar</Link>
+    <div className="private-page-container">
+      <div className="private-page-header">
+        <Title level={2}>Gestión de Usuarios</Title>
+        <Link to="/admin/admindashboard" className="private-back-button">← Regresar</Link>
       </div>
 
-      {/* 🔍 Filtros de búsqueda */}
-      <div className="filters">
-        <input 
-          type="text" 
-          placeholder="Buscar por correo..." 
-          value={searchEmail} 
-          onChange={(e) => setSearchEmail(e.target.value)} 
+      {/* Filtros de búsqueda */}
+      <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.5 }} className="private-filters" style={{ marginBottom: "20px", display: "flex", gap: "10px", flexWrap: "wrap" }}>
+        <Input
+          placeholder="Buscar por correo..."
+          value={searchEmail}
+          onChange={(e) => setSearchEmail(e.target.value)}
+          className="private-input"
+          style={{ width: "200px" }}
         />
-        <select value={searchRole} onChange={(e) => setSearchRole(e.target.value)}>
-          <option value="">Todos los roles</option>
-          <option value="doctor">Doctor</option>
-          <option value="admin">Administrador</option>
-          <option value="empleado">Empleado hospital</option>
-          <option value="empleadoAs">Empleado aseguradora</option>
-        </select>
-        <input type="date" value={searchDate} onChange={(e) => setSearchDate(e.target.value)} />
-      </div>
+        <Select
+          placeholder="Todos los roles"
+          value={searchRole}
+          onChange={value => setSearchRole(value)}
+          style={{ width: "200px" }}
+        >
+          <Option value="">Todos los roles</Option>
+          <Option value="doctor">Doctor</Option>
+          <Option value="admin">Administrador</Option>
+          <Option value="empleado">Empleado hospital</Option>
+          <Option value="empleadoAs">Empleado aseguradora</Option>
+        </Select>
+        <DatePicker
+          placeholder="Fecha"
+          onChange={(date, dateString) => setSearchDate(dateString)}
+          style={{ width: "200px" }}
+        />
+      </motion.div>
 
-      {/* 📜 Tabla de usuarios */}
-      <table className="users-table">
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>Nombre</th>
-            <th>Correo</th>
-            <th>Rol</th>
-            <th>Estado</th>
-            <th>Acciones</th>
-          </tr>
-        </thead>
-        <tbody>
-          {currentUsers.length > 0 ? (
-            currentUsers.map(user => (
-              <tr key={user.id}>
-                <td>{user.id}</td>
-                <td>{user.name || "No asignado"}</td>
-                <td>{user.email}</td>
-                <td>{user.role || "Sin rol"}</td>
-                <td>{user.active ? "🟢 Activo" : "🔴 Inactivo"}</td>
-                <td>
-                  <button onClick={() => toggleUserStatus(user.id)}>
-                    {user.active ? "Desactivar" : "Activar"}
-                  </button>
-                </td>
-              </tr>
-            ))
-          ) : (
-            <tr>
-              <td colSpan="6" className="empty-row">No hay usuarios disponibles.</td>
-            </tr>
-          )}
-        </tbody>
-      </table>
+      {/* Tabla de usuarios */}
+      <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.5, delay: 0.2 }}>
+        <Table
+          dataSource={currentUsers}
+          columns={columns}
+          rowKey="id"
+          pagination={false}
+          className="private-users-table"
+        />
+      </motion.div>
 
-      {/* 🔢 Paginación */}
-      <div className="pagination">
-        {Array.from({ length: Math.ceil(filteredUsers.length / usersPerPage) }, (_, i) => (
-          <button 
-            key={i} 
-            onClick={() => setCurrentPage(i + 1)} 
-            className={currentPage === i + 1 ? "active" : ""}
-          >
-            {i + 1}
-          </button>
-        ))}
-      </div>
+      {/* Paginación */}
+      <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.5, delay: 0.3 }}>
+        <Pagination
+          current={currentPage}
+          total={filteredUsers.length}
+          pageSize={usersPerPage}
+          onChange={page => setCurrentPage(page)}
+          className="private-pagination"
+          style={{ textAlign: "center", marginTop: "20px" }}
+        />
+      </motion.div>
 
-      {/* ➕ Agregar usuario */}
-      <h2>Agregar Usuario</h2>
-      <form className="user-form" onSubmit={handleSubmit}>
-        <input type="text" name="name" placeholder="Nombre completo" value={newUser.name} onChange={handleInputChange} />
-        <input type="email" name="email" placeholder="Correo electrónico" value={newUser.email} onChange={handleInputChange} />
-        <select name="role" value={newUser.role} onChange={handleInputChange}>
-          <option value="">Selecciona un rol</option>
-          <option value="doctor">Doctor</option>
-          <option value="admin">Administrador</option>
-          <option value="empleado">Empleado</option>
-        </select>
-        <button type="submit">Guardar Usuario</button>
-      </form>
+      {/* Formulario para agregar usuario */}
+      <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.5, delay: 0.4 }}>
+        <Title level={3} style={{ marginTop: "30px" }}>Agregar Usuario</Title>
+        <Card className="private-user-form-card" style={{ maxWidth: "600px", margin: "0 auto" }}>
+          <Form layout="vertical" onFinish={handleAddUser} className="private-user-form">
+            <Form.Item
+              label="Nombre completo"
+              name="name"
+              rules={[{ required: true, message: "Ingrese el nombre completo" }]}
+              className="private-form-item"
+            >
+              <Input className="private-input" />
+            </Form.Item>
+            <Form.Item
+              label="Correo electrónico"
+              name="email"
+              rules={[{ required: true, message: "Ingrese el correo electrónico" }]}
+              className="private-form-item"
+            >
+              <Input className="private-input" />
+            </Form.Item>
+            <Form.Item
+              label="Rol"
+              name="role"
+              rules={[{ required: true, message: "Seleccione un rol" }]}
+              className="private-form-item"
+            >
+              <Select className="private-input">
+                <Option value="">Selecciona un rol</Option>
+                <Option value="doctor">Doctor</Option>
+                <Option value="admin">Administrador</Option>
+                <Option value="empleado">Empleado</Option>
+              </Select>
+            </Form.Item>
+            <Form.Item>
+              <Button type="primary" htmlType="submit" block className="private-btn">
+                Guardar Usuario
+              </Button>
+            </Form.Item>
+          </Form>
+        </Card>
+      </motion.div>
     </div>
   );
 }
