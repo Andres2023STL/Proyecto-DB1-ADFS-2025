@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 function Register() {
+  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -18,13 +19,18 @@ function Register() {
     const response = await fetch("http://localhost/hospital_api/register.php", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email, password }),
+      body: JSON.stringify({ name, email, password }),
     });
 
     const data = await response.json();
 
     if (data.success) {
       alert("Registro exitoso. Ahora puedes iniciar sesión.");
+      setName("");
+      setEmail("");
+      setPassword("");
+      setConfirmPassword("");
+      
       navigate("/login");
     } else {
       alert(data.message);
@@ -35,6 +41,12 @@ function Register() {
     <div className="register-container">
       <form className="register-form" onSubmit={handleRegister}>
         <h1>Registrarse</h1>
+        <input
+          type="text"
+          placeholder="Nombre completo"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+        />
         <input
           type="email"
           placeholder="Correo electrónico"
