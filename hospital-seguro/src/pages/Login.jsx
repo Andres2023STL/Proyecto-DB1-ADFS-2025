@@ -4,23 +4,25 @@ import { Card, Input, Button } from "antd";
 import { motion } from "framer-motion";
 
 function Login({ setIsAuthenticated }) {
+  // Estados para almacenar el correo y la contraseña
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  // Hook para realizar redirecciones programáticas
   const navigate = useNavigate();
 
-  // Maneja la autenticación
+  // Función que maneja el envío del formulario de autenticación
   const handleLogin = async (e) => {
-    e.preventDefault();
+    e.preventDefault(); // Prevenir el comportamiento predeterminado del formulario (para que no recargue y manejarlo de forma personalizada)
     const response = await fetch("http://localhost/hospital_api/login.php", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      credentials: "include",
+      credentials: "include", // Envía cookies para mantener la sesión
       body: JSON.stringify({ email, password }),
     });
     const data = await response.json();
     if (data.success) {
       setIsAuthenticated(true);
-      // Normaliza el rol recibido para redirigir correctamente
+      // Se obtiene y normaliza el rol del usuario para redirigir correctamente
       const role = data.role && data.role.trim().toLowerCase();
       if (role === "admin") {
         navigate("/admin/admindashboard");
@@ -36,7 +38,7 @@ function Login({ setIsAuthenticated }) {
     }
   };
 
-  // Variantes de animación para el card de login
+  // Configuración de la animación para el contenedor del card
   const cardVariants = {
     hidden: { opacity: 0, y: -20 },
     visible: { opacity: 1, y: 0, transition: { duration: 0.5 } },
@@ -53,6 +55,7 @@ function Login({ setIsAuthenticated }) {
         padding: "20px",
       }}
     >
+      {/* Contenedor animado para el card de login */}
       <motion.div initial="hidden" animate="visible" variants={cardVariants}>
         <Card title="Iniciar Sesión" style={{ width: 350, borderRadius: 8 }} className="login-card">
           <form className="login-form" onSubmit={handleLogin}>
@@ -72,6 +75,7 @@ function Login({ setIsAuthenticated }) {
             <Button type="primary" htmlType="submit" block style={{ marginBottom: "0.5rem" }}>
               Ingresar
             </Button>
+            {/* Botón que redirige al usuario a la página de registro */}
             <Button type="default" onClick={() => navigate("/register")} block>
               Registrarse
             </Button>

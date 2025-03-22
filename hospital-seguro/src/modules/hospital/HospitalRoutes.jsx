@@ -9,6 +9,7 @@ import Recetas from "./pages/doctor/Recetas";
 const HospitalRoutes = () => {
   return (
     <Routes>
+      {/* Define las rutas para la sección de hospital, cada <Route> mapea una dirección a un componente específico */}
       <Route path="dashboard" element={<DoctorDashboard />} />
       <Route path="appointments" element={<Appointments />} />
       <Route path="doctorcatalog" element={<DoctorCatalog />} />

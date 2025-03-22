@@ -55,7 +55,7 @@ function Register() {
         />
         <button type="submit">Registrarse</button>
 
-        {/* 🔥 Botón para volver al login */}
+        {/* Botón para volver al login */}
         <button type="button" onClick={() => navigate("/login")} style={{ marginTop: "10px" }}>
           Volver al Login
         </button>

@@ -11,6 +11,7 @@ import Reports from "./pages/Reports"
 const SeguroRoutes = () => {
   return (
     <Routes>
+      {/* Define las rutas para la sección de seguro, Ccada <Route> mapea una dirección a un componente específico. */}
       <Route path="SeguroEmpleadoDashboard" element={<SeguroEmpleadoDashboard />} />
       <Route path="AppointmentsControl" element={<AppointmentsControl />} />
       <Route path="Approvals" element={<Approvals />} />
@@ -18,6 +19,7 @@ const SeguroRoutes = () => {
       <Route path="CatalogoSeguro" element={<CatalogoSeguro />} />   
       <Route path="InsuranceClients" element={<InsuranceClients />} />   
       <Route path="Reports" element={<Reports />} />   
+      {/* Ruta por defecto para mostrar un mensaje en caso de ruta no encontrada */}
       <Route path="*" element={<p>Ruta no encontrada en HospitalRoutes</p>} />
     </Routes>
   );
