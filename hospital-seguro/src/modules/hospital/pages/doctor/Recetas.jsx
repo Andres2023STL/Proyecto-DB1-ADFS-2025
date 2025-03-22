@@ -7,38 +7,62 @@ import recetasData from '../../../../data/recetas.json';
 const { Title, Paragraph } = Typography;
 
 function Recetas() {
+  // Estado para almacenar la lista de recetas y la receta en edición
   const [prescriptions, setPrescriptions] = useState([]);
   const [editingPrescription, setEditingPrescription] = useState(null);
   const [form] = Form.useForm();
 
+  // Carga inicial de recetas desde el archivo JSON
   useEffect(() => {
     setPrescriptions(recetasData);
   }, []);
 
+  // Función que maneja el envío del formulario para agregar o actualizar una receta
   const handleFinish = (values) => {
     if (editingPrescription) {
+      // Actualiza la receta existente:
       setPrescriptions((prev) =>
-        prev.map((p) => (p.id === editingPrescription.id ? { ...values, id: p.id } : p))
+        // Para cada receta en el array previo:
+        prev.map((p) =>
+          // Comprueba si el ID de la receta actual coincide con el de la receta en edición
+          p.id === editingPrescription.id
+            // Si coincide, devuelve un nuevo objeto combinando los valores actualizados (values)
+            // y mantiene el ID original para esa receta.
+            ? { ...values, id: p.id }
+            // Si no coincide, retorna la receta sin modificar.
+            : p
+        )
       );
+      // Limpia el estado de edición después de actualizar
       setEditingPrescription(null);
     } else {
+      // Agrega una nueva receta:
+      // Calcula un nuevo ID: si existen recetas, toma el ID de la última y suma 1; de lo contrario, usa 1.
       const newId = prescriptions.length > 0 ? prescriptions[prescriptions.length - 1].id + 1 : 1;
+      // Añade la nueva receta al array existente, combinando los valores del formulario con el nuevo ID.
       setPrescriptions((prev) => [...prev, { ...values, id: newId }]);
     }
+    // Reinicia los campos del formulario
     form.resetFields();
   };
 
+  // Función que prepara una receta para ser editada
   const handleEditPrescription = (prescription) => {
+    // Carga los valores de la receta seleccionada en el formulario
     form.setFieldsValue(prescription);
+    // Marca la receta actual como la receta en edición
     setEditingPrescription(prescription);
   };
 
+  // Función que elimina una receta de la lista
   const handleDeletePrescription = (id) => {
+    // Filtra la lista de recetas, removiendo la receta cuyo ID coincide con el proporcionado
     setPrescriptions((prev) => prev.filter((p) => p.id !== id));
   };
 
   return (
     <div className="private-page-container">
+      {/* Encabezado con título y enlace de regreso */}
       <div className="private-page-header">
         <Title level={2}>Gestión de Recetas</Title>
         <Link to="/hospital/dashboard" className="private-back-button">← Regresar</Link>
@@ -48,13 +72,19 @@ function Recetas() {
         Crea, edita y administra las recetas médicas.
       </Paragraph>
 
+      {/* Formulario de receta con animación */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
       >
         <Card className="private-prescription-form-card">
-          <Form form={form} layout="vertical" onFinish={handleFinish} className="private-prescription-form">
+          <Form
+            form={form}
+            layout="vertical"
+            onFinish={handleFinish}
+            className="private-prescription-form"
+          >
             <Form.Item
               label="Paciente"
               name="patient"
@@ -104,6 +134,7 @@ function Recetas() {
         </Card>
       </motion.div>
 
+      {/* Muestra la lista de recetas en tarjetas con animación */}
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
