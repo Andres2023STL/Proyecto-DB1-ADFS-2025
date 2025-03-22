@@ -127,3 +127,38 @@
     text-align: left;
   }
   
+  /* =========================
+   Estilos para Login y Register
+========================= */
+
+.login-container,
+.register-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  padding: 20px;
+  /* Fondo degradado: puedes ajustar los colores según prefieras */
+  background: linear-gradient(135deg, #001529, #427eff);
+}
+
+.login-card,
+.register-card {
+  /* Tamaño más grande para un mejor aspecto */
+  width: 500px;
+  border-radius: 8px;
+  /* Se puede reutilizar la clase blue-theme de cards.css si la tienes */
+}
+
+.login-form,
+.register-form {
+  display: flex;
+  flex-direction: column;
+}
+
+.login-form .ant-input,
+.register-form .ant-input,
+.login-form .ant-input-password,
+.register-form input {
+  margin-bottom: 1rem;
+}

@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { Input, Button, Card } from "antd";
+import { motion } from "framer-motion";
 
 function Register() {
   const [name, setName] = useState("");
@@ -10,7 +12,6 @@ function Register() {
 
   const handleRegister = async (e) => {
     e.preventDefault();
-
     if (password !== confirmPassword) {
       alert("Las contraseñas no coinciden.");
       return;
@@ -30,7 +31,6 @@ function Register() {
       setEmail("");
       setPassword("");
       setConfirmPassword("");
-      
       navigate("/login");
     } else {
       alert(data.message);
@@ -39,39 +39,40 @@ function Register() {
 
   return (
     <div className="register-container">
-      <form className="register-form" onSubmit={handleRegister}>
-        <h1>Registrarse</h1>
-        <input
-          type="text"
-          placeholder="Nombre completo"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-        />
-        <input
-          type="email"
-          placeholder="Correo electrónico"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-        />
-        <input
-          type="password"
-          placeholder="Contraseña"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
-        <input
-          type="password"
-          placeholder="Confirmar Contraseña"
-          value={confirmPassword}
-          onChange={(e) => setConfirmPassword(e.target.value)}
-        />
-        <button type="submit">Registrarse</button>
-
-        {/* Botón para volver al login */}
-        <button type="button" onClick={() => navigate("/login")} style={{ marginTop: "10px" }}>
-          Volver al Login
-        </button>
-      </form>
+      <motion.div initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
+        <Card title="Registrarse" className="register-card">
+          <form className="register-form" onSubmit={handleRegister}>
+            <Input
+              type="text"
+              placeholder="Nombre completo"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+            />
+            <Input
+              type="email"
+              placeholder="Correo electrónico"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+            />
+            <Input.Password
+              placeholder="Contraseña"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
+            <Input.Password
+              placeholder="Confirmar Contraseña"
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
+            />
+            <Button type="primary" htmlType="submit" block style={{ marginTop: "1rem" }}>
+              Registrarse
+            </Button>
+            <Button type="default" onClick={() => navigate("/login")} block style={{ marginTop: "10px" }}>
+              Volver al Login
+            </Button>
+          </form>
+        </Card>
+      </motion.div>
     </div>
   );
 }
