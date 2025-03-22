@@ -7,10 +7,10 @@ import AdminPanel from "./pages/AdminPanel";
 import AuditLogs from "./pages/AuditLogs";
 import Settings from "./pages/Settings";
 
-
 const AdminRoutes = () => {
   return (
     <Routes>
+      {/* Define las rutas para la sección de admin, cada <Route> mapea una dirección a un componente específico */}
       <Route path="editarcontenido" element={<EditarContenido />} />
       <Route path="usersmanagement" element={<UsersManagement />} />
       <Route path="moderationpanel" element={<ModerationPanel />} />
