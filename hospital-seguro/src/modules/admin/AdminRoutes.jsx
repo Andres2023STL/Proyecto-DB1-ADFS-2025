@@ -18,6 +18,8 @@ const AdminRoutes = () => {
       <Route path="adminpanel" element={<AdminPanel />} />
       <Route path="auditlogs" element={<AuditLogs />} />
       <Route path="settings" element={<Settings />} />
+      <Route path="editMissionVision"></Route>
+      <Route path="editContact"></Route>
       <Route path="*" element={<p>Ruta no encontrada en AdminRoutes</p>} />
     </Routes>
   );

@@ -24,7 +24,7 @@ function EditarContenido() {
 
       <div className="private-dashboard-container">
         <motion.div whileHover={{ scale: 1.02 }} className="private-dashboard-card">
-          <Link to="/adminpanel">
+          <Link to="/admin/adminpanel">
             <Card hoverable className="private-dashboard-card-ant">
               <Title level={4}>Editar Inicio</Title>
               <Paragraph>Modifica la información de la página principal.</Paragraph>
