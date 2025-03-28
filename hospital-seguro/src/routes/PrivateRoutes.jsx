@@ -52,6 +52,7 @@ const PrivateRoutes = ({ allowedRole }) => {
   return (
     <Routes>
       {allowedRole === "doctor" && <Route path="/*" element={<HospitalRoutes />} />}
+      {allowedRole === "empleado_hospital" && <Route path="/*" element={<HospitalRoutes />} />}
       {allowedRole === "admin" && <Route path="/*" element={<AdminRoutes />} />}
       {allowedRole === "empleado_seguro" && <Route path="/*" element={<SeguroRoutes />} />}
       <Route path="*" element={<Navigate to="/acceso-denegado" />} />

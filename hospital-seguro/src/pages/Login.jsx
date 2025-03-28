@@ -26,7 +26,10 @@ function Login({ setIsAuthenticated }) {
         navigate("/hospital/dashboard");
       } else if (role === "empleado_seguro") {
         navigate("/seguro/SeguroEmpleadoDashboard");
-      } else {
+      } else if (role === "empleado_hospital") {
+        navigate("/hospital-empleado/HospitalEmpleadoDashboard");
+      }
+      else {
         navigate("/login");
       }
     } else {

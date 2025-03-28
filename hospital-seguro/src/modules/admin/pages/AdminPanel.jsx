@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-
+import { Form, Input, Button, Card, Upload } from 'antd';
+import { UploadOutlined } from '@ant-design/icons';
+import { motion } from 'framer-motion';
 
 function AdminPanel() {
   // Contenido predeterminado del Home
@@ -27,7 +29,7 @@ function AdminPanel() {
   const [message, setMessage] = useState('');
   const navigate = useNavigate();
 
-  // Cargar datos guardados en localStorage
+  // Se carga el contenido aprobado desde localStorage, si existe
   useEffect(() => {
     const approvedContent = JSON.parse(localStorage.getItem('approvedContent'));
     if (approvedContent) {
@@ -35,32 +37,29 @@ function AdminPanel() {
     }
   }, []);
 
-  // Manejar cambios en los inputs de texto
+  // Actualiza los campos de texto conforme el usuario edita el formulario
   const handleChange = (e) => {
     const { name, value } = e.target;
     setContent(prev => ({ ...prev, [name]: value }));
   };
 
-  // Manejar la subida de imágenes y convertirlas en base64 para previsualización
-  const handleImageUpload = (e) => {
-    const { name } = e.target;
-    const file = e.target.files[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setContent(prev => ({ ...prev, [name]: reader.result }));
-      };
-      reader.readAsDataURL(file);
-    }
+  // Función para procesar la imagen y convertirla a base64
+  const customUpload = (file, fieldName) => {
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      setContent(prev => ({ ...prev, [fieldName]: reader.result }));
+    };
+    reader.readAsDataURL(file);
+    return false; // Evita la carga automática
   };
 
-  // Guardar cambios pendientes en localStorage
+  // Guarda los cambios pendientes en localStorage
   const handleSubmit = () => {
     localStorage.setItem('pendingChanges', JSON.stringify(content));
     setMessage("✅ Tus cambios han sido enviados para aprobación.");
   };
 
-  // Aprobar cambios y publicarlos en Home.jsx
+  // Publica los cambios aprobados para que se reflejen en Home.jsx
   const approveChanges = () => {
     const pending = JSON.parse(localStorage.getItem('pendingChanges'));
     if (pending) {
@@ -71,80 +70,136 @@ function AdminPanel() {
     }
   };
 
+  // Variantes de animación para la entrada del panel
+  const containerVariants = {
+    hidden: { opacity: 0, y: -20 },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.5 } }
+  };
+
   return (
     <div className="admin-panel">
-      <h1>Panel de Administración</h1>
-
-      {/* Edición del Título Principal */}
-      <label>Título Principal:</label>
-      <input type="text" name="heroTitle" value={content.heroTitle} onChange={handleChange} />
-
-      {/* Edición de la Descripción Principal */}
-      <label>Descripción Principal:</label>
-      <textarea name="heroDescription" value={content.heroDescription} onChange={handleChange}></textarea>
-
-      {/* Edición de los Módulos */}
-      <label>Texto Módulo Hospital:</label>
-      <input type="text" name="hospitalText" value={content.hospitalText} onChange={handleChange} />
-
-      <label>Texto Módulo Seguro:</label>
-      <input type="text" name="seguroText" value={content.seguroText} onChange={handleChange} />
-
-      <label>Texto Módulo Farmacia:</label>
-      <input type="text" name="farmaciaText" value={content.farmaciaText} onChange={handleChange} />
-
-      {/* Edición de los Íconos de Hospital y Seguro */}
-      <label>Ícono Módulo Hospital:</label>
-      <input type="file" name="hospitalIcon" accept="image/*" onChange={handleImageUpload} />
-      {content.hospitalIcon && <img src={content.hospitalIcon} alt="Preview" className="preview-icon" />}
-
-      <label>Ícono Módulo Seguro:</label>
-      <input type="file" name="seguroIcon" accept="image/*" onChange={handleImageUpload} />
-      {content.seguroIcon && <img src={content.seguroIcon} alt="Preview" className="preview-icon" />}
-
-      {/* Íconos extra en Módulos */}
-      <label>Ícono Extra en Hospital:</label>
-      <input type="file" name="automationIcon" accept="image/*" onChange={handleImageUpload} />
-      {content.automationIcon && <img src={content.automationIcon} alt="Preview" className="preview-icon" />}
-
-      <label>Ícono Extra en Seguro:</label>
-      <input type="file" name="centralizationIcon" accept="image/*" onChange={handleImageUpload} />
-      {content.centralizationIcon && <img src={content.centralizationIcon} alt="Preview" className="preview-icon" />}
-
-      {/* Edición de Beneficios */}
-      <label>Ícono Beneficio Automatización:</label>
-      <input type="file" name="automationIcon" accept="image/*" onChange={handleImageUpload} />
-      {content.automationIcon && <img src={content.automationIcon} alt="Preview" className="preview-icon" />}
-
-      <label>Texto Beneficio Automatización:</label>
-      <input type="text" name="automationText" value={content.automationText} onChange={handleChange} />
-
-      <label>Ícono Beneficio Centralización:</label>
-      <input type="file" name="centralizationIcon" accept="image/*" onChange={handleImageUpload} />
-      {content.centralizationIcon && <img src={content.centralizationIcon} alt="Preview" className="preview-icon" />}
-
-      <label>Texto Beneficio Centralización:</label>
-      <input type="text" name="centralizationText" value={content.centralizationText} onChange={handleChange} />
-
-      <label>Ícono Beneficio Facilidad de Uso:</label>
-      <input type="file" name="usabilityIcon" accept="image/*" onChange={handleImageUpload} />
-      {content.usabilityIcon && <img src={content.usabilityIcon} alt="Preview" className="preview-icon" />}
-
-      <label>Texto Beneficio Facilidad de Uso:</label>
-      <input type="text" name="usabilityText" value={content.usabilityText} onChange={handleChange} />
-
-      {/* Edición del Contacto */}
-      <label>Correo de Contacto:</label>
-      <input type="text" name="contactEmail" value={content.contactEmail} onChange={handleChange} />
-
-      {/* Botones para Guardar y Aprobar Cambios */}
-      <button onClick={handleSubmit}>Enviar para Aprobación</button>
-
-      {/* Mensaje de Confirmación */}
-      {message && <p className="success-message">{message}</p>}
-
-      {/* Botón para regresar */}
-      <button onClick={() => navigate(-1)} className="back-button">⬅ Regresar</button>
+      <motion.div initial="hidden" animate="visible" variants={containerVariants}>
+        <Card title="Panel de Administración" className="admin-card">
+          <Form layout="vertical" className="admin-form">
+            <Form.Item label="Título Principal">
+              <Input name="heroTitle" value={content.heroTitle} onChange={handleChange} />
+            </Form.Item>
+            <Form.Item label="Descripción Principal">
+              <Input.TextArea
+                name="heroDescription"
+                value={content.heroDescription}
+                onChange={handleChange}
+                rows={4}
+              />
+            </Form.Item>
+            <Form.Item label="Texto Módulo Hospital">
+              <Input name="hospitalText" value={content.hospitalText} onChange={handleChange} />
+            </Form.Item>
+            <Form.Item label="Texto Módulo Seguro">
+              <Input name="seguroText" value={content.seguroText} onChange={handleChange} />
+            </Form.Item>
+            <Form.Item label="Texto Módulo Farmacia">
+              <Input name="farmaciaText" value={content.farmaciaText} onChange={handleChange} />
+            </Form.Item>
+            <Form.Item label="Ícono Módulo Hospital">
+              <Upload
+                beforeUpload={(file) => customUpload(file, 'hospitalIcon')}
+                showUploadList={false}
+                accept="image/*"
+              >
+                <Button icon={<UploadOutlined />}>Subir Imagen</Button>
+              </Upload>
+              {content.hospitalIcon && (
+                <img src={content.hospitalIcon} alt="Preview" className="preview-icon" />
+              )}
+            </Form.Item>
+            <Form.Item label="Ícono Módulo Seguro">
+              <Upload
+                beforeUpload={(file) => customUpload(file, 'seguroIcon')}
+                showUploadList={false}
+                accept="image/*"
+              >
+                <Button icon={<UploadOutlined />}>Subir Imagen</Button>
+              </Upload>
+              {content.seguroIcon && (
+                <img src={content.seguroIcon} alt="Preview" className="preview-icon" />
+              )}
+            </Form.Item>
+            <Form.Item label="Ícono Extra en Hospital">
+              <Upload
+                beforeUpload={(file) => customUpload(file, 'automationIcon')}
+                showUploadList={false}
+                accept="image/*"
+              >
+                <Button icon={<UploadOutlined />}>Subir Imagen</Button>
+              </Upload>
+              {content.automationIcon && (
+                <img src={content.automationIcon} alt="Preview" className="preview-icon" />
+              )}
+            </Form.Item>
+            <Form.Item label="Ícono Extra en Seguro">
+              <Upload
+                beforeUpload={(file) => customUpload(file, 'centralizationIcon')}
+                showUploadList={false}
+                accept="image/*"
+              >
+                <Button icon={<UploadOutlined />}>Subir Imagen</Button>
+              </Upload>
+              {content.centralizationIcon && (
+                <img src={content.centralizationIcon} alt="Preview" className="preview-icon" />
+              )}
+            </Form.Item>
+            <Form.Item label="Texto Beneficio Automatización">
+              <Input name="automationText" value={content.automationText} onChange={handleChange} />
+            </Form.Item>
+            <Form.Item label="Ícono Beneficio Centralización">
+              <Upload
+                beforeUpload={(file) => customUpload(file, 'centralizationIcon')}
+                showUploadList={false}
+                accept="image/*"
+              >
+                <Button icon={<UploadOutlined />}>Subir Imagen</Button>
+              </Upload>
+              {content.centralizationIcon && (
+                <img src={content.centralizationIcon} alt="Preview" className="preview-icon" />
+              )}
+            </Form.Item>
+            <Form.Item label="Texto Beneficio Centralización">
+              <Input name="centralizationText" value={content.centralizationText} onChange={handleChange} />
+            </Form.Item>
+            <Form.Item label="Ícono Beneficio Facilidad de Uso">
+              <Upload
+                beforeUpload={(file) => customUpload(file, 'usabilityIcon')}
+                showUploadList={false}
+                accept="image/*"
+              >
+                <Button icon={<UploadOutlined />}>Subir Imagen</Button>
+              </Upload>
+              {content.usabilityIcon && (
+                <img src={content.usabilityIcon} alt="Preview" className="preview-icon" />
+              )}
+            </Form.Item>
+            <Form.Item label="Texto Beneficio Facilidad de Uso">
+              <Input name="usabilityText" value={content.usabilityText} onChange={handleChange} />
+            </Form.Item>
+            <Form.Item label="Correo de Contacto">
+              <Input name="contactEmail" value={content.contactEmail} onChange={handleChange} />
+            </Form.Item>
+            <Form.Item>
+              <Button type="primary" onClick={handleSubmit} style={{ marginRight: '10px' }}>
+                Enviar para Aprobación
+              </Button>
+              <Button onClick={approveChanges} style={{ marginRight: '10px' }}>
+                Aprobar Cambios
+              </Button>
+              <Button onClick={() => navigate(-1)} className="back-button">
+                ⬅ Regresar
+              </Button>
+            </Form.Item>
+            {message && <p className="success-message">{message}</p>}
+          </Form>
+        </Card>
+      </motion.div>
     </div>
   );
 }

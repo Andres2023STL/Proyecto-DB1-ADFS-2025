@@ -5,6 +5,7 @@ import DoctorCatalog from "./pages/doctor/DoctorCatalog";
 import DoctorDetails from "./pages/doctor/DoctorDetails";
 import PatientHistory from "./pages/doctor/PatientHistory";
 import Recetas from "./pages/doctor/Recetas";
+import HospitalEmpleadoDashboard from "./pages/empleado_hospital/HospitalEmpleadoDashboard";
 
 const HospitalRoutes = () => {
   return (
@@ -16,6 +17,7 @@ const HospitalRoutes = () => {
       <Route path="doctordetails/:id" element={<DoctorDetails />} />
       <Route path="patienthistory" element={<PatientHistory />} />
       <Route path="recetas" element={<Recetas />} />
+      <Route path="HospitalEmpleadoDashboard" element={<HospitalEmpleadoDashboard />} />
       <Route path="*" element={<p>Ruta no encontrada en HospitalRoutes</p>} />
     </Routes>
   );

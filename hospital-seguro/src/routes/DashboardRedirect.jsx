@@ -30,6 +30,8 @@ const DashboardRedirect = () => {
             navigate("/admin/admindashboard");
           } else if (role === "empleado_seguro") {
             navigate("/seguro/SeguroEmpleadoDashboard");
+          } else if (role === "empleado_hospital") {
+            navigate("/hospital-empleado/HospitalEmpleadoDashboard");
           } else {
             // Si el rol no coincide con ninguno de los permitidos, se redirige a acceso denegado
             navigate("/acceso-denegado");

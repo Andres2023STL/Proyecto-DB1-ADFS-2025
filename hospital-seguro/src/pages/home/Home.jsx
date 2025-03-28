@@ -108,7 +108,7 @@ function Home() {
               <Card className="service-card" bodyStyle={{ padding: "12px" }}>
                 <Link to="/SubHomeHospital">
                   <h3>Módulo Hospital</h3>
-                  <img src={content.automationIcon} alt="Automatización" className="module-icon" />
+                  <img src={content.hospitalIcon} alt="Icono hospital" className="module-icon" />
                   <p>{content.hospitalText}</p>
                 </Link>
               </Card>
@@ -125,7 +125,7 @@ function Home() {
               <Card className="service-card" bodyStyle={{ padding: "12px" }}>
                 <Link to="/SubHomeSeguro">
                   <h3>Módulo Seguro</h3>
-                  <img src={content.automationIcon} alt="Automatización" className="module-icon" />
+                  <img src={content.seguroIcon} alt="Icono seguro" className="module-icon" />
                   <p>{content.seguroText}</p>
                 </Link>
               </Card>
