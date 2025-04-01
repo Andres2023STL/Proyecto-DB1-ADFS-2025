@@ -37,9 +37,9 @@ function HospitalEmpleadoDashboard() {
       <DashboardLayout title="¡Bienvenido, Empleado!">
         <div className="dashboard-link-container">
           <DashboardLinkCard 
-            title="" 
-            description="" 
-            link=""
+            title="Registro de pacientes" 
+            description="Formulario para ingresar los datos de los pacientes y registrarlos en el sistema." 
+            link="/hospital-empleado/patientregister"
           />
         </div>
       </DashboardLayout>
