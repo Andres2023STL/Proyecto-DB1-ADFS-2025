@@ -1,0 +1,12 @@
+//Tabla paciente
+create table paciente(
+	dpi varchar(20), 
+	nombre varchar(100), 
+	f_nacimiento date, 
+	foto varchar(255), 
+	codigo_seguro varchar(150), 
+	direccion varchar(150), 
+	telefono varchar(15), 
+	user_id int,
+	PRIMARY KEY (dpi),
+	FOREIGN KEY (user_id) REFERENCES users (id));
