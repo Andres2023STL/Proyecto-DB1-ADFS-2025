@@ -24,8 +24,7 @@ function Login({ setIsAuthenticated }) {
       localStorage.setItem("user_id", data.userId);
   
       const role = data.role && data.role.trim().toLowerCase();
-  
-      // 🚨 Aquí es la parte importante
+
       if (role === "doctor" && data.needsProfile) {
         navigate("/hospital/DoctorProfileForm");
       } else if (role === "doctor") {

@@ -9,7 +9,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
     exit;
 }
 
-$targetDir = __DIR__ . "/uploads/";
+$targetDir = __DIR__ . "/uploads/titles";
 $publicUrlBase = "http://localhost/hospital_api/uploads/";
 
 if (!file_exists($targetDir)) {

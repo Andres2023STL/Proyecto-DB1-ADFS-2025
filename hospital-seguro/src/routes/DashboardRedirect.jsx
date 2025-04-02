@@ -17,7 +17,7 @@ const DashboardRedirect = () => {
         if (data.success && data.role) {
           const role = data.role.trim().toLowerCase();
 
-          // 🚨 Si es doctor, verificar si ya llenó perfil
+          // Si es doctor, verificar si ya llenó perfil
           if (role === "doctor") {
             const profileResponse = await fetch("http://localhost/hospital_api/getDoctorProfileStatus.php", {
               method: "GET",
@@ -33,7 +33,7 @@ const DashboardRedirect = () => {
             return;
           }
 
-          // 🔁 Resto de roles
+          // Resto de roles
           if (role === "admin") {
             navigate("/admin/admindashboard");
           } else if (role === "empleado_seguro") {

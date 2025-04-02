@@ -46,7 +46,7 @@ try {
     $graduation_date = $conn->real_escape_string($data['graduation_date']);
     $especialidad = $conn->real_escape_string($data['especialidad']);
     $telefono = $conn->real_escape_string($data['telefono']);
-    $foto = $conn->real_escape_string($data['foto_perfil'] ?? '');
+    $foto = $conn->real_escape_string($data['foto_perfil'] ?? 'null');
 
     // Insertar en tabla doctors
     $stmt = $conn->prepare("INSERT INTO doctors (user_id, colegiado, universidad, graduation_date, especialidad, telefono, foto_perfil) VALUES (?, ?, ?, ?, ?, ?, ?)");
