@@ -6,6 +6,7 @@ import DashboardLinkCard from "../../../../components/DashboardLinkCard";
 function DoctorDashboard() {
   const [role, setRole] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [name, setName] = useState("");
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -18,6 +19,7 @@ function DoctorDashboard() {
         const data = await response.json();
         if (data.success) {
           setRole(data.role);
+          setName(data.name);
         } else {
           navigate("/login");
         }
@@ -35,7 +37,7 @@ function DoctorDashboard() {
   if (!role) return <p>Error: No se pudo obtener el rol.</p>;
 
   return (
-    <DashboardLayout title="¡Bienvenido, Doctor!">
+    <DashboardLayout title={`¡Bienvenido, Dr. ${name || "Usuario"}!`}>
       <div className="dashboard-link-container">
         <DashboardLinkCard title="Ir a Citas" link="/hospital/appointments" />
         <DashboardLinkCard title="Historial de Pacientes" link="/hospital/patienthistory" />
