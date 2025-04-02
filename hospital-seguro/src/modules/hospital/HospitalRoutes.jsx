@@ -1,4 +1,5 @@
 import { Routes, Route } from "react-router-dom";
+import DoctorProfileForm from "./pages/doctor/DoctorProfileForm";
 import DoctorDashboard from "./pages/doctor/DoctorDashboard";
 import Appointments from "./pages/doctor/Appointments";
 import DoctorCatalog from "./pages/doctor/DoctorCatalog";
@@ -7,6 +8,7 @@ import PatientHistory from "./pages/doctor/PatientHistory";
 import Recetas from "./pages/doctor/Recetas";
 import HospitalEmpleadoDashboard from "./pages/empleado_hospital/HospitalEmpleadoDashboard";
 import PatientRegister from "./pages/empleado_hospital/PatientRegister";
+
 
 const HospitalRoutes = () => {
   return (
@@ -20,6 +22,8 @@ const HospitalRoutes = () => {
       <Route path="recetas" element={<Recetas />} />
       <Route path="HospitalEmpleadoDashboard" element={<HospitalEmpleadoDashboard />} />
       <Route path="patientregister" element={<PatientRegister />} />
+      <Route path="DoctorProfileForm" element={<DoctorProfileForm />} />
+      
       <Route path="*" element={<p>Ruta no encontrada en HospitalRoutes</p>} />
     </Routes>
   );
