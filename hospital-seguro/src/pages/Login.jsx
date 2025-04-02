@@ -16,26 +16,34 @@ function Login({ setIsAuthenticated }) {
       credentials: "include",
       body: JSON.stringify({ email, password }),
     });
+  
     const data = await response.json();
+  
     if (data.success) {
       setIsAuthenticated(true);
+      localStorage.setItem("user_id", data.userId);
+  
       const role = data.role && data.role.trim().toLowerCase();
-      if (role === "admin") {
-        navigate("/admin/admindashboard");
+  
+      // 🚨 Aquí es la parte importante
+      if (role === "doctor" && data.needsProfile) {
+        navigate("/hospital/DoctorProfileForm");
       } else if (role === "doctor") {
         navigate("/hospital/dashboard");
+      } else if (role === "admin") {
+        navigate("/admin/admindashboard");
       } else if (role === "empleado_seguro") {
         navigate("/seguro/SeguroEmpleadoDashboard");
       } else if (role === "empleado_hospital") {
         navigate("/hospital-empleado/HospitalEmpleadoDashboard");
-      }
-      else {
+      } else {
         navigate("/login");
       }
     } else {
       alert(data.message);
     }
   };
+  
 
   const cardVariants = {
     hidden: { opacity: 0, y: -20 },
