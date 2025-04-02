@@ -1,15 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { Table, Input, Select, DatePicker, Form, Button, Typography, Pagination, Card } from 'antd';
+import { Table, Input, Select, DatePicker, Button, Typography, Pagination } from 'antd';
 import { motion } from 'framer-motion';
-import { logAuditEvent } from './AuditLogs';
+import { logAuditEvent } from '../../admin/pages/AuditLogs';
 
 const { Title } = Typography;
 const { Option } = Select;
 
 function UsersManagement() {
-  const [form] = Form.useForm();
-
   const [users, setUsers] = useState([]);
   const [filteredUsers, setFilteredUsers] = useState([]);
   const [searchEmail, setSearchEmail] = useState("");
@@ -43,33 +41,11 @@ function UsersManagement() {
   const indexOfFirstUser = indexOfLastUser - usersPerPage;
   const currentUsers = filteredUsers.slice(indexOfFirstUser, indexOfLastUser);
 
-  const handleAddUser = async (values) => {
-    const response = await fetch("http://localhost/hospital_api/register.php", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ ...values, password: "123456" }) // asignar una contraseña por defecto o generar una temporal
-    });
-    const data = await response.json();
-    if (data.success) {
-      alert("✅ Usuario agregado correctamente.");
-      form.resetFields();
-
-      logAuditEvent("Administrador", "Creación de usuario", `Se creó el usuario ${values.email} con rol ${values.role}`);
-      const updated = await fetch("http://localhost/hospital_api/getUsers.php").then(res => res.json());
-      if (updated.success) setUsers(updated.users);
-    } else {
-      alert("❌ Error al agregar usuario: " + data.message);
-    }
-  };
-
   const toggleUserStatus = async (id, currentStatus) => {
     const payload = {
       id: parseInt(id),
       active: currentStatus ? 0 : 1
     };
-
-
-    console.log("🔄 Enviando a toggleUserStatus:", payload); // <-- DEBUG
 
     const response = await fetch("http://localhost/hospital_api/toggleUserStatus.php", {
       method: "POST",
@@ -78,24 +54,38 @@ function UsersManagement() {
     });
 
     const data = await response.json();
-    console.log("✅ Respuesta toggleUserStatus:", data); // <-- DEBUG
-
     if (data.success) {
       const updated = await fetch("http://localhost/hospital_api/getUsers.php").then(res => res.json());
       if (updated.success) {
         setUsers(updated.users);
-        setFilteredUsers(updated.users); // 🔄 fuerza la recarga en pantalla
+        setFilteredUsers(updated.users);
         const toggledUser = updated.users.find(user => user.id === id);
         const status = currentStatus ? "desactivado" : "activado";
         logAuditEvent("Administrador", "Cambio de estado", `Se ${status} la cuenta de ${toggledUser?.email}`);
       }
-
     } else {
       alert("❌ Error al cambiar estado: " + data.message);
     }
   };
 
-
+  const assignUserRole = async (id, newRole) => {
+    const response = await fetch("http://localhost/hospital_api/setUserRole.php", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ id: parseInt(id), role: newRole })
+    });
+    const data = await response.json();
+    if (data.success) {
+      const updated = await fetch("http://localhost/hospital_api/getUsers.php").then(res => res.json());
+      if (updated.success) {
+        setUsers(updated.users);
+        setFilteredUsers(updated.users);
+        logAuditEvent("Administrador", "Cambio de rol", `Se asignó el rol ${newRole} al usuario con ID ${id}`);
+      }
+    } else {
+      alert("❌ Error al cambiar el rol: " + data.message);
+    }
+  };
 
   const columns = [
     { title: 'ID', dataIndex: 'id', key: 'id' },
@@ -104,12 +94,24 @@ function UsersManagement() {
     { title: 'Rol', dataIndex: 'role', key: 'role', render: text => text || "Sin rol" },
     { title: 'Estado', dataIndex: 'active', key: 'active', render: active => Number(active) === 1 ? "🟢 Activo" : "🔴 Inactivo" },
     {
-      title: 'Acciones', key: 'actions',
+      title: 'Acciones',
+      key: 'actions',
       render: (_, record) => (
-        <Button onClick={() => toggleUserStatus(record.id, Number(record.active))}>
-          {Number(record.active) === 1 ? "Desactivar" : "Activar"}
-        </Button>
-
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+          <Button onClick={() => toggleUserStatus(record.id, Number(record.active))}>
+            {Number(record.active) === 1 ? "Desactivar" : "Activar"}
+          </Button>
+          <Select
+            defaultValue={record.role || undefined}
+            style={{ width: 150 }}
+            onChange={(newRole) => assignUserRole(record.id, newRole)}
+          >
+            <Option value="doctor">Doctor</Option>
+            <Option value="admin">Administrador</Option>
+            <Option value="empleado_hospital">Empleado hospital</Option>
+            <Option value="empleado_seguro">Empleado aseguradora</Option>
+          </Select>
+        </div>
       )
     }
   ];
@@ -127,8 +129,8 @@ function UsersManagement() {
           <Option value="">Todos los roles</Option>
           <Option value="doctor">Doctor</Option>
           <Option value="admin">Administrador</Option>
-          <Option value="empleado">Empleado hospital</Option>
-          <Option value="empleadoAs">Empleado aseguradora</Option>
+          <Option value="empleado_hospital">Empleado hospital</Option>
+          <Option value="empleado_seguro">Empleado aseguradora</Option>
         </Select>
         <DatePicker placeholder="Fecha" onChange={(date, dateString) => setSearchDate(dateString)} style={{ width: "200px" }} />
       </motion.div>
@@ -139,52 +141,6 @@ function UsersManagement() {
 
       <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.5, delay: 0.3 }}>
         <Pagination current={currentPage} total={filteredUsers.length} pageSize={usersPerPage} onChange={page => setCurrentPage(page)} style={{ textAlign: "center", marginTop: "20px" }} />
-      </motion.div>
-
-      <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.5, delay: 0.4 }}>
-        <Title level={3} style={{ marginTop: "30px" }}>Agregar Usuario</Title>
-        <Card style={{ maxWidth: "600px", margin: "0 auto" }}>
-        <Form form={form} layout="vertical" onFinish={handleAddUser}>
-  <Form.Item label="Nombre completo" name="name" rules={[{ required: true, message: "Ingrese el nombre completo" }]}>
-    <Input />
-  </Form.Item>
-
-  <Form.Item label="Correo electrónico" name="email" rules={[{ required: true, message: "Ingrese el correo electrónico" }]}>
-    <Input />
-  </Form.Item>
-
-  <Form.Item
-    label="Contraseña"
-    name="password"
-    rules={[
-      { required: true, message: "Ingrese una contraseña" },
-      { min: 6, message: "Debe tener al menos 6 caracteres" },
-      {
-        pattern: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{6,}$/,
-        message: "Debe contener mayúsculas, minúsculas y un número"
-      }
-    ]}
-  >
-    <Input.Password />
-  </Form.Item>
-
-  <Form.Item label="Rol" name="role" rules={[{ required: true, message: "Seleccione un rol" }]}>
-    <Select>
-      <Option value="doctor">Doctor</Option>
-      <Option value="admin">Administrador</Option>
-      <Option value="empleado">Empleado</Option>
-    </Select>
-  </Form.Item>
-
-  <Form.Item>
-    <Button type="primary" htmlType="submit" block>
-      Guardar Usuario
-    </Button>
-  </Form.Item>
-</Form>
-
-
-        </Card>
       </motion.div>
     </div>
   );
