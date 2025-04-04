@@ -41,7 +41,6 @@ function DoctorDashboard() {
       <div className="dashboard-link-container">
         <DashboardLinkCard title="Ir a Citas" link="/hospital/appointments" />
         <DashboardLinkCard title="Historial de Pacientes" link="/hospital/patienthistory" />
-        <DashboardLinkCard title="Gestión de Recetas" link="/hospital/recetas" />
       </div>
     </DashboardLayout>
   );

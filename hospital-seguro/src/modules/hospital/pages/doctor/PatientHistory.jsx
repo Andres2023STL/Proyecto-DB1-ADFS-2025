@@ -109,6 +109,10 @@ function PatientHistory() {
         <Paragraph>Cargando...</Paragraph>
       ) : error ? (
         <Paragraph type="danger">❌ {error}</Paragraph>
+      ) : patients.length === 0 ? (
+        <Paragraph type="secondary">
+          No hay pacientes que hayas atendido aún.
+        </Paragraph>
       ) : (
         <List
           dataSource={patients}
@@ -119,30 +123,30 @@ function PatientHistory() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.4 }}
               >
-                <Card title={patient.name}>
-                  {patient.photo && (
+                <Card title={patient.nombre}>
+                  {patient.foto && (
                     <img
-                      src={patient.photo}
-                      alt={patient.name}
+                      src={patient.foto}
+                      alt={patient.nombre}
                       style={{ width: "100px", marginBottom: "1rem" }}
                     />
                   )}
-                  <Paragraph><strong>Documento:</strong> {patient.documentId}</Paragraph>
-                  <Paragraph><strong>Fecha de Nacimiento:</strong> {patient.birthDate}</Paragraph>
-                  <Paragraph><strong>Asegurado:</strong> {patient.insuranceCompany}</Paragraph>
-                  <Paragraph><strong>Código Seguro:</strong> {patient.insuranceNumber || "No aplica"}</Paragraph>
-                  <Paragraph><strong>Última Visita:</strong> {patient.lastVisit || "No disponible"}</Paragraph>
-                  <Paragraph><strong>Diagnóstico:</strong> {patient.diagnosis || "No disponible"}</Paragraph>
+                  <Paragraph><strong>Documento:</strong> {patient.documento}</Paragraph>
+                  <Paragraph><strong>Fecha de Nacimiento:</strong> {patient.fecha_nacimiento}</Paragraph>
+                  <Paragraph><strong>Asegurado:</strong> {patient.seguro}</Paragraph>
+                  <Paragraph><strong>Código Seguro:</strong> {patient.codigo_seguro || "No aplica"}</Paragraph>
+                  <Paragraph><strong>Última Visita:</strong> {patient.ultima_visita || "No disponible"}</Paragraph>
+                  <Paragraph><strong>Diagnóstico:</strong> {patient.diagnostico || "No disponible"}</Paragraph>
                   <Paragraph>
                     <strong>Medicamentos:</strong>{" "}
-                    {patient.medications && patient.medications.length > 0
-                      ? patient.medications.join(", ")
+                    {patient.medicamentos && patient.medicamentos.length > 0
+                      ? patient.medicamentos.join(", ")
                       : "Ninguno"}
                   </Paragraph>
                   <Paragraph><strong>Historial de Servicios:</strong></Paragraph>
                   <List
                     size="small"
-                    dataSource={patient.services}
+                    dataSource={patient.citas}
                     renderItem={(service) => (
                       <List.Item>
                         {service.fecha} - {service.hora} - {service.motivo || "Sin motivo"}
@@ -154,9 +158,7 @@ function PatientHistory() {
                   <List
                     dataSource={comments[patient.id] || []}
                     renderItem={(comment, index) => (
-                      <List.Item
-                        style={{ marginLeft: comment.parent_id ? 30 : 0 }}
-                      >
+                      <List.Item style={{ marginLeft: comment.parent_id ? 30 : 0 }}>
                         <div>
                           <Paragraph>
                             <strong>{comment.rol}</strong>: {comment.comentario}
@@ -167,7 +169,6 @@ function PatientHistory() {
                           >
                             Responder
                           </Button>
-
                           {replyingTo[patient.id] === index && (
                             <div style={{ marginTop: 8 }}>
                               <TextArea
@@ -196,6 +197,7 @@ function PatientHistory() {
                       </List.Item>
                     )}
                   />
+
                   <TextArea
                     rows={2}
                     placeholder="Agregar comentario..."

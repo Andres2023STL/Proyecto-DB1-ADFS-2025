@@ -34,18 +34,30 @@ const DashboardRedirect = () => {
           }
 
 
-          // 🔽 Paciente
-          if (role === "paciente") {
+          if (role === "patient") {
             const profileRes = await fetch("http://localhost/hospital_api/getProfileStatus.php", {
               method: "GET",
               credentials: "include",
             });
             const profile = await profileRes.json();
-          
             if (profile.success && profile.filled) {
-              navigate("/paciente/dashboardpaciente");
+              navigate("/paciente/PacienteDashboard");
             } else {
               navigate("/paciente/PacienteProfileForm");
+            }
+            return;
+          }
+
+          if (role === "empleado_seguro") {
+            const profileRes = await fetch("http://localhost/hospital_api/getProfileStatus.php", {
+              method: "GET",
+              credentials: "include",
+            });
+            const profile = await profileRes.json();
+            if (profile.success && profile.filled) {
+              navigate("/seguro/PacienteDashboard");
+            } else {
+              navigate("/seguro/PacienteProfileForm");
             }
             return;
           }
