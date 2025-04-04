@@ -1,68 +1,77 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
-import { Button, Card, List } from 'antd';
-import { motion } from 'framer-motion';
-import approvalsData from '../../../data/approvals.json';
+import React, { useEffect, useState } from "react";
+import { Button, Card, List, message, Modal } from "antd";
+import { Link } from "react-router-dom";
+import { motion } from "framer-motion";
 
 function Approvals() {
-  const [pendingApprovals, setPendingApprovals] = useState(approvalsData);
+  const [appointments, setAppointments] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-  const handleApprove = (id) => {
-    setPendingApprovals(pendingApprovals.map(ap => 
-      ap.id === id ? { ...ap, status: 'Aprobado' } : ap
-    ));
-  };
+  useEffect(() => {
+    fetch("http://localhost/hospital_api/getPendingApprovals.php", {
+      credentials: "include"
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.success) {
+          setAppointments(data.pending_approvals); // 🔧 cambio aquí
+        } else {
+          message.error(data.message || "Error al cargar citas");
+        }
+      })
+      .catch(() => {
+        message.error("Error de conexión");
+      })
+      .finally(() => setLoading(false));
+  }, []);
 
-  const handleReject = (id) => {
-    setPendingApprovals(pendingApprovals.map(ap => 
-      ap.id === id ? { ...ap, status: 'Rechazado' } : ap
-    ));
-  };
-
-  const itemVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: { opacity: 1, y: 0 }
+  const handleAction = (id, approved) => {
+    Modal.confirm({
+      title: approved ? "¿Aprobar esta cita?" : "¿Rechazar esta cita?",
+      content: approved
+        ? "Confirma que deseas aprobar la cita médica."
+        : "Confirma que deseas rechazar la cita médica.",
+      onOk: async () => {
+        const res = await fetch("http://localhost/hospital_api/updateApprovalStatus.php", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          credentials: "include",
+          body: JSON.stringify({ id, aprobado: approved ? 1 : 0 })
+        });
+        const data = await res.json();
+        if (data.success) {
+          message.success(data.message);
+          setAppointments((prev) => prev.filter((a) => a.id !== id));
+        } else {
+          message.error(data.message || "Error al actualizar estado");
+        }
+      }
+    });
   };
 
   return (
-    <div className="private-page-container approvals-container">
+    <div className="private-page-container">
       <h1>Aprobaciones</h1>
       <Link to="/seguro/SeguroEmpleadoDashboard" className="private-back-button">
         ← Regresar al Dashboard
       </Link>
       <List
-        dataSource={pendingApprovals}
-        renderItem={item => (
+        loading={loading}
+        dataSource={appointments}
+        renderItem={(item) => (
           <motion.div
-            initial="hidden"
-            animate="visible"
-            variants={itemVariants}
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.3 }}
-            className="motion-item"
           >
-            <Card className="blue-theme">
-              <div className="approval-item-content">
-                <div>
-                  <p>{item.service} - {item.patient}</p>
-                  <p><strong>{item.status}</strong></p>
-                </div>
-                {item.status === 'Pendiente' && (
-                  <div>
-                    <Button 
-                      type="primary" 
-                      onClick={() => handleApprove(item.id)}
-                      className="mr-8"
-                    >
-                      Aprobar
-                    </Button>
-                    <Button 
-                      danger 
-                      onClick={() => handleReject(item.id)}
-                    >
-                      Rechazar
-                    </Button>
-                  </div>
-                )}
+            <Card className="blue-theme" style={{ marginBottom: 10 }}>
+              <p><strong>Paciente:</strong> {item.paciente}</p>
+              <p><strong>Doctor:</strong> {item.doctor}</p>
+              <p><strong>Motivo:</strong> {item.motivo}</p>
+              <p><strong>Fecha:</strong> {item.fecha} - {item.hora}</p>
+              <div style={{ display: "flex", gap: "10px" }}>
+                <Button type="primary" onClick={() => handleAction(item.id, true)}>Aprobar</Button>
+                <Button danger onClick={() => handleAction(item.id, false)}>Rechazar</Button>
               </div>
             </Card>
           </motion.div>
