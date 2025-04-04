@@ -6,6 +6,7 @@ import CatalogoMedicina from "./pages/CatalogoMedicina"
 import CatalogoSeguro from "./pages/CatalogoSeguro"
 import InsuranceClients from "./pages/InsuranceClients"
 import Reports from "./pages/Reports"
+import EmpleadoSeguroProfileForm from "./pages/EmpleadoSeguroProfileForm";
 
 
 const SeguroRoutes = () => {
@@ -15,6 +16,7 @@ const SeguroRoutes = () => {
       <Route path="SeguroEmpleadoDashboard" element={<SeguroEmpleadoDashboard />} />
       <Route path="AppointmentsControl" element={<AppointmentsControl />} />
       <Route path="Approvals" element={<Approvals />} />
+      <Route path="EmpleadoSeguroProfileForm" element={<EmpleadoSeguroProfileForm />} />
       <Route path="CatalogoMedicina" element={<CatalogoMedicina />} /> 
       <Route path="CatalogoSeguro" element={<CatalogoSeguro />} />   
       <Route path="InsuranceClients" element={<InsuranceClients />} />   
