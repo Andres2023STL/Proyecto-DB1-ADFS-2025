@@ -85,7 +85,7 @@ function DoctorDetails() {
         </Row>
       </Card>
       <div className="private-doctor-details-back">
-        <Link to="/hospital/doctorcatalog" className="private-back-button">
+        <Link to="/hospital-empleado/doctorcatalog" className="private-back-button">
           ← Volver al catálogo
         </Link>
       </div>
