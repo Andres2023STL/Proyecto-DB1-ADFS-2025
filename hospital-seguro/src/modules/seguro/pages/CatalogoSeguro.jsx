@@ -1,55 +1,60 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import { Collapse } from 'antd';
-import { motion } from 'framer-motion';
-import services from '../../../data/medical_services.json';
+import React, { useEffect, useState } from "react";
+import { Collapse, Spin, Alert } from "antd";
+import { motion } from "framer-motion";
+import { Link } from "react-router-dom";
 
 const { Panel } = Collapse;
 
-// Agrupa los servicios por categoría y subcategoría
-function groupData(items, categoryKey, subcategoryKey) {
-  const grouped = {};
-  items.forEach(item => {
-    const category = item[categoryKey];
-    const subcategory = item[subcategoryKey];
-    if (!grouped[category]) grouped[category] = {};
-    if (!grouped[category][subcategory]) grouped[category][subcategory] = [];
-    grouped[category][subcategory].push(item);
-  });
-  return grouped;
-}
-
 function CatalogoSeguro() {
-  const groupedServices = groupData(services, 'category', 'subcategory');
+  const [catalogo, setCatalogo] = useState({});
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: { opacity: 1, transition: { staggerChildren: 0.2 } }
-  };
-
-  const itemVariants = {
-    hidden: { opacity: 0, y: 10 },
-    visible: { opacity: 1, y: 0 }
-  };
+  useEffect(() => {
+    fetch("http://localhost/hospital_api/getInsuranceCatalog.php", {
+      credentials: "include"
+    })
+      .then(res => res.json())
+      .then(data => {
+        if (data.success) {
+          setCatalogo(data.catalogo);
+        } else {
+          setError(data.message || "Error al obtener catálogo");
+        }
+      })
+      .catch(() => setError("Error de conexión"))
+      .finally(() => setLoading(false));
+  }, []);
 
   return (
     <div className="catalog-container private-page-container">
       <h1 className="catalog-title">Catálogo Seguro</h1>
-      <Link to="/seguro/SeguroEmpleadoDashboard" className="back-button">← Regresar al Dashboard</Link>
-      <motion.div variants={containerVariants} initial="hidden" animate="visible">
-        {Object.keys(groupedServices).map(category => (
-          <motion.div key={category} variants={itemVariants} className="category-panel" style={{ marginBottom: '20px' }}>
-            <Collapse accordion className="blue-theme">
-              <Panel header={category} key={category}>
+      <Link to="/seguro/SeguroEmpleadoDashboard" className="back-button">
+        ← Regresar al Dashboard
+      </Link>
+
+      {loading ? (
+        <Spin />
+      ) : error ? (
+        <Alert type="error" message={error} />
+      ) : (
+        Object.keys(catalogo).map((categoria) => (
+          <motion.div
+            key={categoria}
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.3 }}
+            style={{ marginBottom: 20 }}
+          >
+            <Collapse accordion>
+              <Panel header={categoria} key={categoria}>
                 <Collapse accordion>
-                  {Object.keys(groupedServices[category]).map(subcategory => (
-                    <Panel header={subcategory} key={subcategory} className="subcategory-panel">
-                      <ul className="item-list">
-                        {groupedServices[category][subcategory].map(service => (
-                          <li key={service.id_servicio} className="item">
-                            <div className="item-details">
-                              <span>Precio: ${service.price}</span>
-                            </div>
+                  {Object.keys(catalogo[categoria]).map((subcategoria) => (
+                    <Panel header={subcategoria} key={subcategoria}>
+                      <ul>
+                        {catalogo[categoria][subcategoria].map((item) => (
+                          <li key={item.id}>
+                            {item.nombre} - Q{item.precio}
                           </li>
                         ))}
                       </ul>
@@ -59,8 +64,8 @@ function CatalogoSeguro() {
               </Panel>
             </Collapse>
           </motion.div>
-        ))}
-      </motion.div>
+        ))
+      )}
     </div>
   );
 }
