@@ -1,3 +1,4 @@
+// src/routes/DashboardRedirect.jsx
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -6,58 +7,74 @@ const DashboardRedirect = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const fetchUserData = async () => {
+    const redirectUser = async () => {
       try {
-        const response = await fetch("http://localhost/hospital_api/getUser.php", {
+        const res = await fetch("http://localhost/hospital_api/getUser.php", {
           method: "GET",
           credentials: "include",
         });
-        const data = await response.json();
+        const data = await res.json();
 
         if (data.success && data.role) {
-          const role = data.role.trim().toLowerCase();
+          const role = data.role.toLowerCase();
 
-          // 🚨 Si es doctor, verificar si ya llenó perfil
+          // 🔽 Doctor
           if (role === "doctor") {
-            const profileResponse = await fetch("http://localhost/hospital_api/getDoctorProfileStatus.php", {
+            const profileRes = await fetch("http://localhost/hospital_api/getProfileStatus.php", {
               method: "GET",
-              credentials: "include"
+              credentials: "include",
             });
-            const profileData = await profileResponse.json();
-
-            if (profileData.success && profileData.profileCompleted) {
+            const profile = await profileRes.json();
+            if (profile.success && profile.filled) {
               navigate("/hospital/dashboard");
             } else {
-              navigate("/DoctorProfileForm");
+              navigate("/hospital/DoctorProfileForm");
             }
             return;
           }
 
-          // 🔁 Resto de roles
+          // 🔽 Paciente
+          if (role === "paciente") {
+            const profileRes = await fetch("http://localhost/hospital_api/getProfileStatus.php", {
+              method: "GET",
+              credentials: "include",
+            });
+            const profile = await profileRes.json();
+          
+            if (profile.success && profile.filled) {
+              navigate("/paciente/dashboardpaciente");
+            } else {
+              navigate("/paciente/PacienteProfileForm");
+            }
+            return;
+          }
+          
+
+          // 🔽 Resto de roles
           if (role === "admin") {
             navigate("/admin/admindashboard");
-          } else if (role === "empleado_seguro") {
-            navigate("/seguro/SeguroEmpleadoDashboard");
           } else if (role === "empleado_hospital") {
             navigate("/hospital-empleado/HospitalEmpleadoDashboard");
+          } else if (role === "empleado_seguro") {
+            navigate("/seguro/SeguroEmpleadoDashboard");
           } else {
             navigate("/acceso-denegado");
           }
+
         } else {
           navigate("/login");
         }
-      } catch (error) {
+      } catch (err) {
         navigate("/login");
       } finally {
         setLoading(false);
       }
     };
 
-    fetchUserData();
+    redirectUser();
   }, [navigate]);
 
-  if (loading) return <p>Cargando...</p>;
-  return null;
+  return loading ? <p>Cargando...</p> : null;
 };
 
 export default DashboardRedirect;
