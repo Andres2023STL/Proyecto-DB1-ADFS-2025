@@ -1,31 +1,44 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Button, Card } from 'antd';
+import { Button, Card, message } from 'antd';
 import { motion } from 'framer-motion';
 import * as XLSX from 'xlsx';
-import reportsData from '../../../data/reports.json';
 
 function Reports() {
   const [reports, setReports] = useState([]);
 
-  const handleGenerateReport = () => {
-    setReports(reportsData);
-    console.log("Reporte generado");
+  const handleGenerateReport = async () => {
+    try {
+      const res = await fetch("http://localhost/hospital_api/getReports.php", {
+        credentials: "include"
+      });
+      const data = await res.json();
+      if (data.success) {
+        setReports(data.reports);
+        message.success("Reporte generado correctamente");
+      } else {
+        message.error(data.message || "Error al generar reporte");
+      }
+    } catch (error) {
+      message.error("Error de conexión");
+    }
   };
 
   const handleDownload = () => {
     const flattened = [];
     reports.forEach(report => {
       report.details.forEach(detail => {
-        flattened.push({
-          Title: report.title,
-          Date: report.date,
-          Summary: report.summary,
-          Hospital: detail.hospital || "",
-          Pharmacy: detail.pharmacy || "",
-          HospitalAmount: detail.hospital ? detail.total : "",
-          PharmacyAmount: detail.pharmacy ? detail.total : "",
-          Total: detail.total
+        detail.services.forEach(service => {
+          flattened.push({
+            Title: report.title,
+            Date: report.date,
+            Summary: report.summary,
+            Hospital: detail.hospital || "",
+            Pharmacy: detail.pharmacy || "",
+            Service: service.service,
+            Amount: service.amount,
+            Total: detail.total
+          });
         });
       });
     });
@@ -49,7 +62,7 @@ function Reports() {
         ← Regresar al Dashboard
       </Link>
       <p>Aquí se generarán los reportes de actividad del sistema.</p>
-      
+
       <Button 
         type="primary" 
         onClick={handleGenerateReport} 
@@ -57,15 +70,13 @@ function Reports() {
       >
         Generar Reporte
       </Button>
-      
+
       {reports.length > 0 && (
         <>
-          <Button 
-            onClick={handleDownload} 
-            className="mb-10"
-          >
+          <Button onClick={handleDownload} className="mb-10">
             Descargar Reporte
           </Button>
+
           {reports.map((report, index) => (
             <motion.div
               key={index}
@@ -80,8 +91,8 @@ function Reports() {
                 <h3>Detalles del Reporte</h3>
                 {report.details.map((detail, idx) => (
                   <div key={idx} className="report-detail-item">
-                    {detail.hospital && <h4>{detail.hospital}</h4>}
-                    {detail.pharmacy && <h4>{detail.pharmacy}</h4>}
+                    {detail.hospital && <h4>Hospital: {detail.hospital}</h4>}
+                    {detail.pharmacy && <h4>Farmacia: {detail.pharmacy}</h4>}
                     <ul>
                       {detail.services.map((service, serviceIdx) => (
                         <li key={serviceIdx}>
@@ -89,7 +100,7 @@ function Reports() {
                         </li>
                       ))}
                     </ul>
-                    <p>Total: Q{detail.total}</p>
+                    <p><strong>Total:</strong> Q{detail.total}</p>
                   </div>
                 ))}
               </Card>
