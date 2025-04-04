@@ -24,7 +24,7 @@ function DoctorCatalog() {
 
   const handleSelectDoctor = (doctor) => {
     localStorage.setItem("selectedDoctor", JSON.stringify(doctor));
-    navigate("/hospital/appointments");
+    navigate("/hospital-empleado/appointments");
   };
 
   if (loading) return <Spin size="large" />;
@@ -45,7 +45,7 @@ function DoctorCatalog() {
               bordered
               extra={
                 <Link
-                  to={`/hospital/doctordetails/${doctor.id}`}
+                  to={`/hospital-empleado/doctordetails/${doctor.id}`}
                   className="private-doctor-details-link"
                 >
                   Ver Detalles
@@ -68,7 +68,7 @@ function DoctorCatalog() {
         ))}
       </div>
       <div className="private-doctor-catalog-back">
-        <Link to="/hospital/appointments" className="private-back-button">
+        <Link to="/hospital-empleado/appointments" className="private-back-button">
           ← Volver a citas
         </Link>
       </div>
