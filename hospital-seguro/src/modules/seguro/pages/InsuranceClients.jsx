@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { Input, Button, Card, DatePicker } from 'antd';
+import { Input, Button, Card, DatePicker, message } from 'antd';
 import { motion } from 'framer-motion';
 import moment from 'moment';
-import clientsData from '../../../data/insurance_clients.json';
 
 function InsuranceClients() {
   const [clients, setClients] = useState([]);
@@ -13,82 +12,73 @@ function InsuranceClients() {
     policy: '70%',
     documentId: '',
     insuranceNumber: '',
-    expirationDate: '',
-    services: []
+    expirationDate: ''
   });
 
-  // Cargamos los datos de clientes al iniciar el componente
+  // Carga de clientes desde el backend
+  const fetchClients = async () => {
+    try {
+      const res = await fetch("http://localhost/hospital_api/getInsuranceClients.php");
+      const data = await res.json();
+      if (data.success) {
+        setClients(data.clients);
+      } else {
+        message.error(data.message || "Error al cargar clientes");
+      }
+    } catch (error) {
+      message.error("Error de conexión con el servidor");
+    }
+  };
+
   useEffect(() => {
-    setClients(clientsData);
+    fetchClients();
   }, []);
 
-  // Actualiza la póliza de un cliente
-  const handlePolicyChange = (clientId, newPolicy) => {
-    const updatedClients = clients.map(client => {
-      if (client.id === clientId) {
-        return { ...client, policy: newPolicy };
-      }
-      return client;
-    });
-    setClients(updatedClients);
-  };
-
-  // Registra un nuevo cliente
-  const handleRegisterClient = (e) => {
+  const handleRegisterClient = async (e) => {
     e.preventDefault();
-    const newId = clients.length ? Math.max(...clients.map(c => c.id)) + 1 : 1;
-    const clientToAdd = { id: newId, ...newClient };
-    setClients([...clients, clientToAdd]);
-    setNewClient({
-      name: '',
-      policy: '70%',
-      documentId: '',
-      insuranceNumber: '',
-      expirationDate: '',
-      services: []
-    });
-    setIsRegistering(false);
-  };
 
-  // Filtra los clientes por número de seguro
-  const handleFilterClients = (e) => {
-    const filterValue = e.target.value.toLowerCase();
-    const filteredClients = clientsData.filter(client =>
-      client.insuranceNumber.toLowerCase().includes(filterValue)
-    );
-    setClients(filteredClients);
-  };
+    try {
+      const res = await fetch("http://localhost/hospital_api/registerInsuranceClient.php", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(newClient),
+      });
 
-  // Alterna el estado "paid" de todos los servicios de un cliente
-  const toggleAllServicesPaid = (clientId) => {
-    const updatedClients = clients.map(client => {
-      if (client.id === clientId && client.services && client.services.length > 0) {
-        const allPaid = client.services.every(s => s.paid);
-        return {
-          ...client,
-          services: client.services.map(s => ({ ...s, paid: !allPaid }))
-        };
+      const data = await res.json();
+      if (data.success) {
+        message.success("Cliente registrado exitosamente");
+        fetchClients(); // Recargar la lista
+        setNewClient({
+          name: '',
+          policy: '70%',
+          documentId: '',
+          insuranceNumber: '',
+          expirationDate: ''
+        });
+        setIsRegistering(false);
+      } else {
+        message.error(data.message || "Error al registrar cliente");
       }
-      return client;
-    });
-    setClients(updatedClients);
+    } catch (error) {
+      message.error("Error de conexión con el servidor");
+    }
   };
 
-  // Actualiza la fecha de vencimiento de todos los servicios de un cliente
-  const updateAllServicesExpiration = (clientId, newDate) => {
-    const updatedClients = clients.map(client => {
-      if (client.id === clientId && client.services && client.services.length > 0) {
-        return {
-          ...client,
-          services: client.services.map(s => ({ ...s, expirationDate: newDate }))
-        };
+  const handleFilterClients = async (e) => {
+    const filter = e.target.value;
+    try {
+      const res = await fetch(`http://localhost/hospital_api/getInsuranceClients.php?filter=${filter}`);
+      const data = await res.json();
+      if (data.success) {
+        setClients(data.clients);
+      } else {
+        setClients([]);
       }
-      return client;
-    });
-    setClients(updatedClients);
+    } catch {
+      setClients([]);
+    }
   };
 
-  // Definición de animación para cada tarjeta de cliente
   const cardVariants = {
     hidden: { opacity: 0, y: 20 },
     visible: { opacity: 1, y: 0 }
@@ -99,15 +89,10 @@ function InsuranceClients() {
       <h1>Clientes Asegurados</h1>
       <Link to="/seguro/SeguroEmpleadoDashboard" className="private-back-button">← Regresar</Link>
 
-      {/* Campo para filtrar clientes */}
       <div className="filter-container" style={{ marginBottom: '20px' }}>
-        <Input 
-          placeholder="Filtrar por número de seguro" 
-          onChange={handleFilterClients} 
-        />
+        <Input placeholder="Filtrar por número de seguro" onChange={handleFilterClients} />
       </div>
 
-      {/* Listado de clientes */}
       <div className="client-list">
         {clients.map(client => (
           <motion.div
@@ -123,68 +108,15 @@ function InsuranceClients() {
               <div className="client-header" style={{ marginBottom: '10px' }}>
                 <span className="client-name" style={{ fontWeight: 'bold' }}>{client.name}</span>
                 <span className="client-info">
-                  Póliza: {client.policy} | ID: {client.documentId} | Nº Seguro: {client.insuranceNumber}
+                  Póliza: {client.policy_percentage}% | ID: {client.document_id} | Nº Seguro: {client.insurance_number}
                 </span>
-                <div className="policy-selector">
-                  <strong>Cambiar Póliza: </strong>
-                  <select
-                    value={client.policy}
-                    onChange={e => handlePolicyChange(client.id, e.target.value)}
-                  >
-                    <option value="70%">70%</option>
-                    <option value="90%">90%</option>
-                  </select>
-                </div>
+                <div><strong>Vence:</strong> {client.expiration_date}</div>
               </div>
-
-              {/* Desplegable para mostrar servicios */}
-              <details className="services-details" style={{ marginBottom: '10px' }}>
-                <summary>Mostrar/Ocultar Servicios</summary>
-                {client.services && client.services.length > 0 ? (
-                  client.services.map((service, index) => (
-                    <ul key={index} className="service-list" style={{ marginLeft: '20px', marginTop: '10px' }}>
-                      <li className="service-title"><strong>{service.serviceName}</strong></li>
-                      <li><strong>Visita:</strong> {service.lastVisit}</li>
-                      <li><strong>Diagnóstico:</strong> {service.diagnosis}</li>
-                      <li><strong>Medicamentos:</strong> {service.medications.join(', ') || 'Ninguno'}</li>
-                      <li><strong>Notas:</strong> {service.notes}</li>
-                      {service.services && service.services.join ? (
-                        <li><strong>Servicios:</strong> {service.services.join(', ')}</li>
-                      ) : null}
-                      <li><strong>Costo:</strong> {service.cost}</li>
-                      <li><strong>Copago:</strong> {service.copayment}</li>
-                    </ul>
-                  ))
-                ) : (
-                  <p>No hay servicios registrados.</p>
-                )}
-              </details>
-
-              {/* Acciones de servicios */}
-              {client.services && client.services.length > 0 && (
-                <div className="service-actions-container" style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                  <span>
-                    <strong>Pagado:</strong> {client.services.every(s => s.paid) ? 'Sí' : 'No'}
-                  </span>
-                  <Button onClick={() => toggleAllServicesPaid(client.id)}>
-                    Cambiar Estado
-                  </Button>
-                  <span>
-                    <strong>Fecha de Vencimiento:</strong>
-                  </span>
-                  <DatePicker
-                    value={client.services[0].expirationDate ? moment(client.services[0].expirationDate) : null}
-                    onChange={(date, dateString) => updateAllServicesExpiration(client.id, dateString)}
-                    format="YYYY-MM-DD"
-                  />
-                </div>
-              )}
             </Card>
           </motion.div>
         ))}
       </div>
 
-      {/* Sección de registro de nuevos clientes */}
       <div className="final-register-section" style={{ marginTop: '20px' }}>
         <Button 
           type="primary" 
@@ -241,9 +173,6 @@ function InsuranceClients() {
                   <option value="70%">70%</option>
                   <option value="90%">90%</option>
                 </select>
-              </div>
-              <div style={{ marginBottom: '10px' }}>
-                Costo por afiliación: Q.125
               </div>
               <Button type="primary" htmlType="submit" className="submit-button">
                 Agregar Cliente
