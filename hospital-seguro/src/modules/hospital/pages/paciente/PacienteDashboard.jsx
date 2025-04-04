@@ -40,8 +40,8 @@ function PacienteDashboard() {
   return (
     <DashboardLayout title={`¡Bienvenido, ${name || "Paciente"}!`}>
       <div className="dashboard-link-container">
-        <DashboardLinkCard title="Mis Citas" link="/paciente/citas" />
-        <DashboardLinkCard title="Historial Médico" link="/paciente/historial" />
+        <DashboardLinkCard title="Mis Citas" link="/paciente/PacienteCitas" />
+        <DashboardLinkCard title="Historial Médico" link="/paciente/PacienteHistorial" />
       </div>
     </DashboardLayout>
   );
