@@ -6,6 +6,7 @@ import DashboardLinkCard from "../../../components/DashboardLinkCard";
 function AdminDashboard() {
   const [role, setRole] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [name, setName] = useState("");
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -18,6 +19,7 @@ function AdminDashboard() {
         const data = await response.json();
         if (data.success) {
           setRole(data.role);
+          setName(data.name);
         } else {
           navigate("/login");
         }
@@ -34,7 +36,7 @@ function AdminDashboard() {
   if (!role) return <p>Error: No se pudo obtener el rol.</p>;
 
   return (
-    <DashboardLayout title="¡Bienvenido, Administrador!">
+    <DashboardLayout title={`¡Bienvenido, Admin. ${name || "Usuario"}!`}>
       <div className="dashboard-link-container">
         <DashboardLinkCard 
           title="Gestión de Usuarios" 
