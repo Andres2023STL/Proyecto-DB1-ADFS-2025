@@ -1,69 +1,71 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import { Collapse } from 'antd';
-import { motion } from 'framer-motion';
-import medications from '../../../data/medications.json';
+import React, { useEffect, useState } from "react";
+import { Collapse, message } from "antd";
+import { Link } from "react-router-dom";
+import { motion } from "framer-motion";
 
 const { Panel } = Collapse;
 
-// Función para agrupar los datos por categoría y subcategoría
-function groupData(items, categoryKey, subcategoryKey) {
-  const grouped = {};
-  items.forEach(item => {
-    const category = item[categoryKey];
-    const subcategory = item[subcategoryKey];
-    if (!grouped[category]) grouped[category] = {};
-    if (!grouped[category][subcategory]) grouped[category][subcategory] = [];
-    grouped[category][subcategory].push(item);
-  });
-  return grouped;
-}
-
 function CatalogoMedicina() {
-  const groupedMedications = groupData(medications, 'category', 'subcategory');
+  const [medicinas, setMedicinas] = useState([]);
 
-  // Variantes de animación para los contenedores
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: { opacity: 1, transition: { staggerChildren: 0.2 } }
-  };
+  useEffect(() => {
+    fetch("http://localhost/hospital_api/getCoveredMedicines.php", {
+      credentials: "include"
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.success) {
+          setMedicinas(data.medicinas);
+        } else {
+          message.error(data.message || "Error al cargar catálogo");
+        }
+      })
+      .catch(() => {
+        message.error("Error de conexión");
+      });
+  }, []);
 
-  const itemVariants = {
-    hidden: { opacity: 0, y: 10 },
-    visible: { opacity: 1, y: 0 }
-  };
+  // Agrupar por categoría y subcategoría
+  const grouped = {};
+  medicinas.forEach(item => {
+    const cat = item.category || "Sin categoría";
+    const sub = item.subcategory || "General";
+    if (!grouped[cat]) grouped[cat] = {};
+    if (!grouped[cat][sub]) grouped[cat][sub] = [];
+    grouped[cat][sub].push(item);
+  });
 
   return (
     <div className="catalog-container private-page-container">
       <h1 className="catalog-title">Catálogo Medicina</h1>
-      <Link to="/seguro/SeguroEmpleadoDashboard" className="back-button">← Regresar al Dashboard</Link>
-      <motion.div variants={containerVariants} initial="hidden" animate="visible">
-        {Object.keys(groupedMedications).map(category => (
-          <motion.div key={category} variants={itemVariants} className="category-panel" style={{ marginBottom: '20px' }}>
-            {/* Collapse principal con estilo reutilizando la clase blue-theme */}
-            <Collapse accordion className="blue-theme">
-              <Panel header={category} key={category}>
-                <Collapse accordion>
-                  {Object.keys(groupedMedications[category]).map(subcategory => (
-                    <Panel header={subcategory} key={subcategory} className="subcategory-panel">
-                      <ul className="item-list">
-                        {groupedMedications[category][subcategory].map(item => (
-                          <li key={item.id_med} className="item">
-                            <div className="item-name">{item.name}</div>
-                            <div className="item-details">
-                              <span>{item.activeIngredient}</span> | <span>{item.concentration}</span> | <span>${item.price}</span>
-                            </div>
-                          </li>
-                        ))}
-                      </ul>
-                    </Panel>
-                  ))}
-                </Collapse>
-              </Panel>
-            </Collapse>
-          </motion.div>
-        ))}
-      </motion.div>
+      <Link to="/seguro/SeguroEmpleadoDashboard" className="back-button">← Regresar</Link>
+      {Object.keys(grouped).map(cat => (
+        <motion.div
+          key={cat}
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.3 }}
+          style={{ marginBottom: "20px" }}
+        >
+          <Collapse accordion className="blue-theme">
+            <Panel header={cat} key={cat}>
+              <Collapse accordion>
+                {Object.keys(grouped[cat]).map(sub => (
+                  <Panel header={sub} key={sub}>
+                    <ul>
+                      {grouped[cat][sub].map(med => (
+                        <li key={med.id}>
+                          <strong>{med.name}</strong> - {med.active_ingredient} | {med.concentration} | Q{med.price}
+                        </li>
+                      ))}
+                    </ul>
+                  </Panel>
+                ))}
+              </Collapse>
+            </Panel>
+          </Collapse>
+        </motion.div>
+      ))}
     </div>
   );
 }
