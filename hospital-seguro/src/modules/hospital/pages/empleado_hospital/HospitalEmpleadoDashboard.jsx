@@ -31,10 +31,7 @@ function HospitalEmpleadoDashboard() {
     <DashboardLayout title={`¡Bienvenido, ${name || "Empleado"}!`}>
       <div className="dashboard-link-container">
         <DashboardLinkCard title="Agendar Citas" link="/hospital-empleado/appointments" />
-        <DashboardLinkCard title="Registro de Pacientes" link="/hospital-empleado/patientregister" />
-        <DashboardLinkCard title="Llenar Ficha Histórica" link="/hospital-empleado/ficha-historica" />
-        <DashboardLinkCard title="Historial de Pacientes" link="/hospital-empleado/historial" />
-        <DashboardLinkCard title="Autorizaciones de Seguro" link="/hospital-empleado/autorizar-servicio" />
+        <DashboardLinkCard title="Edición de contenido dentro del portal" link="/hospital-empleado/patientregister" />
       </div>
     </DashboardLayout>
   );
