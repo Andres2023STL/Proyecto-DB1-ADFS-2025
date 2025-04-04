@@ -17,7 +17,7 @@ $data = json_decode(file_get_contents("php://input"), true);
 $name = $data['name'] ?? null;
 $email = $data['email'] ?? null;
 $password = $data['password'] ?? null;
-$role = $data['role'] ?? 'patient';
+
 
 if (!$email || !$password) {
   ob_clean();
@@ -39,8 +39,9 @@ if ($result->num_rows > 0) {
 }
 
 // Insertar nuevo usuario
-$stmt = $conn->prepare("INSERT INTO users (name, email, password, role, active, created_at) VALUES (?, ?, ?, ?, 1, NOW())");
-$stmt->bind_param("ssss", $name, $email, $encryptedPassword, $role);
+$stmt = $conn->prepare("INSERT INTO users (name, email, password, active, created_at) VALUES (?, ?, ?, 0, NOW())");
+$stmt->bind_param("sss", $name, $email, $encryptedPassword);
+
 
 ob_clean();
 

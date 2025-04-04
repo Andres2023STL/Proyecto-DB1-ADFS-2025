@@ -18,7 +18,7 @@ const DashboardRedirect = () => {
         if (data.success && data.role) {
           const role = data.role.toLowerCase();
 
-          // 🔽 Doctor
+
           if (role === "doctor") {
             const profileRes = await fetch("http://localhost/hospital_api/getProfileStatus.php", {
               method: "GET",
@@ -32,6 +32,7 @@ const DashboardRedirect = () => {
             }
             return;
           }
+
 
           // 🔽 Paciente
           if (role === "paciente") {
@@ -49,8 +50,6 @@ const DashboardRedirect = () => {
             return;
           }
           
-
-          // 🔽 Resto de roles
           if (role === "admin") {
             navigate("/admin/admindashboard");
           } else if (role === "empleado_hospital") {

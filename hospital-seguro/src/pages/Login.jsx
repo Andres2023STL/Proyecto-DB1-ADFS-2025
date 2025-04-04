@@ -23,8 +23,10 @@ function Login({ setIsAuthenticated }) {
     if (data.success) {
       setIsAuthenticated(true);
 
+
       const role = data.role?.trim().toLowerCase();
       console.log("🔍 Datos de login:", data);
+
 
       if (role === "doctor" && data.needsProfile) {
         navigate("/hospital/DoctorProfileForm");
