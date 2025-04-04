@@ -17,23 +17,43 @@ function Register() {
       return;
     }
 
-    const response = await fetch("http://localhost/hospital_api/register.php", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ name, email, password }),
-    });
+    const start = performance.now();
 
-    const data = await response.json();
+    try {
+      const response = await fetch("http://localhost/hospital_api/register.php", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        credentials: "include",
+        body: JSON.stringify({ name, email, password }),
+      });
 
-    if (data.success) {
-      alert("Registro exitoso. Ahora puedes iniciar sesión.");
-      setName("");
-      setEmail("");
-      setPassword("");
-      setConfirmPassword("");
-      navigate("/login");
-    } else {
-      alert(data.message);
+      const text = await response.text();
+      const end = performance.now();
+      console.log("⏱️ Tiempo de respuesta percibido:", Math.round(end - start), "ms");
+      console.log("Respuesta cruda:", text);
+
+      let data;
+      try {
+        data = JSON.parse(text);
+      } catch (err) {
+        alert("Error inesperado. La respuesta no es válida.");
+        return;
+      }
+
+      if (data.success) {
+        alert("Registro exitoso. Se ha enviado un correo al administrador para activar tu cuenta.");
+        setName("");
+        setEmail("");
+        setPassword("");
+        setConfirmPassword("");
+        navigate("/login");
+      } else {
+        alert(data.message);
+      }
+
+    } catch (error) {
+      console.error("Error de red:", error);
+      alert("Ocurrió un error al registrarse. Verifica tu conexión o contacta al soporte.");
     }
   };
 
