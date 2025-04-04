@@ -102,15 +102,17 @@ function UsersManagement() {
             {Number(record.active) === 1 ? "Desactivar" : "Activar"}
           </Button>
           <Select
-            defaultValue={record.role || undefined}
-            style={{ width: 150 }}
-            onChange={(newRole) => assignUserRole(record.id, newRole)}
-          >
-            <Option value="doctor">Doctor</Option>
-            <Option value="admin">Administrador</Option>
-            <Option value="empleado_hospital">Empleado hospital</Option>
-            <Option value="empleado_seguro">Empleado aseguradora</Option>
-          </Select>
+  value={record.role || undefined}
+  style={{ width: 150 }}
+  onChange={(newRole) => assignUserRole(record.id, newRole)}
+>
+  <Option value="doctor">Doctor</Option>
+  <Option value="admin">Administrador</Option>
+  <Option value="empleado_hospital">Empleado hospital</Option>
+  <Option value="empleado_seguro">Empleado aseguradora</Option>
+  <Option value="patient">Paciente</Option> 
+</Select>
+
         </div>
       )
     }
@@ -131,6 +133,7 @@ function UsersManagement() {
           <Option value="admin">Administrador</Option>
           <Option value="empleado_hospital">Empleado hospital</Option>
           <Option value="empleado_seguro">Empleado aseguradora</Option>
+          <Option value="patient">Paciente</Option> 
         </Select>
         <DatePicker placeholder="Fecha" onChange={(date, dateString) => setSearchDate(dateString)} style={{ width: "200px" }} />
       </motion.div>
