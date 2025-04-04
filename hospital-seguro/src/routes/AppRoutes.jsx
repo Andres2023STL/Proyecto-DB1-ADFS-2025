@@ -61,6 +61,10 @@ const AppRoutes = () => {
           {/* Rutas protegidas para empleados del hospital, distinta al hospital para que no colisionen */}
           <Route path="/hospital-empleado/*" element={<PrivateRoutes allowedRole="empleado_hospital" />} />
 
+          {/* Rutas protegidas para pacientes */}
+          <Route path="/paciente/*" element={<PrivateRoutes allowedRole="patient" />} />
+
+
           {/* Ruta para acceso denegado */}
           <Route path="/acceso-denegado" element={<p>Acceso Denegado</p>} />
         </Routes>
