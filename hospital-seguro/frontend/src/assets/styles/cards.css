@@ -1,0 +1,116 @@
+.service-card,
+.benefit-card {
+  background: #fff;
+  border: 1px solid #f0f0f0;
+  border-radius: 8px;
+  text-align: center;
+  width: 100%;
+  max-width: 500px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  margin: 0 auto;
+  padding: 1.5rem;
+}
+
+.aboutus-card {
+  padding: 20px;
+  border-radius: 8px;
+  border: 1px solid #f0f0f0;
+}
+
+/* Tema azul reutilizable modificado para usar el color del navbar (#001529) */
+.blue-theme {
+  border: 1px solid #001529;
+  background-color: #f0f5ff;
+  transition: box-shadow 0.3s ease, background-color 0.3s ease, color 0.3s ease;
+  border-radius: 8px;
+  text-align: center;
+}
+
+.blue-theme:hover {
+  box-shadow: 0 4px 16px rgba(0, 21, 41, 0.2);
+}
+
+/* Configuración del header de la card para acentuar con el color del navbar */
+.blue-theme .ant-card-head {
+  background-color: #001529;
+}
+.blue-theme .ant-card-head-title {
+  color: #fff;
+  font-size: 3rem; /* Texto de bienvenida mucho más grande */
+}
+
+/* Clase para títulos en otros elementos, si fuera necesario */
+.card-title-blue {
+  color: #001529;
+}
+
+/* Tipografías ajustadas para mayor tamaño */
+.card-main-title {
+  font-size: 2.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.card-main-text {
+  font-size: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.card-section-title {
+  font-size: 2rem;
+  margin-bottom: 1.5rem;
+}
+
+.card-service-title {
+  font-size: 1.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.card-service-text {
+  font-size: 1.3rem;
+}
+
+/* Estilos para el layout de dashboards */
+.dashboard-container {
+  padding: 20px;
+}
+
+.dashboard-layout {
+  min-height: 80vh;
+}
+
+/* Estilos para los link cards del dashboard */
+.dashboard-link-card {
+  background-color: #fff;
+  border: 1px solid #001529;
+  border-radius: 8px;
+  text-align: center;
+  max-width: 500px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  margin: 1rem;
+  padding: 1.5rem;
+  transition: background-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
+  color: #001529;
+}
+
+.dashboard-link-card:hover {
+  background-color: #001529;
+  color: #fff;
+  box-shadow: 0 4px 16px rgba(0, 21, 41, 0.2);
+}
+
+.dashboard-link-card:hover .card-title-blue {
+  color: #fff;
+}
+
+/* Elimina el subrayado de los links en las link cards */
+.dashboard-link {
+  text-decoration: none;
+  color: inherit;
+}
+
+/* Contenedor de los link cards */
+.dashboard-link-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
