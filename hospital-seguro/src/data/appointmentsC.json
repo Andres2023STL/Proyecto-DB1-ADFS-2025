@@ -1,5 +1,0 @@
-[
-    { "id": 1, "date": "2025-03-10", "time": "10:00", "patient": "Juan Pérez", "status": "Pendiente" },
-    { "id": 2, "date": "2025-03-10", "time": "11:00", "patient": "Ana López", "status": "Confirmada" }
-  ]
-  
