@@ -1,29 +1,20 @@
-import { Routes, Route } from "react-router-dom";
-import SubHomeHospital from "../pages/portal/home/SubHomeHospital";
-import SubHomeSeguro from "../pages/portal/home/SubHomeSeguro";
-import Home from "../pages/portal/home/Home";
-import Contacto from "../pages/portal/Contacto";
-import Register from "../pages/auth/Register";
-import AboutUs from "../pages/portal/AboutUs";
-import Login from "../pages/auth/Login";
-import Faq from "../pages/portal/Faq";
+import React from 'react'
+import { Routes, Route } from 'react-router-dom'
+import Home from '../pages/portal/home/Home'
+import Login from '../pages/auth/Login'
+import Register from '../pages/auth/Register'
+// Aquí puedes agregar más páginas públicas como Faq, Contacto, etc.
 
-
-
-
-const PublicRoutes = ({ setIsAuthenticated }) => {
+const PublicRoutes = () => {
   return (
     <Routes>
       <Route path="/" element={<Home />} />
-      <Route path="/SubHomeHospital" element={<SubHomeHospital />} />
-      <Route path="/SubHomeSeguro" element={<SubHomeSeguro />} />
-      <Route path="/Login" element={<Login setIsAuthenticated={setIsAuthenticated} />} />
-      <Route path="/Register" element={<Register />} />
-      <Route path="/AboutUs" element={<AboutUs />} />
-      <Route path="/Contacto" element={<Contacto />} />
-      <Route path="/Faq" element={<Faq />} />
+      <Route path="/login" element={<Login />} />
+      <Route path="/register" element={<Register />} />
+      {/* <Route path="/faq" element={<Faq />} /> */}
+      {/* <Route path="/contacto" element={<Contacto />} /> */}
     </Routes>
-  );
-};
+  )
+}
 
-export default PublicRoutes;
+export default PublicRoutes

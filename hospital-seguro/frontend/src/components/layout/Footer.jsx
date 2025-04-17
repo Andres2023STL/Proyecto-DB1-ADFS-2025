@@ -1,14 +1,14 @@
-import { Layout } from 'antd';
+import React from 'react'
 
-
-const { Footer: AntFooter } = Layout;
-
-function Footer() {
+const Footer = () => {
   return (
-    <AntFooter className="footer">
-      © {new Date().getFullYear()} Plataforma de Gestión Médica. Todos los derechos reservados.
-    </AntFooter>
-  );
+    <footer className="footer">
+      <div className="footer__container">
+        <p>© 2025 CliniSure. Todos los derechos reservados.</p>
+        <p>Contacto: contacto@clinisure.com | +502 1234 5678</p>
+      </div>
+    </footer>
+  )
 }
 
-export default Footer;
+export default Footer

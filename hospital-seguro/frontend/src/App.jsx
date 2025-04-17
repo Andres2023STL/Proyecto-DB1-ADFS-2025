@@ -1,20 +1,18 @@
-// src/App.jsx
-import React from "react";
-import AppRouter from "./routes/AppRouter";
-import { BrowserRouter } from "react-router-dom";
-import Navbar from './components/layout/Navbar';
-import Footer from './components/layout/Footer';
-import "../src/assets/styles/global.css"
-
+import React from 'react'
+import AppRoutes from './routes/AppRoutes'
+import Navbar from './components/layout/Navbar'
+import Footer from './components/layout/Footer'
+import Header from './components/layout/Header'
 
 const App = () => {
   return (
-    <BrowserRouter>
+    <>
+      <Header />
       <Navbar />
-      <AppRouter />
+      <AppRoutes />
       <Footer />
-    </BrowserRouter>
-  );
-};
+    </>
+  )
+}
 
-export default App;
+export default App
