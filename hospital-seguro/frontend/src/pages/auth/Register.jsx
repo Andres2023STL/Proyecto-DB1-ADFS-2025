@@ -1,47 +1,77 @@
-import React from 'react'
+import React from 'react';
+import { useNavigate } from 'react-router-dom';
+import { Container, Card, Form, Button } from 'react-bootstrap';
 
 const Register = () => {
+  const navigate = useNavigate();
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+  
+  };
+
   return (
-    <div className="auth-container">
-      <form className="auth-form" autoComplete="on">
-        <fieldset>
-          <legend>Registrarse</legend>
+    <Container
+      fluid
+      className="min-vh-100 d-flex align-items-center justify-content-center bg-light"
+    >
+      <Card
+        className="shadow-sm"
+        style={{ maxWidth: '450px', width: '100%' }}
+      >
+        <Card.Body className="p-4">
+          <Card.Title className="text-center mb-4 text-success">
+            Registrarse
+          </Card.Title>
 
-          <label htmlFor="nombre">Nombre Completo:</label>
-          <input
-            type="text"
-            id="nombre"
-            name="nombre"
-            placeholder="Tu nombre completo"
-            autoComplete="name"
-            required
-          />
+          <Form autoComplete="on" onSubmit={handleSubmit}>
+            <Form.Group controlId="nombre" className="mb-3">
+              <Form.Label>Nombre Completo</Form.Label>
+              <Form.Control
+                type="text"
+                placeholder="Tu nombre completo"
+                autoComplete="name"
+                required
+              />
+            </Form.Group>
 
-          <label htmlFor="email">Correo Electrónico:</label>
-          <input
-            type="email"
-            id="email"
-            name="email"
-            placeholder="ejemplo@correo.com"
-            autoComplete="email"
-            required
-          />
+            <Form.Group controlId="email" className="mb-3">
+              <Form.Label>Correo Electrónico</Form.Label>
+              <Form.Control
+                type="email"
+                placeholder="ejemplo@correo.com"
+                autoComplete="email"
+                required
+              />
+            </Form.Group>
 
-          <label htmlFor="password">Contraseña:</label>
-          <input
-            type="password"
-            id="password"
-            name="password"
-            placeholder="Crea una contraseña"
-            autoComplete="new-password"
-            required
-          />
+            <Form.Group controlId="password" className="mb-4">
+              <Form.Label>Contraseña</Form.Label>
+              <Form.Control
+                type="password"
+                placeholder="Crea una contraseña"
+                autoComplete="new-password"
+                required
+              />
+            </Form.Group>
 
-          <button type="submit">Registrarse</button>
-        </fieldset>
-      </form>
-    </div>
-  )
-}
+            <Button variant="success" type="submit" className="w-100 mb-3">
+              Registrarse
+            </Button>
 
-export default Register
+            <div className="text-center">
+              <Button
+                variant="link"
+                onClick={() => navigate('/login')}
+              >
+                ¿Ya tienes cuenta? Inicia Sesión
+              </Button>
+            </div>
+          </Form>
+        </Card.Body>
+      </Card>
+    </Container>
+  );
+};
+
+export default Register;

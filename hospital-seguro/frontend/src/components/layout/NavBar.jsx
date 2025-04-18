@@ -30,6 +30,12 @@ const NavBar = () => {
             <Nav.Link as={Link} to="/subhome-seguro">
               Subhome Seguro
             </Nav.Link>
+            <Nav.Link as={Link} to="/historia">
+              Historia
+            </Nav.Link>
+            <Nav.Link as={Link} to="/faq">
+              FAQ
+            </Nav.Link>
             <Nav.Link as={Link} to="/login">
               Iniciar Sesión
             </Nav.Link>

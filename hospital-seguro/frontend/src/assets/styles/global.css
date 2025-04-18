@@ -59,6 +59,10 @@
   object-fit: contain;  
   background-color: #f8f9fa; 
 }
+.service-card {
+  max-width: 50rem;    
+  margin: 0 auto 1.5rem; 
+}
 
 /* Footer */
 .footer {
@@ -84,4 +88,44 @@ html, body, #root {
 }
 .app-content {
   flex: 1;
+}
+footer.bg-success a {
+  color: #ffffff;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+footer.bg-success a:hover {
+  color: #a4abf0;      
+  text-decoration: underline;
+}
+
+/* Timeline */
+.timeline {
+  position: relative;
+  margin-left: 1rem;   
+  padding-left: 3rem;    
+}
+.timeline::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 1.5rem;         
+  width: 2px;
+  height: 100%;
+  background-color: #dee2e6;
+}
+.timeline-event {
+  position: relative;
+  margin-bottom: 2rem;
+}
+.timeline-event::before {
+  content: '';
+  position: absolute;
+  top: 0.5rem;
+  left: -1.3rem;        
+  width: 1rem;
+  height: 1rem;
+  border-radius: 50%;
+  background-color: #198754;
+  border: 2px solid #fff;
 }
