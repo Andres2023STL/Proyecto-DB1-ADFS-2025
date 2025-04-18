@@ -3,6 +3,7 @@ import { Routes, Route } from 'react-router-dom'
 import Home from '../pages/portal/home/Home'
 import Login from '../pages/auth/Login'
 import Register from '../pages/auth/Register'
+import SubHomeHospital from '../pages/portal/home/SubHomeHospital'
 // Aquí puedes agregar más páginas públicas como Faq, Contacto, etc.
 
 const PublicRoutes = () => {
@@ -11,6 +12,7 @@ const PublicRoutes = () => {
       <Route path="/" element={<Home />} />
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
+      <Route path="/subhome-hospital" element={<SubHomeHospital />} />
       {/* <Route path="/faq" element={<Faq />} /> */}
       {/* <Route path="/contacto" element={<Contacto />} /> */}
     </Routes>

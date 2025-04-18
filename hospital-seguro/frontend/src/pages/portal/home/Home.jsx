@@ -1,7 +1,7 @@
 import React from 'react';
 import { Container } from 'react-bootstrap';
-import Carrusel from '../../../components/Carrusel';
-import ListaTarjetas from '../../../components/ListaTarjetas';
+import Carrusel from '../../../components/reusable/Carrusel';
+import ListaTarjetas from '../../../components/reusable/ListaTarjetas';
 
 import img1 from '../../../assets/public/images/img_asegurado.jpg';
 import img2 from '../../../assets/public/images/img_medico.jpg';
