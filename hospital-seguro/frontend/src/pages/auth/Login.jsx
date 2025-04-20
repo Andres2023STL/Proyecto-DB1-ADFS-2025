@@ -1,97 +1,66 @@
-import React, { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
-import { useAuth } from '../../context/AuthContext'
-import { login } from '../../services/authService'
+// src/pages/auth/Login.jsx
+import React from 'react';
+import { useNavigate } from 'react-router-dom';
+import {
+  Container,
+  Card,
+  Form,
+  Button
+} from 'react-bootstrap';
 
 const Login = () => {
-  const navigate = useNavigate()
-  const { setUser } = useAuth()
-
-  const [formData, setFormData] = useState({ email: '', password: '' })
-  const [error, setError] = useState('')
-  const [mensaje, setMensaje] = useState('')
-
-  const handleChange = (e) => {
-    setFormData(prev => ({
-      ...prev,
-      [e.target.name]: e.target.value
-    }))
-  }
-
-  const handleSubmit = async (e) => {
-    e.preventDefault()
-    setError('')
-    setMensaje('')
-  
-    console.log('📤 Enviando login:', formData.email, formData.password)
-  
-    const res = await login(formData.email, formData.password)
-  
-    console.log('📩 Respuesta login:', res)
-  
-    if (res.success) {
-      setUser(res.user)
-  
-      const rolePath = {
-        admin: '/dashboard/admin',
-        doctor: '/dashboard/doctor',
-        paciente: '/dashboard/paciente',
-        empleado: '/dashboard/empleado'
-      }
-  
-      navigate(rolePath[res.user.rol] || '/unauthorized')
-    } else {
-      setError(res.message || 'Credenciales incorrectas')
-    }
-  }
-  
+  const navigate = useNavigate();
 
   return (
-    <div className="auth-container">
-      <form className="auth-form" autoComplete="on" onSubmit={handleSubmit}>
-        <fieldset>
-          <legend>Iniciar Sesión</legend>
+    <Container
+      className="min-vh-100 d-flex align-items-center justify-content-center bg-light"
+    >
+      <Card 
+        className="shadow-sm" 
+        style={{ maxWidth: '450px', width: '100%' }}
+      >
+        <Card.Body className="p-4">
+          <Card.Title className="text-center mb-4 text-success">
+            Iniciar Sesión
+          </Card.Title>
+          <Form autoComplete="on">
+            <Form.Group controlId="email" className="mb-3">
+              <Form.Label>Correo Electrónico</Form.Label>
+              <Form.Control
+                type="email"
+                placeholder="ejemplo@correo.com"
+                autoComplete="email"
+                required
+              />
+            </Form.Group>
 
-          <label htmlFor="email">Correo Electrónico:</label>
-          <input
-            type="email"
-            id="email"
-            name="email"
-            placeholder="ejemplo@correo.com"
-            autoComplete="email"
-            required
-            value={formData.email}
-            onChange={handleChange}
-          />
+            <Form.Group controlId="password" className="mb-4">
+              <Form.Label>Contraseña</Form.Label>
+              <Form.Control
+                type="password"
+                placeholder="Tu contraseña"
+                autoComplete="current-password"
+                required
+              />
+            </Form.Group>
 
-          <label htmlFor="password">Contraseña:</label>
-          <input
-            type="password"
-            id="password"
-            name="password"
-            placeholder="Tu contraseña"
-            autoComplete="current-password"
-            required
-            value={formData.password}
-            onChange={handleChange}
-          />
+            <Button variant="success" type="submit" className="w-100 mb-3">
+              Ingresar
+            </Button>
 
-          <button type="submit">Ingresar</button>
+            <div className="text-center">
+              <Button
+                variant="link"
+                onClick={() => navigate('/register')}
+              >
+                ¿No tienes cuenta? Regístrate
+              </Button>
+            </div>
+          </Form>
+        </Card.Body>
+      </Card>
+    </Container>
+  );
+};
 
-          <button
-            type="button"
-            onClick={() => navigate('/register')}
-            style={{ marginTop: '1rem' }}
-          >
-            ¿No tienes cuenta? Regístrate
-          </button>
-
-          {mensaje && <p className="success">{mensaje}</p>}
-          {error && <p className="error">{error}</p>}
-        </fieldset>
-      </form>
-    </div>
-  )
-}
-
-export default Login
+export default Login;

@@ -1,103 +1,77 @@
-import React, { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import React from 'react';
+import { useNavigate } from 'react-router-dom';
+import { Container, Card, Form, Button } from 'react-bootstrap';
 
 const Register = () => {
-  const [formData, setFormData] = useState({
-    nombre: '',
-    email: '',
-    password: ''
-  })
-  const [mensaje, setMensaje] = useState('')
-  const [error, setError] = useState('')
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
-  const handleChange = (e) => {
-    setFormData(prev => ({
-      ...prev,
-      [e.target.name]: e.target.value
-    }))
-  }
-
-  const handleSubmit = async (e) => {
-    e.preventDefault()
-    setMensaje('')
-    setError('')
-    console.log('Datos enviados:', formData)
-
-    try {
-      const res = await fetch('http://localhost/hospital_api/auth/register.php', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        credentials: 'include',
-        body: JSON.stringify(formData)
-      })
-
-      const data = await res.json()
-
-      if (data.success) {
-        setMensaje('✅ Registro exitoso. Redirigiendo al login...')
-        setFormData({ nombre: '', email: '', password: '' }) // Limpiar campos
-        setTimeout(() => navigate('/login'), 2000) // Redirigir tras 2 seg
-      } else {
-        setError(data.message || 'Ocurrió un error al registrarse.')
-      }
-    } catch (err) {
-      setError('No se pudo conectar con el servidor.')
-    }
-  }
+  const handleSubmit = (e) => {
+    e.preventDefault();
+  
+  };
 
   return (
-    <div className="auth-container">
-      <form className="auth-form" onSubmit={handleSubmit} autoComplete="on">
-        <fieldset>
-          <legend>Registrarse</legend>
+    <Container
+      fluid
+      className="min-vh-100 d-flex align-items-center justify-content-center bg-light"
+    >
+      <Card
+        className="shadow-sm"
+        style={{ maxWidth: '450px', width: '100%' }}
+      >
+        <Card.Body className="p-4">
+          <Card.Title className="text-center mb-4 text-success">
+            Registrarse
+          </Card.Title>
 
-          <label htmlFor="nombre">Nombre Completo:</label>
-          <input
-            type="text"
-            id="nombre"
-            name="nombre"
-            placeholder="Tu nombre completo"
-            autoComplete="name"
-            value={formData.nombre}
-            onChange={handleChange}
-            required
-          />
+          <Form autoComplete="on" onSubmit={handleSubmit}>
+            <Form.Group controlId="nombre" className="mb-3">
+              <Form.Label>Nombre Completo</Form.Label>
+              <Form.Control
+                type="text"
+                placeholder="Tu nombre completo"
+                autoComplete="name"
+                required
+              />
+            </Form.Group>
 
-          <label htmlFor="email">Correo Electrónico:</label>
-          <input
-            type="email"
-            id="email"
-            name="email"
-            placeholder="ejemplo@correo.com"
-            autoComplete="email"
-            value={formData.email}
-            onChange={handleChange}
-            required
-          />
+            <Form.Group controlId="email" className="mb-3">
+              <Form.Label>Correo Electrónico</Form.Label>
+              <Form.Control
+                type="email"
+                placeholder="ejemplo@correo.com"
+                autoComplete="email"
+                required
+              />
+            </Form.Group>
 
-          <label htmlFor="password">Contraseña:</label>
-          <input
-            type="password"
-            id="password"
-            name="password"
-            placeholder="Crea una contraseña"
-            autoComplete="new-password"
-            value={formData.password}
-            onChange={handleChange}
-            required
-          />
+            <Form.Group controlId="password" className="mb-4">
+              <Form.Label>Contraseña</Form.Label>
+              <Form.Control
+                type="password"
+                placeholder="Crea una contraseña"
+                autoComplete="new-password"
+                required
+              />
+            </Form.Group>
 
-          <button type="submit">Registrarse</button>
+            <Button variant="success" type="submit" className="w-100 mb-3">
+              Registrarse
+            </Button>
 
-          {mensaje && <p className="success">{mensaje}</p>}
-          {error && <p className="error">{error}</p>}
-        </fieldset>
-      </form>
-    </div>
-  )
-}
+            <div className="text-center">
+              <Button
+                variant="link"
+                onClick={() => navigate('/login')}
+              >
+                ¿Ya tienes cuenta? Inicia Sesión
+              </Button>
+            </div>
+          </Form>
+        </Card.Body>
+      </Card>
+    </Container>
+  );
+};
 
-export default Register
+export default Register;
